@@ -6,6 +6,7 @@ import FirmenNamen from "./Components/FirmenNamen";
 
 import Home from "./Components/Pages/Home";
 import Employees from "./Components/Employees";
+import Produkte from "./Components/Artikel";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Route path="/voucher" exact element={<CreateInvoice />} />
       <Route path="/customers" exact element={<FirmenNamen />} />
       <Route path="/employees" exact element={<Employees />} />
+      <Route path="/products" exact element={<Produkte />} />
      </Routes>
      </Router>
     </>
