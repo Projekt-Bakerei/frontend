@@ -167,6 +167,10 @@ export default function MenuToolbarExample() {
     e.preventDefault();
     window.location.href = "/employees";
   };
+  const onClickProducts = (e) => {
+    e.preventDefault();
+    window.location.href = "/products";
+  };
 
   return (
     <List
@@ -356,7 +360,7 @@ export default function MenuToolbarExample() {
               }}
             >
               <MenuItem {...itemProps}>Neuen Artikel anlegen</MenuItem>
-              <MenuItem {...itemProps}>Alle Artikeln</MenuItem>
+              <MenuItem {...itemProps} onClick={onClickProducts}>Alle Artikeln</MenuItem>
             </Menu>
           }
         >
