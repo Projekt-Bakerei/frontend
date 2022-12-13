@@ -171,6 +171,10 @@ export default function MenuToolbarExample() {
     e.preventDefault();
     window.location.href = "/products";
   };
+  const onClickAbout = (e) => {
+    e.preventDefault();
+    window.location.href = "/about";
+  };
 
   return (
     <List
@@ -218,7 +222,7 @@ export default function MenuToolbarExample() {
                 setMenuIndex(null);
               }}
             >
-              <MenuItem {...itemProps}>Firmendaten</MenuItem>
+              <MenuItem {...itemProps} onClick={onClickAbout}>Firmendaten</MenuItem>
               <MenuItem {...itemProps}>Benutzer</MenuItem>
               <MenuItem {...itemProps}>Mein Steuerberater</MenuItem>
               <MenuItem {...itemProps}>Allgemeine Einstellungen</MenuItem>

@@ -7,6 +7,7 @@ import FirmenNamen from "./Components/FirmenNamen";
 import Home from "./Components/Pages/Home";
 import Employees from "./Components/Employees";
 import Produkte from "./Components/Artikel";
+import FirmenDaten from "./Components/Pages/FirmenDaten";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Route path="/customers" exact element={<FirmenNamen />} />
       <Route path="/employees" exact element={<Employees />} />
       <Route path="/products" exact element={<Produkte />} />
+      <Route path="/about" exact element={<FirmenDaten />} />
      </Routes>
      </Router>
     </>

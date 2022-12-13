@@ -8,6 +8,7 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import { Grid } from "@mui/material";
 
+
 function Home() {
   const bull = (
     <Box
@@ -32,78 +33,78 @@ function Home() {
               <CardContent>
                 <Typography
                   fontSize="l"
-                  textColor="neutral.500"
+                  textColor="neutral.700"
                   fontWeight="lg"
                   gutterBottom
                 >
-                  Einfache Software macht komplexe Aufgaben leicht
+                  Einfache Rechnung erstellen
                 </Typography>
                 <Typography variant="h5" component="div">
-                  be{bull}nev{bull}o{bull}lent
+                  {bull} Aktuel Rechnung {bull}
                 </Typography>
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                  adjective
+                  {bull} 20221221045
                 </Typography>
                 <Typography variant="body2">
-                  well meaning and kindly.
+                  Bei Firma: 
                   <br />
-                  {'"a benevolent smile"'}
+                  FirmenNamen[1]
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small">Learn More</Button>
+                <Button size="small">Weiter</Button>
+              </CardActions>
+            </Card>
+            <Card sx={{ width: 275 }}>
+              <CardContent>
+                <Typography
+                  fontSize="1"
+                  textColor="neutral.700"
+                  fontWeight="lg"
+                  gutterBottom
+                >
+                  Einfache Lieferschein erstellen
+                </Typography>
+                <Typography variant="h5" component="div">
+                  {bull} Aktuel Lieferschein {bull}
+                </Typography>
+                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                  {bull} 20221221222
+                </Typography>
+                <Typography variant="body2">
+                  Fahrer:
+                  <br />
+                  {'"Name - Kennzeichen"'}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small">Weiter</Button>
               </CardActions>
             </Card>
             <Card sx={{ width: 275 }}>
               <CardContent>
                 <Typography
                   fontSize="l"
-                  textColor="neutral.500"
+                  textColor="neutral.700"
                   fontWeight="lg"
                   gutterBottom
                 >
-                  Einfache Software macht komplexe Aufgaben leicht
+                  Einfache Angebot erstellen
                 </Typography>
                 <Typography variant="h5" component="div">
-                  be{bull}nev{bull}o{bull}lent
+                  {bull} Angeboten {bull}
                 </Typography>
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                  adjective
+                  {bull} 25.12.2022
                 </Typography>
                 <Typography variant="body2">
-                  well meaning and kindly.
+                  Unser Angebot
                   <br />
-                  {'"a benevolent smile"'}
+                  {'"Black Friday"'}
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small">Learn More</Button>
-              </CardActions>
-            </Card>
-            <Card sx={{ width: 275 }}>
-              <CardContent>
-                <Typography
-                  fontSize="l"
-                  textColor="neutral.500"
-                  fontWeight="lg"
-                  gutterBottom
-                >
-                  Einfache Software macht komplexe Aufgaben leicht
-                </Typography>
-                <Typography variant="h5" component="div">
-                  be{bull}nev{bull}o{bull}lent
-                </Typography>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                  adjective
-                </Typography>
-                <Typography variant="body2">
-                  well meaning and kindly.
-                  <br />
-                  {'"a benevolent smile"'}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small">Learn More</Button>
+                <Button size="small">Weiter</Button>
               </CardActions>
             </Card>
           </Grid>
