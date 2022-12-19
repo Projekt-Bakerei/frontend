@@ -9,6 +9,7 @@ import Employees from "./Components/Employees";
 import Produkte from "./Components/Artikel";
 import FirmenDaten from "./Components/Pages/FirmenDaten";
 import SignIn from "./Components/Login/SignIn";
+import NewCustomer from "./Components/NewCustomer";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Route path="/" exact element={<Home />} />
       <Route path="/voucher" exact element={<CreateInvoice />} />
       <Route path="/customers" exact element={<FirmenNamen />} />
+      <Route path="/newcustomer" exact element={<NewCustomer />} />
       <Route path="/employees" exact element={<Employees />} />
       <Route path="/products" exact element={<Produkte />} />
       <Route path="/about" exact element={<FirmenDaten />} />

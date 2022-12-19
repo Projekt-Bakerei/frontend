@@ -163,6 +163,10 @@ export default function MenuToolbarExample() {
     e.preventDefault();
     window.location.href = "/customers";
   };
+  const onClickNewCustomer = (e) => {
+    e.preventDefault();
+    window.location.href = "/newcustomer";
+  };
   const onClickEmployees = (e) => {
     e.preventDefault();
     window.location.href = "/employees";
@@ -175,6 +179,7 @@ export default function MenuToolbarExample() {
     e.preventDefault();
     window.location.href = "/about";
   };
+  
 
   return (
     <List
@@ -296,7 +301,7 @@ export default function MenuToolbarExample() {
             >
               <ListItem nested>
                 <List aria-label="Time travel">
-                  <MenuItem {...itemProps}>Neue Kunde anlegen</MenuItem>
+                  <MenuItem {...itemProps} onClick={onClickNewCustomer}>Neue Kunde anlegen</MenuItem>
                   <MenuItem {...itemProps} onClick={onClickCustomer}>Alle Kunden</MenuItem>
                 </List>
               </ListItem>
@@ -370,6 +375,19 @@ export default function MenuToolbarExample() {
         >
           Produkte
         </MenuButton>
+      </ListItem>
+      <ListItem>
+        <Link
+          to="/login"
+          style={{
+            textDecoration: "none",
+            color: "black",
+            position: "fixed",
+            right: "25px"
+          }}
+        >
+          <Typography>Login</Typography>
+        </Link>
       </ListItem>
     </List>
   );
