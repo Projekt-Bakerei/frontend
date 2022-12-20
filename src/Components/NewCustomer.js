@@ -73,8 +73,8 @@ const kunden = [{label: 'Aladdin grill', Kodu: '234', hitab: 'Firma', kategorisi
               <Autocomplete options={["Bar-Rechnung", "Rechnung"]} /> */}
              <FormControl /> 
           <Form.Label htmlFor="hitab" style={{
-             marginRight: "2rem",
-              width: '10rem',
+            //  marginRight: "2rem",
+              width: '8.5rem',
               fontFamily: "Roboto",
               fontSize: "0.875rem",
               fontWeight: 500, 
@@ -88,7 +88,7 @@ const kunden = [{label: 'Aladdin grill', Kodu: '234', hitab: 'Firma', kategorisi
           </Form.Select>
           <Form.Label htmlFor="kategorisi" style={{
              marginRight: "2rem",
-             marginLeft: "3rem",
+             marginLeft: "4.5rem",
               width: '10rem',
               fontFamily: "Roboto",
               fontSize: "0.875rem",

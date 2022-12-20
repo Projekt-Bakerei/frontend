@@ -10,6 +10,7 @@ import Produkte from "./Components/Artikel";
 import FirmenDaten from "./Components/Pages/FirmenDaten";
 import SignIn from "./Components/Login/SignIn";
 import NewCustomer from "./Components/NewCustomer";
+import { Register } from "./Components/Login/Signup";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
       <Route path="/products" exact element={<Produkte />} />
       <Route path="/about" exact element={<FirmenDaten />} />
       <Route path="/login" exact element={<SignIn />} />
+      <Route path="/register" exact element={<Register />} />
      </Routes>
      </Router>
     </>

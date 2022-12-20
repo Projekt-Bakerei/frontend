@@ -13,18 +13,18 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://alfatrex.com">
-        Hosting Alfatrex.com
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+// function Copyright(props) {
+//   return (
+//     <Typography variant="body2" color="text.secondary" align="center" {...props}>
+//       {'Copyright © '}
+//       <Link color="inherit" href="https://alfatrex.com">
+//         Hosting Alfatrex.com
+//       </Link>{' '}
+//       {new Date().getFullYear()}
+//       {'.'}
+//     </Typography>
+//   );
+// }
 
 const theme = createTheme();
 
@@ -96,14 +96,14 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="./register" variant="body2">
                   {"Hesabiniz yok mu?"}
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+        {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
       </Container>
     </ThemeProvider>
   );
