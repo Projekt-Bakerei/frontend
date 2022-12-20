@@ -71,10 +71,13 @@ console.log("UserContext Token:", token)
           password,
         }
       );
+      
       const { token } = response.data;
       setToken(token);
     } catch (err) {
       console.log(err);
+      console.log("Log email",email)
+      console.log("ENV", process.env.REACT_APP_API)
     }
   };
 

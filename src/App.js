@@ -8,7 +8,7 @@ import Home from "./Components/Pages/Home";
 import Employees from "./Components/Employees";
 import Produkte from "./Components/Artikel";
 import FirmenDaten from "./Components/Pages/FirmenDaten";
-import SignIn from "./Components/Login/SignIn";
+import { LoginForm } from "./Components/Login/SignIn";
 import NewCustomer from "./Components/NewCustomer";
 import { Register } from "./Components/Login/Signup";
 
@@ -25,7 +25,7 @@ function App() {
       <Route path="/employees" exact element={<Employees />} />
       <Route path="/products" exact element={<Produkte />} />
       <Route path="/about" exact element={<FirmenDaten />} />
-      <Route path="/login" exact element={<SignIn />} />
+      <Route path="/login" exact element={<LoginForm />} />
       <Route path="/register" exact element={<Register />} />
      </Routes>
      </Router>
