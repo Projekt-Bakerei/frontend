@@ -160,7 +160,7 @@ export const LoginForm = () => {
                 </Link> */}
               </Grid>
               <Grid item>
-                <Link href="/signup" variant="body">
+                <Link href="/register" variant="body">
                   {"Du hast kein Konto? Anmeldung"}
                 </Link>
               </Grid>
