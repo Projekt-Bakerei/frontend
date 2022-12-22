@@ -208,6 +208,6 @@ export const CustomerProvider = ({ children }) => {
   );
 };
 
-export const useCustomerContext = () => {
+export const useCustomer = () => {
   return useContext(CustomerContext);
 };
