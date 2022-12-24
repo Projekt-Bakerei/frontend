@@ -80,28 +80,28 @@ function NewCustomer() {
     setPassivCheck([e.target.checked, e.target.checked]);
   };
 
-  const handleCreate = (e) => {
-    e.preventDefault();
-    // setCustomerData({ ...customerData, [e.target.name]: e.target.value });
-    setCustomerData(
-      kodu,
-      passiv,
-      hitab,
-      kategory,
-      ismi,
-      kdv,
-      kisi,
-      sekli,
-      cadde,
-      plz,
-      yer,
-      telefon,
-      mobil,
-      token
-    );
-  };
+  // const handleCreate = (e) => {
+  //   e.preventDefault();
+  //   // setCustomerData({ ...customerData, [e.target.name]: e.target.value });
+  //   setCustomerData(
+  //     kodu,
+  //     passiv,
+  //     hitab,
+  //     kategory,
+  //     ismi,
+  //     kdv,
+  //     kisi,
+  //     sekli,
+  //     cadde,
+  //     plz,
+  //     yer,
+  //     telefon,
+  //     mobil,
+  //     token
+  //   );
+  // };
   const handleChange = (e) => {
-    setCustomerData({ [e.target.name]: e.target.value });
+    setCustomerData({ ...customerData, [e.target.name]: e.target.value });
     console.log(customerData);
   };
 
