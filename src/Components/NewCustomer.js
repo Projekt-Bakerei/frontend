@@ -41,39 +41,39 @@ function NewCustomer() {
   ];
 
   // const nav = useNavigate();
+  const { addCustomer } = useCustomer();
   const { token } = useUser();
   const [passivCheck, setPassivCheck] = useState([false, true]);
   const [customerData, setCustomerData] = useState({
-        kodu: '',
-        passiv: '',
-        hitab: '',
-        kategory: '',
-        ismi: '',
-        kdv: '',
-        kisi: '',
-        sekli: '',
-        cadde: '',
-        plz: '',
-        yer: '',
-        telefon: '',
-        mobil: '',
-
+    kodu: "",
+    passiv: "",
+    hitab: "",
+    kategory: "",
+    ismi: "",
+    kdv: "",
+    kisi: "",
+    sekli: "",
+    cadde: "",
+    plz: "",
+    yer: "",
+    telefon: "",
+    mobil: "",
   });
- 
-  const { 
-        kodu,
-        passiv,
-        hitab,
-        kategory,
-        ismi,
-        kdv,
-        kisi,
-        sekli,
-        cadde,
-        plz,
-        yer,
-        telefon,
-        mobil, 
+
+  const {
+    kodu,
+    passiv,
+    hitab,
+    kategory,
+    ismi,
+    kdv,
+    kisi,
+    sekli,
+    cadde,
+    plz,
+    yer,
+    telefon,
+    mobil,
   } = customerData;
 
   const handleCheckClick = (e) => {
@@ -83,7 +83,8 @@ function NewCustomer() {
   const handleCreate = (e) => {
     e.preventDefault();
     // setCustomerData({ ...customerData, [e.target.name]: e.target.value });
-     setCustomerData(kodu,
+    setCustomerData(
+      kodu,
       passiv,
       hitab,
       kategory,
@@ -95,17 +96,16 @@ function NewCustomer() {
       plz,
       yer,
       telefon,
-      mobil, 
-      token 
-      );
+      mobil,
+      token
+    );
   };
-  const handleChange = e => {
-    setCustomerData({ ...customerData, [e.target.name]: e.target.value });
-    console.log(customerData)
+  const handleChange = (e) => {
+    setCustomerData({ [e.target.name]: e.target.value });
+    console.log(customerData);
   };
 
-  return (
-    token ?(
+  return token ? (
     <Container maxWidth="xl">
       <CssBaseline />
 
@@ -123,7 +123,7 @@ function NewCustomer() {
                   {bull} Müsteri kodu:
                 </FormLabel>
                 <TextField size="5px" label="Kodu" placeholder="123" /> */}
-                <label
+                <Form.Label
                   htmlFor="input"
                   style={{
                     marginRight: "2rem",
@@ -134,14 +134,15 @@ function NewCustomer() {
                   }}
                 >
                   {bull} Müsteri kodu:
-                </label>
-                <input
+                </Form.Label>
+                <Form.Control
                   type="text"
                   id="input"
                   aria-describedby="Kodu"
                   placeholder="Kodu"
-                   value={kodu}
-                  onChange={e => handleChange(e)}
+                  name="kodu"
+                  //  value={kodu}
+                  onChange={(e) => handleChange(e)}
                 />
               </div>
 
@@ -177,7 +178,6 @@ function NewCustomer() {
                 <Form.Select
                   id="hitab"
                   style={{ width: "15rem", height: "3rem" }}
-                
                 >
                   <option>Firma</option>
                   <option>Frau</option>
@@ -231,7 +231,6 @@ function NewCustomer() {
                   id="input"
                   aria-describedby="Ismi"
                   placeholder="Bei inge"
-                  
                 />
               </div>
               {/* <FormLabel>{bull} KDV:</FormLabel>
@@ -252,7 +251,6 @@ function NewCustomer() {
               <Form.Select
                 id="select"
                 style={{ width: "15rem", height: "3rem" }}
-                
               >
                 <option>incl</option>
                 <option>plus</option>
@@ -281,7 +279,6 @@ function NewCustomer() {
                   id="input"
                   aria-describedby="Inge"
                   placeholder="inge Taube"
-                  
                 />
               </div>
               <Form.Label
@@ -301,7 +298,6 @@ function NewCustomer() {
               <Form.Select
                 id="select"
                 style={{ width: "15rem", height: "3rem" }}
-                
               >
                 <option>günlük</option>
                 <option>haftalik</option>
@@ -330,7 +326,6 @@ function NewCustomer() {
                   id="input"
                   aria-describedby="Adresse"
                   placeholder="Muster Straße 10"
-                  
                 />
               </div>
             </div>
@@ -356,7 +351,6 @@ function NewCustomer() {
                   id="input"
                   aria-describedby="Plz"
                   placeholder="PLZ"
-                  
                 />
               </div>
               <div className="d-flex">
@@ -381,7 +375,6 @@ function NewCustomer() {
                   id="input"
                   aria-describedby="Stadt"
                   placeholder="Stadt"
-                  
                 />
               </div>
             </div>
@@ -407,7 +400,6 @@ function NewCustomer() {
                   id="input"
                   aria-describedby="Telefon"
                   placeholder="Telefonnummer"
-                  
                 />
               </div>
               <div className="d-flex">
@@ -432,12 +424,32 @@ function NewCustomer() {
                   id="input"
                   aria-describedby="C-telefon"
                   placeholder="Cep-Telefon"
-                  
                 />
               </div>
             </div>
             <hr />
-            <Button size="md" variant="contained" color="primary" onClick={handleCreate}>
+            <Button
+              size="md"
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                addCustomer(
+                  kodu,
+                  passiv,
+                  hitab,
+                  kategory,
+                  ismi,
+                  kdv,
+                  kisi,
+                  sekli,
+                  cadde,
+                  plz,
+                  yer,
+                  telefon,
+                  mobil
+                );
+              }}
+            >
               Create
             </Button>
           </div>
@@ -455,10 +467,10 @@ function NewCustomer() {
         </div>
       </Box>
     </Container>
-    ):(
-      <div><h1>Du bist nicht angemeldet!</h1></div>
-    )
-
+  ) : (
+    <div>
+      <h1>Du bist nicht angemeldet!</h1>
+    </div>
   );
 }
 
