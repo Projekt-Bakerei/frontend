@@ -7,6 +7,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import { Grid } from "@mui/material";
+import { useUser } from "../../Context/UserContext";
 
 
 function Home() {
@@ -19,6 +20,8 @@ function Home() {
     </Box>
   );
 
+  const { token, user } = useUser();
+console.log(user)
   return (
     <Fragment>
       <CssBaseline />
@@ -28,6 +31,15 @@ function Home() {
           <Typography textColor="neutral.500" fontSize="xl" fontWeight="lg">
             Aufgaben
           </Typography>
+{token ? (
+  <Typography textColor="green" fontSize="xl" fontWeight="lg">
+            Hallo! - {user.name}
+          </Typography>
+          ) :( 
+            <Typography textColor="red" fontSize="xl" fontWeight="lg">
+            Du bist nicht angemeldet!
+          </Typography>
+          )}
           <Grid container spacing={2} gap={2} marginTop={5} padding={5}>
             <Card sx={{ width: 275 }}>
               <CardContent>

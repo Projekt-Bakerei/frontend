@@ -11,7 +11,7 @@ import { FormGroup, FormLabel } from "@mui/material";
 import FormControl from "@mui/joy/FormControl";
 // import FormLabel from "@mui/joy/FormLabel";
 //  import FormHelperText from "@mui/joy/FormHelperText";
-import { Checkbox } from "@mui/joy";
+import { Checkbox, Select } from "@mui/joy";
 // import Autocomplete from "@mui/joy/Autocomplete";
 
 import Form from "react-bootstrap/Form";
@@ -19,7 +19,7 @@ import Autocomplete from "@mui/joy/Autocomplete";
 
 import { useCustomer } from "../Context/CustomerContext";
 import { useUser } from "../Context/UserContext";
-import jwtdecode from "jwt-decode";
+
 
 function NewCustomer() {
   const bull = (
@@ -76,9 +76,25 @@ function NewCustomer() {
     mobil,
   } = customerData;
 
-  const handleCheckClick = (e) => {
-    setPassivCheck([e.target.checked, e.target.checked]);
+  
+  const [selectKategory, setSelectKategory] = useState("");
+
+  const optionsHitab = [
+    {label: ''},
+    { label: 'Firma', value: 'firma' },
+    { label: 'Frau', value: 'frau' },
+    { label: 'Herr', value: 'herr' },
+    { label: 'Familie', value: 'fmilie' },
+    { label: 'An das', value: 'andas' },
+  ];
+
+  const [hitabSelect, setHitabSelect] = useState("");
+
+  const handleCheckClick = (e) => {  
+    setPassivCheck([e.target.checked])
+    setCustomerData({...customerData, [e.target.name]: e.target.checked});
   };
+
 
   // const handleCreate = (e) => {
   //   e.preventDefault();
@@ -100,11 +116,36 @@ function NewCustomer() {
   //     token
   //   );
   // };
-  const handleChange = (e) => {
-    setCustomerData({ ...customerData, [e.target.name]: e.target.value });
-    console.log(customerData);
+  console.log("Passiv?:", passivCheck)
+
+  const handleChangeKodu = (e) => {
+    e.preventDefault();
+    setCustomerData({ ...customerData, [e.target.name]: e.target.value});
   };
 
+  const onChangeHitab = (e) => {
+      //const value = e.label
+     e.preventDefault();
+       setHitabSelect(e.target.value);
+      setCustomerData({...customerData, [e.target.name]: e.target.value});
+
+  };
+   console.log("SelectHitab:", hitabSelect)
+
+
+  const onChangeKategory = (e) => {
+    e.preventDefault();
+    const value = e.target.value;
+   setSelectKategory(value);
+   setCustomerData({...customerData, [e.target.name]: e.target.value})
+ };
+
+ const handleChangeIsmi = (e) => {
+  e.preventDefault();
+  setCustomerData({ ...customerData, [e.target.name]: e.target.value});
+};
+
+console.log(customerData);
   return token ? (
     <Container maxWidth="xl">
       <CssBaseline />
@@ -142,7 +183,7 @@ function NewCustomer() {
                   placeholder="Kodu"
                   name="kodu"
                   //  value={kodu}
-                  onChange={(e) => handleChange(e)}
+                  onChange={(e) => handleChangeKodu(e)}
                 />
               </div>
 
@@ -150,7 +191,8 @@ function NewCustomer() {
                 label="Müsteri pasiv?"
                 checked={passivCheck[0]}
                 onChange={handleCheckClick}
-                value={passiv}
+                
+                name="passiv"
               />
             </div>
             <div className="d-flex flex-sm-wrap justify-content-xl-between p-3">
@@ -176,14 +218,20 @@ function NewCustomer() {
                   {bull} Müsteri hitab:
                 </Form.Label>
                 <Form.Select
-                  id="hitab"
+                  name="hitab"
                   style={{ width: "15rem", height: "3rem" }}
+                  // value={selectHitab}
+                  onChange={onChangeHitab}
+                  value={hitabSelect}
                 >
-                  <option>Firma</option>
-                  <option>Frau</option>
-                  <option>Herr</option>
-                  <option>Familie</option>
-                  <option>An das</option>
+                  {/* <option name='Firma'>Firma</option>
+                  <option name="Frau">Frau</option>
+                  <option value="Herr">Herr</option>
+                  <option value="Familie">Familie</option>
+                  <option value="An das">An das</option> */}
+                   {optionsHitab.map((option, i) => (
+            <option name={option.selectHitab} key={i}>{option.label}</option>
+          ))} 
                 </Form.Select>
                 <Form.Label
                   htmlFor="kategorisi"
@@ -202,6 +250,7 @@ function NewCustomer() {
                   id="kategorisi"
                   style={{ width: "15rem", height: "3rem" }}
                   label={kategory}
+                  onChange={onChangeKategory}
                 >
                   <option>Bar-Rechnung</option>
                   <option>Rechnung</option>
@@ -231,6 +280,8 @@ function NewCustomer() {
                   id="input"
                   aria-describedby="Ismi"
                   placeholder="Bei inge"
+                  name="ismi"
+                   onChange={(e) => handleChangeIsmi(e)}
                 />
               </div>
               {/* <FormLabel>{bull} KDV:</FormLabel>

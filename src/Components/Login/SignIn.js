@@ -22,6 +22,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Zoom } from 'react-toastify';
 
 
+
 const theme = createTheme();
 
 export const LoginForm = () => {
@@ -159,11 +160,11 @@ export const LoginForm = () => {
                   Forgot password?
                 </Link> */}
               </Grid>
-              <Grid item>
+              {/* <Grid item>
                 <Link href="/register" variant="body">
                   {"Du hast kein Konto? Anmeldung"}
                 </Link>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Box>
         </Box>
