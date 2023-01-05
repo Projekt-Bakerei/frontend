@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
+
 export const CustomerContext = createContext();
 
 export const CustomerProvider = ({ children }) => {
@@ -70,6 +71,7 @@ export const CustomerProvider = ({ children }) => {
         }
       );
       setListData(list.data);
+      console.log("Data context",list.data)
     } catch (err) {
       console.log("Load Customer error:", err);
     }

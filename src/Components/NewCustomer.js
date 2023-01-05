@@ -1,25 +1,18 @@
 import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Box, Container } from "@mui/system";
 import Typography from "@mui/joy/Typography";
-// import Card from "@mui/material/Card";
-// import CardActions from "@mui/material/CardActions";
-// import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import { FormGroup, FormLabel } from "@mui/material";
 import FormControl from "@mui/joy/FormControl";
-// import FormLabel from "@mui/joy/FormLabel";
-//  import FormHelperText from "@mui/joy/FormHelperText";
-import { Checkbox, Select } from "@mui/joy";
-// import Autocomplete from "@mui/joy/Autocomplete";
+import { Checkbox } from "@mui/joy";
 
 import Form from "react-bootstrap/Form";
 import Autocomplete from "@mui/joy/Autocomplete";
 
 import { useCustomer } from "../Context/CustomerContext";
 import { useUser } from "../Context/UserContext";
-
+import axios from "axios";
 
 function NewCustomer() {
   const bull = (
@@ -40,7 +33,6 @@ function NewCustomer() {
     },
   ];
 
-  // const nav = useNavigate();
   const { addCustomer } = useCustomer();
   const { token } = useUser();
   const [passivCheck, setPassivCheck] = useState([false, true]);
@@ -59,6 +51,7 @@ function NewCustomer() {
     telefon: "",
     mobil: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const {
     kodu,
@@ -76,25 +69,47 @@ function NewCustomer() {
     mobil,
   } = customerData;
 
-  
-  const [selectKategory, setSelectKategory] = useState("");
-
   const optionsHitab = [
-    {label: ''},
-    { label: 'Firma', value: 'firma' },
-    { label: 'Frau', value: 'frau' },
-    { label: 'Herr', value: 'herr' },
-    { label: 'Familie', value: 'fmilie' },
-    { label: 'An das', value: 'andas' },
+    { label: "" },
+    { label: "Firma", value: "firma" },
+    { label: "Frau", value: "frau" },
+    { label: "Herr", value: "herr" },
+    { label: "Familie", value: "fmilie" },
+    { label: "An das", value: "andas" },
   ];
 
   const [hitabSelect, setHitabSelect] = useState("");
 
-  const handleCheckClick = (e) => {  
-    setPassivCheck([e.target.checked])
-    setCustomerData({...customerData, [e.target.name]: e.target.checked});
+  const optionsKategory = [
+    { label: "" },
+    { label: "Bar", value: "bar" },
+    { label: "Rechnung", value: "rechnung" },
+  ];
+
+  const [kategorySelect, setKategorySelect] = useState("");
+
+  const optionsKDV = [
+    { label: "" },
+    { label: "Incl", value: "incl" },
+    { label: "Plus", value: "plus" },
+    { label: "Sakla", value: "sakla" },
+  ];
+
+  const [kdvSelect, setKdvSelect] = useState("");
+
+  const handleCheckClick = (e) => {
+    setPassivCheck([e.target.checked]);
+    setCustomerData({ ...customerData, [e.target.name]: e.target.checked });
   };
 
+  const optionsSekli = [
+    { label: "" },
+    { label: "günlük", value: "günlük" },
+    { label: "haftalik", value: "haftalik" },
+    { label: "aylik", value: "aylik" },
+  ];
+
+  const [sekliSelect, setSekliSelect] = useState("");
 
   // const handleCreate = (e) => {
   //   e.preventDefault();
@@ -116,36 +131,97 @@ function NewCustomer() {
   //     token
   //   );
   // };
-  console.log("Passiv?:", passivCheck)
+  console.log("Passiv?:", passivCheck);
 
   const handleChangeKodu = (e) => {
     e.preventDefault();
-    setCustomerData({ ...customerData, [e.target.name]: e.target.value});
+    setCustomerData({ ...customerData, [e.target.name]: e.target.value });
+  };
+
+  const handleChangeKisi = (e) => {
+    e.preventDefault();
+    setCustomerData({ ...customerData, [e.target.name]: e.target.value });
+  };
+  const handleChangeCadde = (e) => {
+    e.preventDefault();
+    setCustomerData({ ...customerData, [e.target.name]: e.target.value });
+  };
+
+  const handleChangePlz = (e) => {
+    e.preventDefault();
+    setCustomerData({ ...customerData, [e.target.name]: e.target.value });
+  };
+
+  const handleChangeYer = (e) => {
+    e.preventDefault();
+    setCustomerData({ ...customerData, [e.target.name]: e.target.value });
+  };
+
+  const handleChangeTelefon = (e) => {
+    e.preventDefault();
+    setCustomerData({ ...customerData, [e.target.name]: e.target.value });
+  };
+
+  const handleChangeMobil = (e) => {
+    e.preventDefault();
+    setCustomerData({ ...customerData, [e.target.name]: e.target.value });
   };
 
   const onChangeHitab = (e) => {
-      //const value = e.label
-     e.preventDefault();
-       setHitabSelect(e.target.value);
-      setCustomerData({...customerData, [e.target.name]: e.target.value});
-
+    e.preventDefault();
+    setHitabSelect(e.target.value);
+    setCustomerData({ ...customerData, [e.target.name]: e.target.value });
   };
-   console.log("SelectHitab:", hitabSelect)
-
 
   const onChangeKategory = (e) => {
     e.preventDefault();
-    const value = e.target.value;
-   setSelectKategory(value);
-   setCustomerData({...customerData, [e.target.name]: e.target.value})
- };
+    setKategorySelect(e.target.value);
+    setCustomerData({ ...customerData, [e.target.name]: e.target.value });
+  };
 
- const handleChangeIsmi = (e) => {
-  e.preventDefault();
-  setCustomerData({ ...customerData, [e.target.name]: e.target.value});
-};
+  const handleChangeIsmi = (e) => {
+    e.preventDefault();
+    setCustomerData({ ...customerData, [e.target.name]: e.target.value });
+  };
 
-console.log(customerData);
+  const onChangeKDV = (e) => {
+    e.preventDefault();
+    setKdvSelect(e.target.value);
+    setCustomerData({ ...customerData, [e.target.name]: e.target.value });
+  };
+
+  const onChangeSekli = (e) => {
+    e.preventDefault();
+    setSekliSelect(e.target.value);
+    setCustomerData({ ...customerData, [e.target.name]: e.target.value });
+  };
+  const [data, setData] = useState(null);
+  const handleSubmit = () => {
+    setLoading(true);
+    const data = {
+      kodu,
+    passiv,
+    hitab,
+    kategory,
+    ismi,
+    kdv,
+    kisi,
+    sekli,
+    cadde,
+    plz,
+    yer,
+    telefon,
+    mobil
+    }
+    axios.post(`${process.env.REACT_APP_API}/addcustomer`, data).then(res => {
+      setData(res.data);
+      setLoading(false);
+    }).catch(err => {
+      setLoading(false);
+    });
+  }
+
+  console.log(customerData);
   return token ? (
     <Container maxWidth="xl">
       <CssBaseline />
@@ -182,7 +258,6 @@ console.log(customerData);
                   aria-describedby="Kodu"
                   placeholder="Kodu"
                   name="kodu"
-                  //  value={kodu}
                   onChange={(e) => handleChangeKodu(e)}
                 />
               </div>
@@ -191,19 +266,11 @@ console.log(customerData);
                 label="Müsteri pasiv?"
                 checked={passivCheck[0]}
                 onChange={handleCheckClick}
-                
                 name="passiv"
               />
             </div>
             <div className="d-flex flex-sm-wrap justify-content-xl-between p-3">
               <div className="d-flex">
-                {/*<FormLabel>{bull} Müsteri hitab:</FormLabel>
-               <Autocomplete
-                options={["Frau", "Herr", "Firma", "Familie", "An das"]}
-                sx={{ zIndex: 1 }}
-              />
-              <FormLabel>{bull} Müsteri kategorisi:</FormLabel>
-              <Autocomplete options={["Bar-Rechnung", "Rechnung"]} /> */}
                 <FormControl />
                 <Form.Label
                   htmlFor="hitab"
@@ -220,18 +287,14 @@ console.log(customerData);
                 <Form.Select
                   name="hitab"
                   style={{ width: "15rem", height: "3rem" }}
-                  // value={selectHitab}
                   onChange={onChangeHitab}
                   value={hitabSelect}
                 >
-                  {/* <option name='Firma'>Firma</option>
-                  <option name="Frau">Frau</option>
-                  <option value="Herr">Herr</option>
-                  <option value="Familie">Familie</option>
-                  <option value="An das">An das</option> */}
-                   {optionsHitab.map((option, i) => (
-            <option name={option.selectHitab} key={i}>{option.label}</option>
-          ))} 
+                  {optionsHitab.map((option, i) => (
+                    <option name={option.selectHitab} key={i}>
+                      {option.label}
+                    </option>
+                  ))}
                 </Form.Select>
                 <Form.Label
                   htmlFor="kategorisi"
@@ -247,13 +310,16 @@ console.log(customerData);
                   {bull} Müsteri kategorisi:
                 </Form.Label>
                 <Form.Select
-                  id="kategorisi"
+                  name="kategory"
                   style={{ width: "15rem", height: "3rem" }}
-                  label={kategory}
+                  value={kategorySelect}
                   onChange={onChangeKategory}
                 >
-                  <option>Bar-Rechnung</option>
-                  <option>Rechnung</option>
+                  {optionsKategory.map((option, i) => (
+                    <option name={option.selectKategory} key={i}>
+                      {option.label}
+                    </option>
+                  ))}
                 </Form.Select>
               </div>
             </div>
@@ -281,13 +347,13 @@ console.log(customerData);
                   aria-describedby="Ismi"
                   placeholder="Bei inge"
                   name="ismi"
-                   onChange={(e) => handleChangeIsmi(e)}
+                  onChange={(e) => handleChangeIsmi(e)}
                 />
               </div>
               {/* <FormLabel>{bull} KDV:</FormLabel>
               <Autocomplete options={["incl", "plus", "sakla"]} /> */}
               <Form.Label
-                htmlFor="enableSelect"
+                htmlFor="KDV"
                 style={{
                   marginRight: "2rem",
                   marginLeft: "3rem",
@@ -300,12 +366,17 @@ console.log(customerData);
                 {bull} KDV:
               </Form.Label>
               <Form.Select
-                id="select"
+                value={kdvSelect}
+                onChange={onChangeKDV}
+                name="kdv"
+                id="kdv"
                 style={{ width: "15rem", height: "3rem" }}
               >
-                <option>incl</option>
-                <option>plus</option>
-                <option>sakla</option>
+                {optionsKDV.map((option, i) => (
+                  <option name={option.selectKDV} key={i}>
+                    {option.label}
+                  </option>
+                ))}
               </Form.Select>
             </div>
             <div className="d-flex flex-sm-wrap justify-content-xl-between p-3">
@@ -330,6 +401,8 @@ console.log(customerData);
                   id="input"
                   aria-describedby="Inge"
                   placeholder="inge Taube"
+                  name="kisi"
+                  onChange={(e) => handleChangeKisi(e)}
                 />
               </div>
               <Form.Label
@@ -345,14 +418,18 @@ console.log(customerData);
               >
                 {bull} Ödeme sekli:
               </Form.Label>
-              {/* <Autocomplete options={["günlük", "haftalik", "aylik"]} /> */}
               <Form.Select
-                id="select"
+                id="sekli"
+                name="sekli"
+                value={sekliSelect}
+                onChange={onChangeSekli}
                 style={{ width: "15rem", height: "3rem" }}
               >
-                <option>günlük</option>
-                <option>haftalik</option>
-                <option>aylik</option>
+                {optionsSekli.map((option, i) => (
+                  <option name={option.selectSekli} key={i}>
+                    {option.label}
+                  </option>
+                ))}
               </Form.Select>
             </div>
             <div className="d-flex flex-sm-wrap justify-content-xl-between p-3">
@@ -377,6 +454,8 @@ console.log(customerData);
                   id="input"
                   aria-describedby="Adresse"
                   placeholder="Muster Straße 10"
+                  name="cadde"
+                  onChange={(e) => handleChangeCadde(e)}
                 />
               </div>
             </div>
@@ -394,14 +473,13 @@ console.log(customerData);
                 >
                   {bull} Posta Kodu:
                 </Form.Label>
-                {/* <TextField
-                size="lx" label='"Muster Straße 10"'
-              /> */}
                 <Form.Control
                   type="text"
                   id="input"
                   aria-describedby="Plz"
                   placeholder="PLZ"
+                  name="plz"
+                  onChange={(e) => handleChangePlz(e)}
                 />
               </div>
               <div className="d-flex">
@@ -418,14 +496,13 @@ console.log(customerData);
                 >
                   {bull} Yer:
                 </Form.Label>
-                {/* <TextField
-                size="lx" label='"Muster Straße 10"'
-              /> */}
                 <Form.Control
                   type="text"
                   id="input"
                   aria-describedby="Stadt"
                   placeholder="Stadt"
+                  name="yer"
+                  onChange={(e) => handleChangeYer(e)}
                 />
               </div>
             </div>
@@ -443,14 +520,13 @@ console.log(customerData);
                 >
                   {bull} Telefon:
                 </Form.Label>
-                {/* <TextField
-                size="lx" label='"Muster Straße 10"'
-              /> */}
                 <Form.Control
                   type="text"
                   id="input"
                   aria-describedby="Telefon"
                   placeholder="Telefonnummer"
+                  name="telefon"
+                  onChange={(e) => handleChangeTelefon(e)}
                 />
               </div>
               <div className="d-flex">
@@ -475,6 +551,8 @@ console.log(customerData);
                   id="input"
                   aria-describedby="C-telefon"
                   placeholder="Cep-Telefon"
+                  name="mobil"
+                  onChange={(e) => handleChangeMobil(e)}
                 />
               </div>
             </div>
@@ -483,23 +561,7 @@ console.log(customerData);
               size="md"
               variant="contained"
               color="primary"
-              onClick={() => {
-                addCustomer(
-                  kodu,
-                  passiv,
-                  hitab,
-                  kategory,
-                  ismi,
-                  kdv,
-                  kisi,
-                  sekli,
-                  cadde,
-                  plz,
-                  yer,
-                  telefon,
-                  mobil
-                );
-              }}
+              onClick={handleSubmit}
             >
               Create
             </Button>
