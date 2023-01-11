@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Box, Container } from "@mui/system";
 import Typography from "@mui/joy/Typography";
@@ -8,7 +8,7 @@ import FormControl from "@mui/joy/FormControl";
 import { Checkbox } from "@mui/joy";
 
 import Form from "react-bootstrap/Form";
-import Autocomplete from "@mui/joy/Autocomplete";
+// import Autocomplete from "@mui/joy/Autocomplete";
 
 import { useCustomer } from "../Context/CustomerContext";
 import { useUser } from "../Context/UserContext";
@@ -22,17 +22,10 @@ function NewCustomer() {
       •
     </Box>
   );
-  const kunden = [
-    {
-      label: "Aladdin grill",
-      Kodu: "234",
-      hitab: "Firma",
-      kategorisi: "Rechnung",
-      Ismi: "Aladdin Grill",
-    },
-  ];
+  
 
-  const { addCustomer } = useCustomer();
+  const { addCustomer, listData } = useCustomer();
+  console.log("List Costumers:", listData)
   const { token } = useUser();
   const [passivCheck, setPassivCheck] = useState([false, true]);
   const [customerData, setCustomerData] = useState({
@@ -51,6 +44,16 @@ function NewCustomer() {
     mobil: "",
   });
   // const [loading, setLoading] = useState(false);
+  const [coduCheck, setCoduCheck] = useState([]);
+
+ const [listKunden, setListKunden] = useState([]);
+
+ useEffect(() => {
+  setListKunden(listData)
+ }, [listData]);
+
+ let kunden = listKunden;
+ console.log("Kunden:", kunden)
 
   const {
     kodu,
@@ -81,6 +84,7 @@ function NewCustomer() {
 
   const optionsKategory = [
     { label: "" },
+    { label: "Bar / Rechnung", value: "bar/rechnung" },
     { label: "Bar", value: "bar" },
     { label: "Rechnung", value: "rechnung" },
   ];
@@ -135,7 +139,9 @@ function NewCustomer() {
 
   const handleChangeKodu = (e) => {
     e.preventDefault();
-    setCustomerData({ ...customerData, [e.target.name]: e.target.value });
+    let kodu =  e.target.value;
+    setCustomerData({ ...customerData, kodu });
+    setCoduCheck(kodu)
   };
 
   const handleChangeKisi = (e) => {
@@ -234,6 +240,7 @@ function NewCustomer() {
                   placeholder="Kodu"
                   name="kodu"
                   onChange={(e) => handleChangeKodu(e)}
+                  required
                 />
               </div>
 
@@ -552,7 +559,11 @@ function NewCustomer() {
                   telefon,
                   mobil
                 );
+                setTimeout(()=>{
+                  window.location.reload(false);
+              }, 500);
               }}
+              
             >
               Create
             </Button>
@@ -563,13 +574,23 @@ function NewCustomer() {
             <FormLabel sx={{ width: "20rem" }}>
               {bull} Ismiyle | Müsteri ara |
             </FormLabel>
-            <Autocomplete
+            {/* <Autocomplete
               sx={{ marginTop: ".5rem", width: "20rem" }}
-              options={kunden}
-            />
+               options={kunden}
+            /> */}
           </div>
         </div>
+        {/* <div>
+        Customer:<ul>
+        {kunden.map((option, i) => (
+                  <li name={option.kunden} key={i}>
+                   <a href="{i}"> {JSON.stringify(kunden[i].ismi)}</a>
+                  </li>
+                ))}
+          </ul>
+      </div> */}
       </Box>
+      
     </Container>
   ) : (
     <div>

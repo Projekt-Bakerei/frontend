@@ -23,7 +23,7 @@ export const UserContextProvider = ({ children }) => {
       timeoutHandle = setTimeout(() => {
         setToken(null);
         console.log("timeoutHandle:", timeoutHandle);
-      }, 100000);
+      }, 100000 * 60);
 
     } else {
       localStorage.removeItem("token");
