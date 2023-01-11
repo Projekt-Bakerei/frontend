@@ -1,8 +1,8 @@
 import * as React from "react";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-
+import { useUser } from "../Context/UserContext";
 
 export const CustomerContext = createContext();
 
@@ -12,28 +12,30 @@ export const CustomerProvider = ({ children }) => {
   const [addData, setAddData] = useState([]);
   const [editData, setEditData] = useState([]);
   const [delData, setDelData] = useState([]);
-  const [token, setToken] = useState(() => {
-    const token = localStorage.getItem("token");
-    return token || null;
-  });
+  const { token } = useUser();
+  const [tokenSet, setTokenSet] = useState();
+  // const [authToken, setAuthToken] = useState(() => {
+  //   const authToken = localStorage.getItem("token");
+  //   return authToken || null;
+  // });
 
-  useEffect(() => {
-    let timeoutHandle = 0;
-    if (token) {
-      localStorage.setItem("token", token);
-      const decoded = jwt_decode(token);
-      timeoutHandle = setTimeout(() => {
-        setToken(null);
-      }, decoded.exp * 1000 - Date.now());
-    } else {
-      localStorage.removeItem("token");
-    }
-    return () => {
-      if (timeoutHandle !== 0) {
-        clearTimeout(timeoutHandle);
-      }
-    };
-  }, [token]);
+  // useEffect(() => {
+  //   let timeoutHandle = 0;
+  //   if (token) {
+  //     localStorage.setItem("token", token);
+  //     const decoded = jwt_decode(token);
+  //     timeoutHandle = setTimeout(() => {
+  //       setToken(null);
+  //     }, decoded.exp * 1000 - Date.now());
+  //   } else {
+  //     localStorage.removeItem("token");
+  //   }
+  //   return () => {
+  //     if (timeoutHandle !== 0) {
+  //       clearTimeout(timeoutHandle);
+  //     }
+  //   };
+  // }, [token]);
 
   const loadCustomer = async (
     id,
@@ -71,13 +73,68 @@ export const CustomerProvider = ({ children }) => {
         }
       );
       setListData(list.data);
-      console.log("Data context",list.data)
+      console.log("Data context", list.data);
     } catch (err) {
       console.log("Load Customer error:", err);
     }
   };
 
-  const addCustomer = async (
+  //   console.log("Token Customer Context:", token);
+  //   let authToken = token;
+  //   const addCustomer = async (
+  //     kodu,
+  //     passiv,
+  //     hitab,
+  //     kategory,
+  //     ismi,
+  //     kdv,
+  //     kisi,
+  //     sekli,
+  //     cadde,
+  //     plz,
+  //     yer,
+  //     telefon,
+  //     mobil
+  //   ) => {
+  //     try {
+  // const config = {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         "Authorization": `Bearer ${authToken}`,
+  //       },
+  //     };
+  //     console.log("Token addCustomer:", authToken)
+  //       const add = await axios.post(
+  //         `${process.env.REACT_APP_API}/customers/addcustomer`,
+  //         {
+  //           kodu,
+  //           passiv,
+  //           hitab,
+  //           kategory,
+  //           ismi,
+  //           kdv,
+  //           kisi,
+  //           sekli,
+  //           cadde,
+  //           plz,
+  //           yer,
+  //           telefon,
+  //           mobil,
+  //         },
+  //         config
+  //       );
+
+  //       //  setAuthToken(authToken);
+  //       setTokenSet(add.data);
+  //       setAddData(add.data);
+  //     } catch (error) {
+
+  //       console.log("AddData:", addData);
+  //       console.log("Add Customer error:", error);
+  //     }
+  //   };
+
+  const addCustomer = (
     kodu,
     passiv,
     hitab,
@@ -90,28 +147,40 @@ export const CustomerProvider = ({ children }) => {
     plz,
     yer,
     telefon,
+    mobil,
+    ) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+    };
+    console.log("Token addCustomer:", token);
+
+    const data = 
+    {
+      kodu,
+    passiv,
+    hitab,
+    kategory,
+    ismi,
+    kdv,
+    kisi,
+    sekli,
+    cadde,
+    plz,
+    yer,
+    telefon,
     mobil
-  ) => {
-    try {
-      const add = await axios.post(`${process.env.REACT_APP_API}/addcustomer`, {
-        kodu,
-        passiv,
-        hitab,
-        kategory,
-        ismi,
-        kdv,
-        kisi,
-        sekli,
-        cadde,
-        plz,
-        yer,
-        telefon,
-        mobil,
-      });
-      setAddData(add.data);
-    } catch (err) {
-      console.log("Add Customer error:", err);
     }
+    axios
+      .post(`${process.env.REACT_APP_API}/customers/addcustomer`, data, config)
+      .then((res) => {
+        setAddData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const editCustomer = async (

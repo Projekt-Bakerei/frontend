@@ -12,7 +12,6 @@ import Autocomplete from "@mui/joy/Autocomplete";
 
 import { useCustomer } from "../Context/CustomerContext";
 import { useUser } from "../Context/UserContext";
-import axios from "axios";
 
 function NewCustomer() {
   const bull = (
@@ -51,7 +50,7 @@ function NewCustomer() {
     telefon: "",
     mobil: "",
   });
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   const {
     kodu,
@@ -132,6 +131,7 @@ function NewCustomer() {
   //   );
   // };
   console.log("Passiv?:", passivCheck);
+  console.log("Token:", token)
 
   const handleChangeKodu = (e) => {
     e.preventDefault();
@@ -195,31 +195,6 @@ function NewCustomer() {
     setSekliSelect(e.target.value);
     setCustomerData({ ...customerData, [e.target.name]: e.target.value });
   };
-  const [data, setData] = useState(null);
-  const handleSubmit = () => {
-    setLoading(true);
-    const data = {
-      kodu,
-    passiv,
-    hitab,
-    kategory,
-    ismi,
-    kdv,
-    kisi,
-    sekli,
-    cadde,
-    plz,
-    yer,
-    telefon,
-    mobil
-    }
-    axios.post(`${process.env.REACT_APP_API}/addcustomer`, data).then(res => {
-      setData(res.data);
-      setLoading(false);
-    }).catch(err => {
-      setLoading(false);
-    });
-  }
 
   console.log(customerData);
   return token ? (
@@ -561,7 +536,23 @@ function NewCustomer() {
               size="md"
               variant="contained"
               color="primary"
-              onClick={handleSubmit}
+              onClick={() => {
+                addCustomer(
+                  kodu,
+                  passiv,
+                  hitab,
+                  kategory,
+                  ismi,
+                  kdv,
+                  kisi,
+                  sekli,
+                  cadde,
+                  plz,
+                  yer,
+                  telefon,
+                  mobil
+                );
+              }}
             >
               Create
             </Button>
