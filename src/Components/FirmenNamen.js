@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import { Container } from '@mui/system';
 import { useCustomer } from '../Context/CustomerContext';
+import { useUser } from '../Context/UserContext';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 60 },
@@ -86,6 +87,7 @@ const columns = [
 
 
 export default function FirmenNamen() {
+  const { token } = useUser();
 
   const { listData } = useCustomer();
   console.log("List Costumers:", listData)
@@ -100,7 +102,7 @@ let kunden = listKunden;
 console.log("Kunden:", kunden)
 
 
-  return (
+  return token ? (
     <Container maxWidth="xl">
         <h1>Kunden</h1>
         <Box sx={{ bgcolor: '#cfe8fc', height: '75vh', padding: '1rem' }}>
@@ -117,5 +119,9 @@ console.log("Kunden:", kunden)
     </Box>
     </Box>
     </Container>
+  ) : (
+    <div>
+      <h1>Du bist nicht angemeldet!</h1>
+    </div>
   );
 }
