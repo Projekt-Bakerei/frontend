@@ -110,8 +110,8 @@ console.log("Kunden:", kunden)
       <DataGrid
         rows={kunden}
         columns={columns}
-        pageSize={15}
-        rowsPerPageOptions={[15]}
+        pageSize={10}
+        rowsPerPageOptions={[12]}
         checkboxSelection
         disableSelectionOnClick
         experimentalFeatures={{ newEditingApi: true }}
