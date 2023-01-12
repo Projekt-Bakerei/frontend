@@ -1,7 +1,8 @@
 import * as React from "react";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
-import jwt_decode from "jwt-decode";
+
+import { useUser } from "../Context/UserContext";
 
 export const CustomerContext = createContext();
 
@@ -11,108 +12,73 @@ export const CustomerProvider = ({ children }) => {
   const [addData, setAddData] = useState([]);
   const [editData, setEditData] = useState([]);
   const [delData, setDelData] = useState([]);
-  const [token, setToken] = useState(() => {
-    const token = localStorage.getItem("token");
-    return token || null;
-  });
+  const { token } = useUser();
 
-  useEffect(() => {
-    let timeoutHandle = 0;
-    if (token) {
-      localStorage.setItem("token", token);
-      const decoded = jwt_decode(token);
-      timeoutHandle = setTimeout(() => {
-        setToken(null);
-      }, decoded.exp * 1000 - Date.now());
-    } else {
-      localStorage.removeItem("token");
-    }
-    return () => {
-      if (timeoutHandle !== 0) {
-        clearTimeout(timeoutHandle);
-      }
+
+useEffect(() => {
+    loadCustomer();
+  }, []);
+
+  function loadCustomer() {
+    axios
+      .get(`${process.env.REACT_APP_API}/customers`)
+      .then((res) => {
+        setListData(res.data);
+        console.log("Load Customer OK")
+      }).catch((error) => {
+              console.log("Load Customer Error:", error);
+            });
+  }
+
+  const addCustomer = (
+    kodu,
+    passiv,
+    hitab,
+    kategory,
+    ismi,
+    kdv,
+    kisi,
+    sekli,
+    cadde,
+    plz,
+    yer,
+    telefon,
+    mobil
+  ) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
     };
-  }, [token]);
+    console.log("Token addCustomer:", token);
 
-  const loadCustomer = async (
-    id,
-    kodu,
-    passiv,
-    hitab,
-    kategory,
-    ismi,
-    kdv,
-    kisi,
-    sekli,
-    cadde,
-    plz,
-    yer,
-    telefon,
-    mobil
-  ) => {
-    try {
-      const list = await axios.get(
-        `${process.env.REACT_APP_API}/customer/${id}`,
-        {
-          kodu,
-          passiv,
-          hitab,
-          kategory,
-          ismi,
-          kdv,
-          kisi,
-          sekli,
-          cadde,
-          plz,
-          yer,
-          telefon,
-          mobil,
-        }
-      );
-      setListData(list.data);
-    } catch (err) {
-      console.log("Load Customer error:", err);
-    }
-  };
-
-  const addCustomer = async (
-    kodu,
-    passiv,
-    hitab,
-    kategory,
-    ismi,
-    kdv,
-    kisi,
-    sekli,
-    cadde,
-    plz,
-    yer,
-    telefon,
-    mobil
-  ) => {
-    try {
-      const add = await axios.post(`${process.env.REACT_APP_API}/addcustomer`, {
-        kodu,
-        passiv,
-        hitab,
-        kategory,
-        ismi,
-        kdv,
-        kisi,
-        sekli,
-        cadde,
-        plz,
-        yer,
-        telefon,
-        mobil,
+    const data = {
+      kodu,
+      passiv,
+      hitab,
+      kategory,
+      ismi,
+      kdv,
+      kisi,
+      sekli,
+      cadde,
+      plz,
+      yer,
+      telefon,
+      mobil,
+    };
+    axios
+      .post(`${process.env.REACT_APP_API}/customers/addcustomer`, data, config)
+      .then((res) => {
+        setAddData(res.data);
+      })
+      .catch((error) => {
+        console.log("Create new Customer Error:", error);
       });
-      setAddData(add.data);
-    } catch (err) {
-      console.log("Add Customer error:", err);
-    }
   };
 
-  const editCustomer = async (
+  const editCustomer = (
     kodu,
     passiv,
     hitab,
@@ -127,66 +93,71 @@ export const CustomerProvider = ({ children }) => {
     telefon,
     mobil
   ) => {
-    try {
-      const edit = await axios.put(
-        `${process.env.REACT_APP_API}/editcustomer`,
-        {
-          kodu,
-          passiv,
-          hitab,
-          kategory,
-          ismi,
-          kdv,
-          kisi,
-          sekli,
-          cadde,
-          plz,
-          yer,
-          telefon,
-          mobil,
-        }
-      );
-      setEditData(edit.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const delCustomer = async (
-    kodu,
-    passiv,
-    hitab,
-    kategory,
-    ismi,
-    kdv,
-    kisi,
-    sekli,
-    cadde,
-    plz,
-    yer,
-    telefon,
-    mobil
-  ) => {
-    try {
-      const del = await axios.delete(`${process.env.REACT_APP_API}/customer`, {
-        kodu,
-        passiv,
-        hitab,
-        kategory,
-        ismi,
-        kdv,
-        kisi,
-        sekli,
-        cadde,
-        plz,
-        yer,
-        telefon,
-        mobil,
+    const data = {
+      kodu,
+      passiv,
+      hitab,
+      kategory,
+      ismi,
+      kdv,
+      kisi,
+      sekli,
+      cadde,
+      plz,
+      yer,
+      telefon,
+      mobil,
+    };
+    axios
+      .put(`${process.env.REACT_APP_API}/customers/addcustomer`, data)
+      .then((res) => {
+        setEditData(res.data);
+        console.log("Edit Customer OK")
+      })
+      .catch((error) => {
+        console.log("Edit Customer Error:", error);
       });
-      setDelData(del.data);
-    } catch (err) {
-      console.log(err);
-    }
+  };
+
+  const delCustomer = (
+    kodu,
+    passiv,
+    hitab,
+    kategory,
+    ismi,
+    kdv,
+    kisi,
+    sekli,
+    cadde,
+    plz,
+    yer,
+    telefon,
+    mobil
+  ) => {
+    const data = {
+      kodu,
+      passiv,
+      hitab,
+      kategory,
+      ismi,
+      kdv,
+      kisi,
+      sekli,
+      cadde,
+      plz,
+      yer,
+      telefon,
+      mobil,
+    };
+    axios
+      .get(`${process.env.REACT_APP_API}/customers/addcustomer`, data)
+      .then((res) => {
+        setDelData(res.data);
+        console.log("Delete Customer OK")
+      })
+      .catch((error) => {
+        console.log("Delete Customer Error:", error);
+      });
   };
 
   return (
@@ -208,6 +179,6 @@ export const CustomerProvider = ({ children }) => {
   );
 };
 
-export const useCustomerContext = () => {
+export const useCustomer = () => {
   return useContext(CustomerContext);
 };

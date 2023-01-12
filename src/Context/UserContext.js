@@ -16,14 +16,14 @@ export const UserContextProvider = ({ children }) => {
     const [errMsg, setErrMsg] = useState(false);
 
   useEffect(() => {
-    // let timeoutHandle = 0;
+     let timeoutHandle = 0;
     if (token) {
       localStorage.setItem("token", token);
 
-      // timeoutHandle = setTimeout(() => {
-      //   setToken(null);
-      //   console.log("timeoutHandle:")
-      // }, 100000);
+      timeoutHandle = setTimeout(() => {
+        setToken(null);
+        console.log("timeoutHandle:", timeoutHandle);
+      }, 100000 * 60);
 
     } else {
       localStorage.removeItem("token");

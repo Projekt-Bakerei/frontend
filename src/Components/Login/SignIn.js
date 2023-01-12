@@ -22,6 +22,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Zoom } from 'react-toastify';
 
 
+
 const theme = createTheme();
 
 export const LoginForm = () => {
@@ -36,13 +37,14 @@ export const LoginForm = () => {
 
   const toastId = useRef(null);
 
- 
 
   const CloseButton = ({ closeToast }) => (
     
     <i
       className="material-icons"
-      onClick={closeToast}
+      onClick={() => {closeToast(); setTimeout(()=>{
+        window.location.reload(false);
+    }, 500);}}
     >
       OK.
     </i>
@@ -71,6 +73,9 @@ export const LoginForm = () => {
           position: toast.POSITION.BOTTOM_CENTER,
           theme: "colored"
         })
+        setTimeout(()=>{
+          window.location.reload(false);
+      }, 10000);
       }
     }
   }, [user, nav, errMsg])
@@ -83,6 +88,9 @@ export const LoginForm = () => {
       email: data.get('email'),
       password: data.get('password')
     });
+    setTimeout(()=>{
+      window.location.reload(false);
+  }, 10000);
   };
 
   return (
@@ -97,7 +105,7 @@ export const LoginForm = () => {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <Avatar sx={{ m: 1, bgcolor: "green" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -159,16 +167,17 @@ export const LoginForm = () => {
                   Forgot password?
                 </Link> */}
               </Grid>
-              <Grid item>
+              {/* <Grid item>
                 <Link href="/register" variant="body">
                   {"Du hast kein Konto? Anmeldung"}
                 </Link>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Box>
         </Box>
         <ToastContainer
-         closeButton={CloseButton} 
+         closeButton={CloseButton}
+         reload 
          transition={Zoom} 
          style={{ width: "300px", bottom: "25rem" }} />
       </Container>

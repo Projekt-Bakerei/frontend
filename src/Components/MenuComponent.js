@@ -14,6 +14,8 @@ import ListDivider from "@mui/joy/ListDivider";
 import Typography, { typographyClasses } from "@mui/joy/Typography";
 import { Link } from "react-router-dom";
 
+import { useUser } from "../Context/UserContext";
+
 const MenuButton = forwardRef(
   ({ children, menu, open, onOpen, onKeyDown, ...props }, ref) => {
     const buttonRef = useRef(null);
@@ -37,6 +39,8 @@ const MenuButton = forwardRef(
       }
       onKeyDown(event);
     };
+
+    
 
     return (
       <Fragment>
@@ -180,6 +184,11 @@ export default function MenuToolbarExample() {
     window.location.href = "/about";
   };
   
+  const { token } = useUser();
+  const logout = () => {
+    localStorage.removeItem('token');
+    window.location.href = "/";
+  };
 
   return (
     <List
@@ -377,17 +386,31 @@ export default function MenuToolbarExample() {
         </MenuButton>
       </ListItem>
       <ListItem>
-        <Link
+        {token ? (
+          <Link
+          onClick={logout}
+          style={{
+            textDecoration: "none",
+            color: "red",
+            position: "display",
+            right: "25px"
+          }}
+        >
+          <Typography>Logout</Typography>
+        </Link>
+        ) : (
+          <Link
           to="/login"
           style={{
             textDecoration: "none",
             color: "black",
-            position: "fixed",
+            position: "display",
             right: "25px"
           }}
         >
           <Typography>Login</Typography>
         </Link>
+        )}
       </ListItem>
     </List>
   );
