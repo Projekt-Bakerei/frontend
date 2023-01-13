@@ -10,6 +10,7 @@ import Produkte from "./Components/Artikel";
 import FirmenDaten from "./Components/Pages/FirmenDaten";
 import { LoginForm } from "./Components/Login/SignIn";
 import NewCustomer from "./Components/NewCustomer";
+import NewMiterbeiter from "./Components/NewMiterbeiter";
 import { Register } from "./Components/Login/Signup";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
       <Route path="/voucher" exact element={<CreateInvoice />} />
       <Route path="/customers" exact element={<FirmenNamen />} />
       <Route path="/newcustomer" exact element={<NewCustomer />} />
+      <Route path="/newmiterbeiter" exact element={<NewMiterbeiter />} />
       <Route path="/employees" exact element={<Employees />} />
       <Route path="/products" exact element={<Produkte />} />
       <Route path="/about" exact element={<FirmenDaten />} />
