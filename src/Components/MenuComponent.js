@@ -246,6 +246,8 @@ export default function MenuToolbarExample() {
           Dashboard
         </MenuButton>
       </ListItem>
+      {token ? (
+        <>
       <ListItem>
         <MenuButton
           open={menuIndex === 1}
@@ -385,6 +387,8 @@ export default function MenuToolbarExample() {
           Produkte
         </MenuButton>
       </ListItem>
+      </>
+      ):(null)}
       <ListItem>
         {token ? (
           <Link

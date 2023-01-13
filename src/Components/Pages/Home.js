@@ -8,6 +8,7 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import { Grid } from "@mui/material";
 import { useUser } from "../../Context/UserContext";
+import { Image } from "react-bootstrap";
 
 
 function Home() {
@@ -40,8 +41,15 @@ console.log(user)
             Du bist nicht angemeldet!
           </Typography>
           )}
-          <Grid container spacing={2} gap={2} marginTop={5} padding={5}>
-            <Card sx={{ width: 275 }}>
+          <Grid container spacing={2} gap={2} marginTop={5} padding={5} className="d-flex flex-column">
+            <Typography fontSize="xl" fontWeight="lg">Öz Güven Warenhandelsgesellschaft mbH</Typography>
+<Typography fontSize="xl" fontWeight="m">
+Kepler Straße 15
+50823 Köln</Typography>
+<Box className="h-50">
+            <Image src="../../image/2023-01-13_07-44-38.png" thumbnail responsive="true" style={{height:"auto", width:"550px"}}/>
+            </Box>
+            {/* <Card sx={{ width: 275 }}>
               <CardContent>
                 <Typography
                   fontSize="l"
@@ -118,7 +126,7 @@ console.log(user)
               <CardActions>
                 <Button size="small">Weiter</Button>
               </CardActions>
-            </Card>
+            </Card> */}
           </Grid>
         </Box>
       </Container>
