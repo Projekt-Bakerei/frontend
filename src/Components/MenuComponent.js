@@ -185,11 +185,15 @@ export default function MenuToolbarExample() {
   };
   const onClickNewArtikel = (e) => {
     e.preventDefault();
-    window.location.href = "/newartikel";
+    window.location.href = "/addartikel";
   };
   const onClickAbout = (e) => {
     e.preventDefault();
     window.location.href = "/about";
+  };
+  const onClickCustomerArtikel = (e) => {
+    e.preventDefault();
+    window.location.href = "/newartikel";
   };
   
   const { token } = useUser();
@@ -322,6 +326,7 @@ export default function MenuToolbarExample() {
                 <List aria-label="Time travel">
                   <MenuItem {...itemProps} onClick={onClickNewCustomer}>Neue Kunde anlegen</MenuItem>
                   <MenuItem {...itemProps} onClick={onClickCustomer}>Alle Kunden</MenuItem>
+                  <MenuItem {...itemProps} onClick={onClickCustomerArtikel}>Kunden Artikel anlegen</MenuItem>
                 </List>
               </ListItem>
               <ListDivider />
