@@ -10,29 +10,26 @@ import FormControl from "@mui/joy/FormControl";
 import Form from "react-bootstrap/Form";
 // import Autocomplete from "@mui/joy/Autocomplete";
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { Zoom } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Zoom } from "react-toastify";
 
 import { useNewArtikel } from "../Context/ArtikelContext";
 import { useUser } from "../Context/UserContext";
 
 function AddArtikel() {
-
-  
-
   const toastId = useRef();
 
-
   const CloseButton = ({ closeToast }) => (
-    
     <b
       className="material-icons"
       onClick={() => {
-        closeToast(setTimeout(()=>{
-        window.location.reload(false);
-    }, 300)); 
-        }}
+        closeToast(
+          setTimeout(() => {
+            window.location.reload(false);
+          }, 300)
+        );
+      }}
     >
       Hier klick!
     </b>
@@ -48,7 +45,7 @@ function AddArtikel() {
   );
 
   const { AddNewArtikel, listNewArtikel } = useNewArtikel();
-  console.log("List Artikel: ", listNewArtikel)
+  console.log("List Artikel: ", listNewArtikel);
   const { token } = useUser();
 
   const [artikelData, setArtikelData] = useState({
@@ -59,7 +56,6 @@ function AddArtikel() {
     NewartikelKodu: "",
   });
   //const [loading, setLoading] = useState(false);
- 
 
   const [listArtikel, setListArtikel] = useState([]);
 
@@ -81,23 +77,26 @@ function AddArtikel() {
   console.log("Token:", token);
 
   const handleChangeNewartikelKodu = (e) => {
-
     let kodu = e.target.value;
     if (artikel.find((newArtikel) => newArtikel.NewartikelKodu === `${kodu}`)) {
       if (!toast.isActive(toastId.current)) {
-        toastId.current = toast.error("Dieser Code existiert bereits! / Bu kodu zaten var!", {
-          autoClose: false,
-          position: toast.POSITION.BOTTOM_CENTER,
-          theme: "colored"
-        }, setTimeout(()=>{
-          window.location.reload(false);
-      }, 2000))
+        toastId.current = toast.error(
+          "Dieser Code existiert bereits! / Bu kodu zaten var!",
+          {
+            autoClose: false,
+            position: toast.POSITION.BOTTOM_CENTER,
+            theme: "colored",
+          },
+          setTimeout(() => {
+            window.location.reload(false);
+          }, 2000)
+        );
       }
-    }else{
-    e.preventDefault();
-    setArtikelData({ ...artikelData, kodu });
-  }
-};
+    } else {
+      e.preventDefault();
+      setArtikelData({ ...artikelData, [e.target.name]: e.target.value });
+    }
+  };
 
   const handleChangeNewartikelName = (e) => {
     e.preventDefault();
@@ -124,14 +123,22 @@ function AddArtikel() {
       <CssBaseline />
 
       <h1>Neu Artikel anlegen</h1>
-      <Box sx={{ bgcolor: "#cfe8fc", minHeight: "100vh", padding: "1rem", minWidth: "70vw"}}>
+      <Box
+        sx={{
+          bgcolor: "#cfe8fc",
+          minHeight: "100vh",
+          padding: "1rem",
+          minWidth: "70vw",
+        }}
+      >
         <Typography textColor="neutral.800" fontSize="xl" fontWeight="lg">
           Ürün
         </Typography>
         <hr />
-        <FormGroup style={{minWidth: "70vw"}}>
-          <div className="m-auto border border-primary rounded" 
-          //style={{width: "50%"}}
+        <FormGroup style={{ minWidth: "70vw" }}>
+          <div
+            className="m-auto border border-primary rounded"
+            //style={{width: "50%"}}
           >
             <div className="d-flex flex-column p-3">
               <div className="d-flex flex-column p-3">
@@ -148,7 +155,7 @@ function AddArtikel() {
                   {bull} Artikel kodu:
                 </Form.Label>
                 <Form.Control
-                  style={{width: "20vw"}}
+                  style={{ width: "20vw" }}
                   type="text"
                   id="input"
                   aria-describedby="NewartikelKodu"
@@ -175,7 +182,7 @@ function AddArtikel() {
                 <Form.Control
                   type="text"
                   id="input"
-                  style={{width: "30vw"}}
+                  style={{ width: "30vw" }}
                   aria-describedby="NewartikelName"
                   placeholder="Ürün"
                   name="NewartikelName"
@@ -209,56 +216,56 @@ function AddArtikel() {
               </div>
               <div className="d-flex flex-wrap p-3 gap-3">
                 <Box>
-                <Form.Label
-                  htmlFor="input"
-                  style={{
-                    // marginRight: "2rem",
-                   // width: "10rem",
-                    fontFamily: "Roboto",
-                    fontSize: "0.875rem",
-                    fontWeight: 500,
-                  }}
-                >
-                  {bull} Price:
-                </Form.Label>
-                <Form.Control
-                style={{width: "10rem"}}
-                  type="text"
-                  id="input"
-                  aria-describedby="NewartikelPrice"
-                  placeholder="Price"
-                  name="NewartikelPrice"
-                  onChange={(e) => handleChangeNewartikelPrice(e)}
-                />
-              </Box>
-              <Box>
-                <Form.Label
-                  htmlFor="input"
-                  style={{
-                    // marginRight: "2rem",
-                   // width: "10rem",
-                    fontFamily: "Roboto",
-                    fontSize: "0.875rem",
-                    fontWeight: 500,
-                  }}
-                >
-                  {bull} Rabat %:
-                </Form.Label>
-                <Form.Control
-                style={{width: "10rem"}}
-                  type="text"
-                  id="input"
-                  aria-describedby="NewartikelRabat"
-                  placeholder="Rabat %"
-                  name="NewartikelRabat"
-                  onChange={(e) => handleChangeNewartikelRabat(e)}
-                />
+                  <Form.Label
+                    htmlFor="input"
+                    style={{
+                      // marginRight: "2rem",
+                      // width: "10rem",
+                      fontFamily: "Roboto",
+                      fontSize: "0.875rem",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {bull} Price:
+                  </Form.Label>
+                  <Form.Control
+                    style={{ width: "10rem" }}
+                    type="text"
+                    id="input"
+                    aria-describedby="NewartikelPrice"
+                    placeholder="Price"
+                    name="NewartikelPrice"
+                    onChange={(e) => handleChangeNewartikelPrice(e)}
+                  />
+                </Box>
+                <Box>
+                  <Form.Label
+                    htmlFor="input"
+                    style={{
+                      // marginRight: "2rem",
+                      // width: "10rem",
+                      fontFamily: "Roboto",
+                      fontSize: "0.875rem",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {bull} Rabat %:
+                  </Form.Label>
+                  <Form.Control
+                    style={{ width: "10rem" }}
+                    type="text"
+                    id="input"
+                    aria-describedby="NewartikelRabat"
+                    placeholder="Rabat %"
+                    name="NewartikelRabat"
+                    onChange={(e) => handleChangeNewartikelRabat(e)}
+                  />
                 </Box>
               </div>
             </div>
             <hr />
             <Button
-            sx={{margin: 3}}
+              sx={{ margin: 3 }}
               size="md"
               variant="contained"
               color="primary"
@@ -281,10 +288,11 @@ function AddArtikel() {
         </FormGroup>
       </Box>
       <ToastContainer
-         closeButton={CloseButton}
-         reload 
-         transition={Zoom}
-         style={{ width: "300px", bottom: "25rem" }} />
+        closeButton={CloseButton}
+        reload
+        transition={Zoom}
+        style={{ width: "300px", bottom: "25rem" }}
+      />
     </Container>
   ) : (
     <div>
