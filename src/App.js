@@ -11,6 +11,8 @@ import FirmenDaten from "./Components/Pages/FirmenDaten";
 import { LoginForm } from "./Components/Login/SignIn";
 import NewCustomer from "./Components/NewCustomer";
 import { Register } from "./Components/Login/Signup";
+import { NewArtikel } from "./Components/NewArtikel";
+import AddArtikel from "./Components/AddArtikel";
 
 function App() {
   return (
@@ -27,6 +29,9 @@ function App() {
       <Route path="/about" exact element={<FirmenDaten />} />
       <Route path="/login" exact element={<LoginForm />} />
       <Route path="/register" exact element={<Register />} />
+      <Route path="/newartikel" exact element={<NewArtikel />} />
+      <Route path="/addartikel" exact element={<AddArtikel />} />
+
      </Routes>
      </Router>
     </>

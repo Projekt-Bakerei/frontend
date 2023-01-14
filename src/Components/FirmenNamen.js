@@ -69,23 +69,6 @@ const columns = [
   
 ];
 
-// const rows = [
-//   { id: "8756958975789687b8b707808070n7n", firmenName: 'Snow Düner GmbH', kontaktName: 'Petar Smith', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', text: 'Firmen sitzt bla bla' },
-//   { id: 2, firmenName: 'Aliemsi GmbH', kontaktName: 'Ali', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', text: 'Firmen sitzt bla bla' },
-//   { id: 3, firmenName: 'Epsi Gmbh', kontaktName: 'Suleaman', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', text: 'Firmen sitzt bla bla' },
-//   { id: 4, firmenName: 'Dres Gmbh', kontaktName: 'Alali', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', text: 'Firmen sitzt bla bla' },
-//   { id: 5, firmenName: 'Snow Düner GmbH', kontaktName: 'Petar Smith', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', text: 'Firmen sitzt bla bla' },
-//   { id: 6, firmenName: 'Snow Düner GmbH', kontaktName: 'Petar Smith', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', text: 'Firmen sitzt bla bla' },
-//   { id: 7, firmenName: 'Snow Düner GmbH', kontaktName: 'Petar Smith', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', text: 'Firmen sitzt bla bla' },
-//   { id: 8, firmenName: 'Snow Düner GmbH', kontaktName: 'Petar Smith', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', text: 'Firmen sitzt bla bla' },
-//   { id: 9, firmenName: 'Snow Düner GmbH', kontaktName: 'Petar Smith', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', text: 'Firmen sitzt bla bla' },
-//   { id: 10, firmenName: 'Snow Düner GmbH', kontaktName: 'Petar Smith', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', text: 'Firmen sitzt bla bla' },
-//   { id: 11, firmenName: 'Snow Düner GmbH', kontaktName: 'Petar Smith', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', text: 'Firmen sitzt bla bla' },
-//   { id: 12, firmenName: 'Snow Düner GmbH', kontaktName: 'Petar Smith', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', text: 'Firmen sitzt bla bla' },
-// ];
-
-
-
 export default function FirmenNamen() {
   const { token } = useUser();
 
