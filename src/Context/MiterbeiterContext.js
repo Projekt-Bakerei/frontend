@@ -2,7 +2,7 @@ import * as React from "react";
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 
-import { useMiterbeiter } from "../Context/MiterbeiterContext";
+//import { useMiterbeiter } from "../Context/MiterbeiterContext";
 
 export const MiterbeiterContext = createContext();
 
@@ -31,19 +31,7 @@ useEffect(() => {
   }
 
   const addMiterbeiter = (
-    kodu,
-    passiv,
-    hitab,
-    kategory,
-    ismi,
-    kdv,
-    kisi,
-    sekli,
-    cadde,
-    plz,
-    yer,
-    telefon,
-    mobil
+    mName, mAdres, tel, position, extern, kenzeichen
   ) => {
     const config = {
       headers: {
@@ -54,22 +42,10 @@ useEffect(() => {
     console.log("Token addMiterbeiter:", token);
 
     const data = {
-      kodu,
-      passiv,
-      hitab,
-      kategory,
-      ismi,
-      kdv,
-      kisi,
-      sekli,
-      cadde,
-      plz,
-      yer,
-      telefon,
-      mobil,
+        mName, mAdres, tel, position, extern, kenzeichen
     };
     axios
-      .post(`${process.env.REACT_APP_API}/customers/addmiterbeiter`, data, config)
+      .post(`${process.env.REACT_APP_API}/miterbeiters/addmiterbeiter`, data, config)
       .then((res) => {
         setAddData(res.data);
       })
@@ -79,34 +55,10 @@ useEffect(() => {
   };
 
   const editMiterbeiter = (
-    kodu,
-    passiv,
-    hitab,
-    kategory,
-    ismi,
-    kdv,
-    kisi,
-    sekli,
-    cadde,
-    plz,
-    yer,
-    telefon,
-    mobil
+    mName, mAdres, tel, position, extern, kenzeichen
   ) => {
     const data = {
-      kodu,
-      passiv,
-      hitab,
-      kategory,
-      ismi,
-      kdv,
-      kisi,
-      sekli,
-      cadde,
-      plz,
-      yer,
-      telefon,
-      mobil,
+        mName, mAdres, tel, position, extern, kenzeichen
     };
     axios
       .put(`${process.env.REACT_APP_API}/miterbeiters/addmiterbeiter`, data)
@@ -120,37 +72,13 @@ useEffect(() => {
   };
 
   const delMiterbeiter = (
-    kodu,
-    passiv,
-    hitab,
-    kategory,
-    ismi,
-    kdv,
-    kisi,
-    sekli,
-    cadde,
-    plz,
-    yer,
-    telefon,
-    mobil
+    mName, mAdres, tel, position, extern, kenzeichen
   ) => {
     const data = {
-      kodu,
-      passiv,
-      hitab,
-      kategory,
-      ismi,
-      kdv,
-      kisi,
-      sekli,
-      cadde,
-      plz,
-      yer,
-      telefon,
-      mobil,
+        mName, mAdres, tel, position, extern, kenzeichen
     };
     axios
-      .get(`${process.env.REACT_APP_API}/customers/addmiterbeiter`, data)
+      .get(`${process.env.REACT_APP_API}/miterbeiters/addmiterbeiter`, data)
       .then((res) => {
         setDelData(res.data);
         console.log("Delete Miterbeiter OK")
@@ -179,6 +107,6 @@ useEffect(() => {
   );
 };
 
-export const useCustomer = () => {
+export const useMiterbeiter = () => {
   return useContext(MiterbeiterContext);
 };

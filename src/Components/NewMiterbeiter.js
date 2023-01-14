@@ -4,8 +4,8 @@ import { Box, Container } from "@mui/system";
 import Typography from "@mui/joy/Typography";
 import Button from "@mui/material/Button";
 import { FormGroup, FormLabel } from "@mui/material";
-import FormControl from "@mui/joy/FormControl";
-import { Checkbox } from "@mui/joy";
+//import FormControl from "@mui/joy/FormControl";
+//import { Checkbox } from "@mui/joy";
 
 import Form from "react-bootstrap/Form";
 
@@ -23,7 +23,7 @@ function NewMiterbeiter() {
   );
 
   const { addMiterbeiter, listData } = useMiterbeiter();
-  console.log("List Costumers:", listData);
+  console.log("List Miterbeiters:", listData);
   const { token } = useUser();
 
   const [miterbeiterData, setMiterbeiterData] = useState({
@@ -182,7 +182,7 @@ function NewMiterbeiter() {
                     fontWeight: 500,
                   }}
                 >
-                  {bull} Yetkili Kisi:
+                  {bull} Tel:
                 </Form.Label>
                 {/* <TextField
                      size="lx" label='"inge Taube"'
@@ -209,19 +209,7 @@ function NewMiterbeiter() {
               >
                 {bull} Ödeme sekli:
               </Form.Label>
-              <Form.Select
-                id="sekli"
-                name="sekli"
-                value={sekliSelect}
-                onChange={onChangeSekli}
-                style={{ width: "15rem", height: "3rem" }}
-              >
-                {optionsSekli.map((option, i) => (
-                  <option name={option.selectSekli} key={i}>
-                    {option.label}
-                  </option>
-                ))}
-              </Form.Select>
+              
             </div>
             <div className="d-flex flex-sm-wrap justify-content-xl-between p-3">
               <div className="d-flex">
@@ -235,7 +223,7 @@ function NewMiterbeiter() {
                     fontWeight: 500,
                   }}
                 >
-                  {bull} Cadde ve Ev-Nr:
+                  {bull} Position:
                 </Form.Label>
                 {/* <TextField
                      size="lx" label='"Muster Straße 10"'
@@ -246,7 +234,7 @@ function NewMiterbeiter() {
                   aria-describedby="Adresse"
                   placeholder="Muster Straße 10"
                   name="cadde"
-                  onChange={(e) => handleChangeCadde(e)}
+                  onChange={(e) => handleChangePosition(e)}
                 />
               </div>
             </div>
@@ -262,7 +250,7 @@ function NewMiterbeiter() {
                     fontWeight: 500,
                   }}
                 >
-                  {bull} Posta Kodu:
+                  {bull} Kenzeichen:
                 </Form.Label>
                 <Form.Control
                   type="text"
@@ -270,7 +258,7 @@ function NewMiterbeiter() {
                   aria-describedby="Plz"
                   placeholder="PLZ"
                   name="plz"
-                  onChange={(e) => handleChangePlz(e)}
+                  onChange={(e) => handleChangeKenzeichen(e)}
                 />
               </div>
               <div className="d-flex">
@@ -285,7 +273,7 @@ function NewMiterbeiter() {
                     fontWeight: 500,
                   }}
                 >
-                  {bull} Yer:
+                  {bull} Extern:
                 </Form.Label>
                 <Form.Control
                   type="text"
@@ -293,58 +281,16 @@ function NewMiterbeiter() {
                   aria-describedby="Stadt"
                   placeholder="Stadt"
                   name="yer"
-                  onChange={(e) => handleChangeYer(e)}
+                  onChange={(e) => handleChangeExtern(e)}
                 />
               </div>
             </div>
             <div className="d-flex flex-sm-wrap justify-content-xl-between p-3">
               <div className="d-flex">
-                <Form.Label
-                  htmlFor="Telefon"
-                  style={{
-                    marginRight: "2rem",
-                    width: "10rem",
-                    fontFamily: "Roboto",
-                    fontSize: "0.875rem",
-                    fontWeight: 500,
-                  }}
-                >
-                  {bull} Telefon:
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  id="input"
-                  aria-describedby="Telefon"
-                  placeholder="Telefonnummer"
-                  name="telefon"
-                  onChange={(e) => handleChangeTelefon(e)}
-                />
+                _______________________
               </div>
               <div className="d-flex">
-                <Form.Label
-                  htmlFor="C-telefon"
-                  style={{
-                    marginRight: "2rem",
-                    marginLeft: "3rem",
-                    width: "10rem",
-                    fontFamily: "Roboto",
-                    fontSize: "0.875rem",
-                    fontWeight: 500,
-                  }}
-                >
-                  {bull} Cep-Tel:
-                </Form.Label>
-                {/* <TextField
-                     size="lx" label='"Muster Straße 10"'
-                   /> */}
-                <Form.Control
-                  type="text"
-                  id="input"
-                  aria-describedby="C-telefon"
-                  placeholder="Cep-Telefon"
-                  name="mobil"
-                  onChange={(e) => handleChangeMobil(e)}
-                />
+                
               </div>
             </div>
             <hr />
@@ -353,20 +299,8 @@ function NewMiterbeiter() {
               variant="contained"
               color="primary"
               onClick={() => {
-                addCustomer(
-                  kodu,
-                  passiv,
-                  hitab,
-                  kategory,
-                  ismi,
-                  kdv,
-                  kisi,
-                  sekli,
-                  cadde,
-                  plz,
-                  yer,
-                  telefon,
-                  mobil
+                addMiterbeiter(
+                  mName, mAdres, tel, position, extern, kenzeichen
                 );
                 setTimeout(() => {
                   window.location.reload(false);
