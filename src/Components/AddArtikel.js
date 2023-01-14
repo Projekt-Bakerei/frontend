@@ -205,7 +205,6 @@ function AddArtikel() {
                   placeholder="Zutaten"
                   name="NewartikelBeschreibung"
                   onChange={(e) => handleChangeNewartikelBeschreibung(e)}
-                  required
                 />
               </div>
               <div className="d-flex flex-wrap p-3 gap-3">
@@ -230,7 +229,6 @@ function AddArtikel() {
                   placeholder="Price"
                   name="NewartikelPrice"
                   onChange={(e) => handleChangeNewartikelPrice(e)}
-                  required
                 />
               </Box>
               <Box>
@@ -254,7 +252,6 @@ function AddArtikel() {
                   placeholder="Rabat %"
                   name="NewartikelRabat"
                   onChange={(e) => handleChangeNewartikelRabat(e)}
-                  required
                 />
                 </Box>
               </div>
