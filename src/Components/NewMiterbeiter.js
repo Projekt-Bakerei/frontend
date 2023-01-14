@@ -105,7 +105,7 @@ function NewMiterbeiter() {
       <CssBaseline />
 
       <h1>Neu Miterbeiter anlegen</h1>
-      <Box sx={{ bgcolor: "#cfe8fc", height: "75vh", padding: "1rem" }}>
+      <Box sx={{ bgcolor: "#cfe8fc", height: "85vh", padding: "1rem" }}>
         <Typography textColor="neutral.800" fontSize="xl" fontWeight="lg">
           Yeni Isci
         </Typography>
@@ -170,6 +170,7 @@ function NewMiterbeiter() {
               </div>
               {/* Isci Adresi */}
             </div>
+
             <div className="d-flex flex-sm-wrap justify-content-center p-3">
               <div className="d-flex">
                 <Form.Label
@@ -197,6 +198,7 @@ function NewMiterbeiter() {
                 />
               </div>
             </div>
+
             <div className="d-flex flex-sm-wrap justify-content-center p-3">
               <div className="d-flex">
                 <Form.Label
@@ -224,6 +226,7 @@ function NewMiterbeiter() {
                 />
               </div>
             </div>
+
             <div className="d-flex flex-sm-wrap justify-content-center p-3">
               <div className="d-flex">
                 <Form.Label
@@ -247,7 +250,9 @@ function NewMiterbeiter() {
                   onChange={(e) => handleChangeKenzeichen(e)}
                 />
               </div>
-              <div className="d-flex">
+            </div>
+            <div className="d-flex flex-sm-wrap justify-content-center p-3">
+            <div className="d-flex">
                 <Form.Label
                   htmlFor="extern"
                   style={{
