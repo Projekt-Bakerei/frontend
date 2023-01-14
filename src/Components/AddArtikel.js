@@ -135,7 +135,7 @@ function AddArtikel() {
           Ürün
         </Typography>
         <hr />
-        <FormGroup style={{ minWidth: "70vw" }}>
+        <FormGroup style={{ minWidth: "80%" }}>
           <div
             className="m-auto border border-primary rounded"
             //style={{width: "50%"}}
