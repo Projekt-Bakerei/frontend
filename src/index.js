@@ -21,8 +21,7 @@ root.render(
      {/* <AdminContextProvider>  */}
      
       <UserContextProvider>
-        <MiterbeiterProvider>
-
+       <MiterbeiterProvider>
         <CustomerProvider>
         {/* <ProductContextProvider> */}
           {/* <CartContextProvider> */}
@@ -30,7 +29,7 @@ root.render(
           {/* </CartContextProvider> */}
         {/* </ProductContextProvider> */}
         </CustomerProvider>
-        </MiterbeiterProvider>
+       </MiterbeiterProvider>
       </UserContextProvider>
     {/* </AdminContextProvider>  */}
     {/* </Provider> */}

@@ -12,19 +12,22 @@ import Form from "react-bootstrap/Form";
 import { useMiterbeiter } from "../Context/MiterbeiterContext";
 import { useUser } from "../Context/UserContext";
 
+
 function NewMiterbeiter() {
   const bull = (
     <Box
-      component="span"
-      sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
+    component="span"
+    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
     >
       •
     </Box>
   );
-
+  
   const { addMiterbeiter, listData } = useMiterbeiter();
   console.log("List Miterbeiters:", listData);
   const { token } = useUser();
+  
+  console.log("User Token:", token);
 
   const [miterbeiterData, setMiterbeiterData] = useState({
     mName: "",
