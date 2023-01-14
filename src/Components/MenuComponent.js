@@ -171,6 +171,10 @@ export default function MenuToolbarExample() {
     e.preventDefault();
     window.location.href = "/newcustomer";
   };
+  const onClickNewMiterbeiter = (e) => {
+    e.preventDefault();
+    window.location.href = "/newmiterbeiter";
+  };
   const onClickEmployees = (e) => {
     e.preventDefault();
     window.location.href = "/employees";
@@ -354,7 +358,7 @@ export default function MenuToolbarExample() {
                 setMenuIndex(null);
               }}
             >
-              <MenuItem {...itemProps}>Neue Mitarbeiter anlegen</MenuItem>
+              <MenuItem {...itemProps} onClick={onClickNewMiterbeiter}>Neue Mitarbeiter anlegen</MenuItem>
               <MenuItem {...itemProps}>Alle Liferanten</MenuItem>
               <MenuItem {...itemProps} onClick={onClickEmployees}>Alle Miterbeiter Beckarei</MenuItem>
             </Menu>

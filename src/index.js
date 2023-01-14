@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { UserContextProvider } from "./Context/UserContext";
+import { MiterbeiterProvider } from "./Context/MiterbeiterContext";
 
 // Bootstrap CSS
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -21,6 +22,7 @@ root.render(
      {/* <AdminContextProvider>  */}
      
       <UserContextProvider>
+       <MiterbeiterProvider>
         <NewArtikelProvider>
         <CustomerProvider>
         {/* <ProductContextProvider> */}
@@ -29,6 +31,7 @@ root.render(
           {/* </CartContextProvider> */}
         {/* </ProductContextProvider> */}
         </CustomerProvider>
+       </MiterbeiterProvider>
         </NewArtikelProvider>
       </UserContextProvider>
       

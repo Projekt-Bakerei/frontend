@@ -21,8 +21,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Zoom } from 'react-toastify';
 
-
-
 const theme = createTheme();
 
 export const LoginForm = () => {
