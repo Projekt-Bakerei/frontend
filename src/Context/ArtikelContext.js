@@ -8,14 +8,13 @@ export const NewArtikelContext = createContext();
 
 export const NewArtikelProvider = ({ children }) => {
   const data = "Test Admin";
-  const [listData, setListData] = useState([]);
+  const [listNewArtikel, setListNewArtikel] = useState([]);
   const [addData, setAddData] = useState([]);
   const [editData, setEditData] = useState([]);
   const [delData, setDelData] = useState([]);
   const { token } = useUser();
 
-
-useEffect(() => {
+  useEffect(() => {
     loadNewArtikel();
   }, []);
 
@@ -23,27 +22,20 @@ useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API}/newartikels`)
       .then((res) => {
-        setListData(res.data);
-        console.log("Load Artikels OK")
-      }).catch((error) => {
-              console.log("Load Artikels Error:", error);
-            });
+        setListNewArtikel(res.data);
+        console.log("Load Artikels OK");
+      })
+      .catch((error) => {
+        console.log("Load Artikels Error:", error);
+      });
   }
 
-  const addNewArtikel = (
-    kodu,
-    passiv,
-    hitab,
-    kategory,
-    ismi,
-    kdv,
-    kisi,
-    sekli,
-    cadde,
-    plz,
-    yer,
-    telefon,
-    mobil
+  const AddNewArtikel = (
+    NewartikelName,
+    NewartikelPrice,
+    NewartikelBeschreibung,
+    NewartikelRabat,
+    NewartikelKodu,
   ) => {
     const config = {
       headers: {
@@ -54,24 +46,17 @@ useEffect(() => {
     console.log("Token addNewArtikel:", token);
 
     const data = {
-      kodu,
-      passiv,
-      hitab,
-      kategory,
-      ismi,
-      kdv,
-      kisi,
-      sekli,
-      cadde,
-      plz,
-      yer,
-      telefon,
-      mobil,
+      NewartikelName,
+      NewartikelPrice,
+      NewartikelBeschreibung,
+      NewartikelRabat,
+      NewartikelKodu,
     };
     axios
       .post(`${process.env.REACT_APP_API}/newartikels/addartikel`, data, config)
       .then((res) => {
         setAddData(res.data);
+        console.log("Create new Artikel OK!")
       })
       .catch((error) => {
         console.log("Create new Artikel Error:", error);
@@ -79,40 +64,24 @@ useEffect(() => {
   };
 
   const editNewArtikel = (
-    kodu,
-    passiv,
-    hitab,
-    kategory,
-    ismi,
-    kdv,
-    kisi,
-    sekli,
-    cadde,
-    plz,
-    yer,
-    telefon,
-    mobil
+    NewartikelName,
+    NewartikelPrice,
+    NewartikelBeschreibung,
+    NewartikelRabat,
+    NewartikelKodu,
   ) => {
     const data = {
-      kodu,
-      passiv,
-      hitab,
-      kategory,
-      ismi,
-      kdv,
-      kisi,
-      sekli,
-      cadde,
-      plz,
-      yer,
-      telefon,
-      mobil,
+      NewartikelName,
+      NewartikelPrice,
+      NewartikelBeschreibung,
+      NewartikelRabat,
+      NewartikelKodu,
     };
     axios
       .put(`${process.env.REACT_APP_API}/newartikels/addartikel`, data)
       .then((res) => {
         setEditData(res.data);
-        console.log("Edit Artikel OK")
+        console.log("Edit Artikel OK");
       })
       .catch((error) => {
         console.log("Edit Artikel Error:", error);
@@ -120,40 +89,24 @@ useEffect(() => {
   };
 
   const delNewArtikel = (
-    kodu,
-    passiv,
-    hitab,
-    kategory,
-    ismi,
-    kdv,
-    kisi,
-    sekli,
-    cadde,
-    plz,
-    yer,
-    telefon,
-    mobil
+    NewartikelName,
+    NewartikelPrice,
+    NewartikelBeschreibung,
+    NewartikelRabat,
+    NewartikelKodu,
   ) => {
     const data = {
-      kodu,
-      passiv,
-      hitab,
-      kategory,
-      ismi,
-      kdv,
-      kisi,
-      sekli,
-      cadde,
-      plz,
-      yer,
-      telefon,
-      mobil,
+      NewartikelName,
+      NewartikelPrice,
+      NewartikelBeschreibung,
+      NewartikelRabat,
+      NewartikelKodu,
     };
     axios
       .get(`${process.env.REACT_APP_API}/newartikels/deleteartikel`, data)
       .then((res) => {
         setDelData(res.data);
-        console.log("Delete Artikel OK")
+        console.log("Delete Artikel OK");
       })
       .catch((error) => {
         console.log("Delete Artikel Error:", error);
@@ -164,12 +117,12 @@ useEffect(() => {
     <NewArtikelContext.Provider
       value={{
         data,
-        listData,
+        listNewArtikel,
         addData,
         editData,
         delData,
         loadNewArtikel,
-        addNewArtikel,
+        AddNewArtikel,
         editNewArtikel,
         delNewArtikel,
       }}
@@ -179,6 +132,6 @@ useEffect(() => {
   );
 };
 
-export const useNewArtiel = () => {
+export const useNewArtikel = () => {
   return useContext(NewArtikelContext);
 };

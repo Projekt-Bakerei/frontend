@@ -4,13 +4,13 @@ import { Box, Container } from "@mui/system";
 import Typography from "@mui/joy/Typography";
 import Autocomplete from "@mui/material/Autocomplete";
 import FormControl from "@mui/joy/FormControl";
-import { FormGroup, Grid, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { DataGrid } from '@mui/x-data-grid';
 
 import { useCustomer } from "../Context/CustomerContext";
 import { useUser } from "../Context/UserContext";
 import { FormLabel } from "@mui/joy";
-import { Col, FormText, Row } from "react-bootstrap";
+import { FormText } from "react-bootstrap";
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 60 },
@@ -47,33 +47,6 @@ const columns = [
     editable: true,
     sortable: true,
   },
-  // {
-  //   field: 'mobil',
-  //   headerName: 'Cep-Tel',
-  //   type: 'number',
-  //   width: 120,
-  //   editable: true,
-  //   sortable: true,
-  // },
-  // {
-  //   field: 'kategory',
-  //   headerName: 'Bar / Rechnung',
-  //   width: 120,
-  //   editable: true,
-  // },
-  // {
-  //   field: 'kdv',
-  //   headerName: 'KDV',
-  //   width: 120,
-  //   editable: true,
-  // },
-  // {
-  //   field: 'sekli',
-  //   headerName: 'Ödeme sekli',
-  //   width: 120,
-  //   editable: true,
-  // },
-  
 ];
 
 const artikel = [

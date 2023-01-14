@@ -44,7 +44,7 @@ function NewCustomer() {
     mobil: "",
   });
   // const [loading, setLoading] = useState(false);
-  const [coduCheck, setCoduCheck] = useState([]);
+  //const [coduCheck, setCoduCheck] = useState([]);
 
  const [listKunden, setListKunden] = useState([]);
 
@@ -141,7 +141,7 @@ function NewCustomer() {
     e.preventDefault();
     let kodu =  e.target.value;
     setCustomerData({ ...customerData, kodu });
-    setCoduCheck(kodu)
+    //setCoduCheck(kodu)
   };
 
   const handleChangeKisi = (e) => {
