@@ -3,9 +3,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { Box, Container } from "@mui/system";
 import Typography from "@mui/joy/Typography";
 import Button from "@mui/material/Button";
-import { FormGroup, FormLabel } from "@mui/material";
-//import FormControl from "@mui/joy/FormControl";
-//import { Checkbox } from "@mui/joy";
+import { FormGroup } from "@mui/material";
 
 import Form from "react-bootstrap/Form";
 
@@ -48,27 +46,6 @@ function NewMiterbeiter() {
 
   const { mName, mAdres, tel, position, extern, kenzeichen } = miterbeiterData;
 
-  // const handleCreate = (e) => {
-  //   e.preventDefault();
-  //   // setCustomerData({ ...customerData, [e.target.name]: e.target.value });
-  //   setCustomerData(
-  //     kodu,
-  //     passiv,
-  //     hitab,
-  //     kategory,
-  //     ismi,
-  //     kdv,
-  //     kisi,
-  //     sekli,
-  //     cadde,
-  //     plz,
-  //     yer,
-  //     telefon,
-  //     mobil,
-  //     token
-  //   );
-  // };
-
   const handleChangemName = (e) => {
     e.preventDefault();
     setMiterbeiterData({ ...miterbeiterData, [e.target.name]: e.target.value });
@@ -105,25 +82,22 @@ function NewMiterbeiter() {
       <CssBaseline />
 
       <h1>Neu Miterbeiter anlegen</h1>
-      <Box sx={{ bgcolor: "#cfe8fc", height: "85vh", padding: "1rem" }}>
+      <Box sx={{ bgcolor: "#cfe8fc", maxHeight: "80%", padding: "1rem" }}>
         <Typography textColor="neutral.800" fontSize="xl" fontWeight="lg">
           Yeni Isci
         </Typography>
         <hr />
-        <FormGroup>
-          <div className="w-55 m-auto ">
+        <FormGroup style={{ minWidth: "70vw" }}>
+          <div
+            className="m-auto border border-primary rounded"
+          >
             <div className="d-flex flex-sm-wrap justify-content-center p-3">
               <div className="d-flex">
-                {/* <FormLabel sx={{ paddingRight: "2rem", width: '10rem' }}>
-                       {bull} Müsteri kodu:
-                     </FormLabel>
-                     <TextField size="5px" label="Kodu" placeholder="123" /> */}
                 <Form.Label
                   htmlFor="input"
                   style={{
                     marginRight: "2rem",
                     width: "10rem",
-                    margin: "auto",
                     fontFamily: "Roboto",
                     fontSize: "0.875rem",
                     fontWeight: 500,
@@ -143,7 +117,7 @@ function NewMiterbeiter() {
               </div>
             </div>
 
-            <div className="d-flex flex-sm-wrap justify-content-center p-3">
+            <div className="d-flex flex-sm-wrap p-3">
               <div className="d-flex">
                 <Form.Label
                   htmlFor="mName"
@@ -171,7 +145,7 @@ function NewMiterbeiter() {
               {/* Isci Adresi */}
             </div>
 
-            <div className="d-flex flex-sm-wrap justify-content-center p-3">
+            <div className="d-flex flex-sm-wrap p-3">
               <div className="d-flex">
                 <Form.Label
                   htmlFor="tel"
@@ -199,7 +173,7 @@ function NewMiterbeiter() {
               </div>
             </div>
 
-            <div className="d-flex flex-sm-wrap justify-content-center p-3">
+            <div className="d-flex flex-sm-wrap p-3">
               <div className="d-flex">
                 <Form.Label
                   htmlFor="position"
@@ -227,7 +201,7 @@ function NewMiterbeiter() {
               </div>
             </div>
 
-            <div className="d-flex flex-sm-wrap justify-content-center p-3">
+            <div className="d-flex flex-sm-wrap p-3">
               <div className="d-flex">
                 <Form.Label
                   htmlFor="kenzeichen"
@@ -251,13 +225,12 @@ function NewMiterbeiter() {
                 />
               </div>
             </div>
-            <div className="d-flex flex-sm-wrap justify-content-center p-3">
+            <div className="d-flex flex-sm-wrap p-3">
             <div className="d-flex">
                 <Form.Label
                   htmlFor="extern"
                   style={{
                     marginRight: "2rem",
-                    marginLeft: "3rem",
                     width: "10rem",
                     fontFamily: "Roboto",
                     fontSize: "0.875rem",
@@ -277,7 +250,7 @@ function NewMiterbeiter() {
               </div>
             </div>
             <hr />
-            <Button
+            <Button sx={{margin: 3}}
               size="md"
               variant="contained"
               color="primary"
@@ -299,26 +272,6 @@ function NewMiterbeiter() {
             </Button>
           </div>
         </FormGroup>
-        <div className="d-flex justify-content-center">
-          <div className="d-flex flex-column">
-            <FormLabel sx={{ width: "20rem" }}>
-              {bull} Ismiyle | Müsteri ara |
-            </FormLabel>
-            {/* <Autocomplete
-                   sx={{ marginTop: ".5rem", width: "20rem" }}
-                    options={kunden}
-                 /> */}
-          </div>
-        </div>
-        {/* <div>
-             Customer:<ul>
-             {kunden.map((option, i) => (
-                       <li name={option.kunden} key={i}>
-                        <a href="{i}"> {JSON.stringify(kunden[i].ismi)}</a>
-                       </li>
-                     ))}
-               </ul>
-           </div> */}
       </Box>
     </Container>
   ) : (
