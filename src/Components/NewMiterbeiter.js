@@ -12,21 +12,20 @@ import Form from "react-bootstrap/Form";
 import { useMiterbeiter } from "../Context/MiterbeiterContext";
 import { useUser } from "../Context/UserContext";
 
-
 function NewMiterbeiter() {
   const bull = (
     <Box
-    component="span"
-    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
+      component="span"
+      sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
     >
       •
     </Box>
   );
-  
+
   const { addMiterbeiter, listData } = useMiterbeiter();
   console.log("List Miterbeiters:", listData);
   const { token } = useUser();
-  
+
   console.log("User Token:", token);
 
   const [miterbeiterData, setMiterbeiterData] = useState({
@@ -34,8 +33,8 @@ function NewMiterbeiter() {
     mAdres: "",
     tel: "",
     position: "",
-    extern: "",
     kenzeichen: "",
+    extern: "",
   });
 
   const [listMiterbeitern, setListMiterbeitern] = useState([]);
@@ -49,7 +48,6 @@ function NewMiterbeiter() {
 
   const { mName, mAdres, tel, position, extern, kenzeichen } = miterbeiterData;
 
-  
   // const handleCreate = (e) => {
   //   e.preventDefault();
   //   // setCustomerData({ ...customerData, [e.target.name]: e.target.value });
@@ -102,20 +100,19 @@ function NewMiterbeiter() {
 
   console.log(miterbeiterData);
 
-
   return token ? (
     <Container maxWidth="xl">
       <CssBaseline />
 
       <h1>Neu Miterbeiter anlegen</h1>
-      <Box sx={{ bgcolor: "#cfe8fc", minHeight: "100vh", padding: "1rem" }}>
+      <Box sx={{ bgcolor: "#cfe8fc", height: "75vh", padding: "1rem" }}>
         <Typography textColor="neutral.800" fontSize="xl" fontWeight="lg">
           Yeni Isci
         </Typography>
         <hr />
         <FormGroup>
           <div className="w-55 m-auto ">
-            <div className="d-flex flex-sm-wrap justify-content-xl-between p-3">
+            <div className="d-flex flex-sm-wrap justify-content-center p-3">
               <div className="d-flex">
                 {/* <FormLabel sx={{ paddingRight: "2rem", width: '10rem' }}>
                        {bull} Müsteri kodu:
@@ -126,6 +123,7 @@ function NewMiterbeiter() {
                   style={{
                     marginRight: "2rem",
                     width: "10rem",
+                    margin: "auto",
                     fontFamily: "Roboto",
                     fontSize: "0.875rem",
                     fontWeight: 500,
@@ -144,8 +142,8 @@ function NewMiterbeiter() {
                 />
               </div>
             </div>
-    
-            <div className="d-flex flex-sm-wrap justify-content-xl-between p-3">
+
+            <div className="d-flex flex-sm-wrap justify-content-center p-3">
               <div className="d-flex">
                 <Form.Label
                   htmlFor="mName"
@@ -164,19 +162,18 @@ function NewMiterbeiter() {
                 <Form.Control
                   type="text"
                   id="input"
-                  aria-describedby="Ismi"
-                  placeholder="Bei inge"
-                  name="ismi"
+                  aria-describedby="mAdres"
+                  placeholder="Isci Adresi"
+                  name="mAdres"
                   onChange={(e) => handleChangemAdres(e)}
                 />
               </div>
               {/* Isci Adresi */}
-              
             </div>
-            <div className="d-flex flex-sm-wrap justify-content-xl-between p-3">
+            <div className="d-flex flex-sm-wrap justify-content-center p-3">
               <div className="d-flex">
                 <Form.Label
-                  htmlFor="Inge"
+                  htmlFor="tel"
                   style={{
                     marginRight: "2rem",
                     width: "10rem",
@@ -193,31 +190,17 @@ function NewMiterbeiter() {
                 <Form.Control
                   type="text"
                   id="input"
-                  aria-describedby="Tel"
-                  placeholder="Tel: 0090 123"
+                  aria-describedby="tel"
+                  placeholder="Tel: +90 123 456 78"
                   name="tel"
                   onChange={(e) => handleChangeTel(e)}
                 />
               </div>
-              <Form.Label
-                htmlFor="enableSelect"
-                style={{
-                  marginRight: "2rem",
-                  marginLeft: "3rem",
-                  width: "10rem",
-                  fontFamily: "Roboto",
-                  fontSize: "0.875rem",
-                  fontWeight: 500,
-                }}
-              >
-                {bull} Ödeme sekli:
-              </Form.Label>
-              
             </div>
-            <div className="d-flex flex-sm-wrap justify-content-xl-between p-3">
+            <div className="d-flex flex-sm-wrap justify-content-center p-3">
               <div className="d-flex">
                 <Form.Label
-                  htmlFor="Adresse"
+                  htmlFor="position"
                   style={{
                     marginRight: "2rem",
                     width: "10rem",
@@ -234,17 +217,17 @@ function NewMiterbeiter() {
                 <Form.Control
                   type="text"
                   id="input"
-                  aria-describedby="Adresse"
-                  placeholder="Muster Straße 10"
-                  name="cadde"
+                  aria-describedby="position"
+                  placeholder="Position"
+                  name="position"
                   onChange={(e) => handleChangePosition(e)}
                 />
               </div>
             </div>
-            <div className="d-flex flex-sm-wrap justify-content-xl-between p-3">
+            <div className="d-flex flex-sm-wrap justify-content-center p-3">
               <div className="d-flex">
                 <Form.Label
-                  htmlFor="Plz"
+                  htmlFor="kenzeichen"
                   style={{
                     marginRight: "2rem",
                     width: "10rem",
@@ -258,15 +241,15 @@ function NewMiterbeiter() {
                 <Form.Control
                   type="text"
                   id="input"
-                  aria-describedby="Plz"
-                  placeholder="PLZ"
-                  name="plz"
+                  aria-describedby="kenzeichen"
+                  placeholder="kenzeichen"
+                  name="kenzeichen"
                   onChange={(e) => handleChangeKenzeichen(e)}
                 />
               </div>
               <div className="d-flex">
                 <Form.Label
-                  htmlFor="Stadt"
+                  htmlFor="extern"
                   style={{
                     marginRight: "2rem",
                     marginLeft: "3rem",
@@ -281,19 +264,11 @@ function NewMiterbeiter() {
                 <Form.Control
                   type="text"
                   id="input"
-                  aria-describedby="Stadt"
-                  placeholder="Stadt"
-                  name="yer"
+                  aria-describedby="extern"
+                  placeholder="extern"
+                  name="extern"
                   onChange={(e) => handleChangeExtern(e)}
                 />
-              </div>
-            </div>
-            <div className="d-flex flex-sm-wrap justify-content-xl-between p-3">
-              <div className="d-flex">
-                _______________________
-              </div>
-              <div className="d-flex">
-                
               </div>
             </div>
             <hr />
@@ -303,7 +278,12 @@ function NewMiterbeiter() {
               color="primary"
               onClick={() => {
                 addMiterbeiter(
-                  mName, mAdres, tel, position, extern, kenzeichen
+                  mName,
+                  mAdres,
+                  tel,
+                  position,
+                  extern,
+                  kenzeichen
                 );
                 setTimeout(() => {
                   window.location.reload(false);
