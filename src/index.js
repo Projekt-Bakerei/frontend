@@ -19,22 +19,22 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
     {/* <Provider store={store}> */}
-     {/* <AdminContextProvider>  */}
-     
-      <UserContextProvider>
-       <MiterbeiterProvider>
-        <NewArtikelProvider>
-        <CustomerProvider>
-        {/* <ProductContextProvider> */}
-          {/* <CartContextProvider> */}
-          <App />
-          {/* </CartContextProvider> */}
-        {/* </ProductContextProvider> */}
-        </CustomerProvider>
-       </MiterbeiterProvider>
-        </NewArtikelProvider>
-      </UserContextProvider>
-      
+    {/* <AdminContextProvider>  */}
+
+    <UserContextProvider>
+      <NewArtikelProvider>
+        <MiterbeiterProvider>
+          <CustomerProvider>
+            {/* <ProductContextProvider> */}
+            {/* <CartContextProvider> */}
+            <App />
+            {/* </CartContextProvider> */}
+            {/* </ProductContextProvider> */}
+          </CustomerProvider>
+        </MiterbeiterProvider>
+      </NewArtikelProvider>
+    </UserContextProvider>
+
     {/* </AdminContextProvider>  */}
     {/* </Provider> */}
   </React.StrictMode>
