@@ -1,72 +1,75 @@
-import * as React from 'react';
+import  {React, useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import { Container } from '@mui/system';
+import { useNewArtikel } from '../Context/ArtikelContext';
+import { useUser } from '../Context/UserContext';
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 90 },
+  { field: 'id', headerName: 'ID', width: 60 },
+  { field: 'NewartikelKodu', headerName: 'Ürün kodu', width: 120, sortable: true, },
   {
-    field: 'producktName',
-    headerName: 'Produkt Name',
-    width: 150,
+    field: 'NewartikelName',
+    headerName: 'Ürün',
+    width: 200,
     editable: true,
-  },
-  {
-    field: 'kategorien',
-    headerName: 'Kategorien',
-    width: 150,
-    editable: true,
-  },
-  {
-    field: 'gewicht',
-    headerName: 'Gewicht',
-    description: 'Fertige Gewicht',
     sortable: true,
-    width: 60,
-    // valueGetter: (params) =>
-    //   `${params.row.firstName || ''} ${params.row.lastName || ''}`,
   },
   {
-    field: 'price',
+    field: 'NewartikelBeschreibung',
+    headerName: 'Beschreibung',
+    type: 'text',
+    width: 450,
+    editable: true,
+    sortable: true,
+  },
+  {
+    field: 'NewartikelPrice',
     headerName: 'Price',
+    description: 'Grund Price',
+    sortable: true,
+    width: 120,
+  //   valueGetter: (params) =>
+  //     `${params.row.cadde || ''}, ${params.row.plz || ''} ${params.row.yer|| ''}`,
+   },
+  {
+    field: 'NewartikelRabat',
+    headerName: 'Rabat %',
     type: 'number',
-    width: 60,
+    width: 120,
     editable: true,
     sortable: true,
   },
-  {
-    field: 'alergen',
-    headerName: 'Alergen',
-    type: 'number',
-    width: 210,
-    editable: false,
-  },
+
+  
 ];
 
-const rows = [
-  { id: 1, producktName: 'Fladen Brot', kategorien: 'Brot', gewicht: '125', price: '0,59 €', alergen: 'Lacktose, Mehl' },
-  { id: 2, producktName: 'Brot', kategorien: 'Brot', gewicht: '125', price: '0,59 €', alergen: 'Lacktose, Mehl' },
-  { id: 3, producktName: 'Pide', kategorien: 'Brot', gewicht: '125', price: '0,59 €', alergen: 'Lacktose, Mehl' },
-  { id: 4, producktName: 'Fladen Brot', kategorien: 'Brot', gewicht: '125', price: '0,59 €', alergen: 'Lacktose, Mehl' },
-  { id: 5, producktName: 'Fladen Brot', kategorien: 'Brot', gewicht: '125', price: '0,59 €', alergen: 'Lacktose, Mehl' },
-  { id: 6, producktName: 'Fladen Brot', kategorien: 'Brot', gewicht: '125', price: '0,59 €', alergen: 'Lacktose, Mehl' },
-  { id: 7, producktName: 'Fladen Brot', kategorien: 'Brot', gewicht: '125', price: '0,59 €', alergen: 'Lacktose, Mehl' },
-  { id: 8, producktName: 'Fladen Brot', kategorien: 'Brot', gewicht: '125', price: '0,59 €', alergen: 'Lacktose, Mehl' },
-  { id: 9, producktName: 'Fladen Brot', kategorien: 'Brot', gewicht: '125', price: '0,59 €', alergen: 'Lacktose, Mehl' },
-  { id: 10, producktName: 'Fladen Brot', kategorien: 'Brot', gewicht: '125', price: '0,59 €', alergen: 'Lacktose, Mehl' },
-];
+export default function FirmenNamen() {
+  const { token } = useUser();
 
-export default function Produkte() {
-  return (
+  const { listNewArtikel } = useNewArtikel();
+  console.log("List Costumers:", listNewArtikel)
+
+const [listArtikel, setListArtikel] = useState([]);
+
+useEffect(() => {
+ setListArtikel(listNewArtikel)
+}, [listNewArtikel]);
+
+let artikel = listArtikel;
+console.log("Artikel:", artikel)
+
+
+  return token ? (
     <Container maxWidth="xl">
-        <h1>Alle Produkte Beckarei</h1>
+        <h1>Alle Artikel / Ürün Dosiyes</h1>
         <Box sx={{ bgcolor: '#cfe8fc', height: '75vh', padding: '1rem' }}>
     <Box sx={{ height: '100%', width: '100%' }}>
       <DataGrid
-        rows={rows}
+        rows={artikel}
         columns={columns}
-        pageSize={15}
-        rowsPerPageOptions={[15]}
+        pageSize={10}
+        rowsPerPageOptions={[12]}
         checkboxSelection
         disableSelectionOnClick
         experimentalFeatures={{ newEditingApi: true }}
@@ -74,5 +77,9 @@ export default function Produkte() {
     </Box>
     </Box>
     </Container>
+  ) : (
+    <div>
+      <h1>Du bist nicht angemeldet!</h1>
+    </div>
   );
 }
