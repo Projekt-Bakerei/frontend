@@ -88,7 +88,7 @@ console.log("Kunden:", kunden)
   return token ? (
     <Container maxWidth="xl">
         <h1>Kunden</h1>
-        <Box sx={{ bgcolor: '#cfe8fc', height: '75vh', padding: '1rem' }}>
+        <Box sx={{ bgcolor: '#cfe8fc', height: '100vh', padding: '1rem' }}>
     <Box sx={{ height: '100%', width: '100%' }}>
       <DataGrid
         rows={kunden}

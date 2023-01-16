@@ -28,7 +28,7 @@ console.log(user)
       <CssBaseline />
       <Container maxWidth="xl">
         <h1>Home</h1>
-        <Box sx={{ bgcolor: "#cfe8fc", height: "75vh", padding: "1rem" }}>
+        <Box sx={{ bgcolor: "#cfe8fc", maxHeight: "80%", padding: "1rem" }}>
           <Typography textColor="neutral.500" fontSize="xl" fontWeight="lg">
             Aufgaben
           </Typography>

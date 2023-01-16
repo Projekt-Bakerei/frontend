@@ -1,74 +1,77 @@
-import * as React from 'react';
+import  {React, useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import { Container } from '@mui/system';
+import { useMiterbeiter } from '../Context/MiterbeiterContext';
+import { useUser } from '../Context/UserContext';
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 90 },
+  { field: 'id', headerName: 'ID', width: 60 },
   {
-    field: 'vorName',
-    headerName: 'Vor- Name',
-    width: 150,
+    field: 'mName',
+    headerName: 'Name',
+    width: 250,
     editable: true,
-  },
-  {
-    field: 'familienName',
-    headerName: 'Familien Name',
-    width: 150,
-    editable: true,
-  },
-  {
-    field: 'adresse',
-    headerName: 'Adresse',
-    description: 'Wohnung Adresse',
     sortable: true,
-    width: 260,
-    // valueGetter: (params) =>
-    //   `${params.row.firstName || ''} ${params.row.lastName || ''}`,
   },
   {
-    field: 'telefon',
+    field: 'mAdres',
+    headerName: 'Adresse',
+    type: 'text',
+    width: 350,
+    editable: true,
+    sortable: true,
+  },
+  {
+    field: 'tel',
     headerName: 'Telefon',
     type: 'number',
-    width: 210,
+    width: 120,
     editable: true,
     sortable: true,
   },
   {
     field: 'position',
     headerName: 'Position',
-    type: 'number',
-    width: 210,
-    editable: false,
+    width: 120,
+    editable: true,
+    sortable: true,
   },
-];
-
-const rows = [
-  { id: 1, vorName: 'Sunai', familienName: 'Alie', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', position: 'Master Bäcker' },
-  { id: 2, vorName: 'Emo', familienName: 'Alie', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', position: 'Shofeur' },
-  { id: 3, vorName: 'Ahmed', familienName: 'Alie', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', position: 'Master Bäcker' },
-  { id: 4, vorName: 'Meme', familienName: 'Alie', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', position: 'Master Bäcker' },
-  { id: 5, vorName: 'Rocki', familienName: 'Alie', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', position: 'Master Bäcker' },
-  { id: 6, vorName: 'Lasgo', familienName: 'Alie', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', position: 'Master Bäcker' },
-  { id: 7, vorName: 'Sunai', familienName: 'Alie', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', position: 'Master Bäcker' },
-  { id: 8, vorName: 'Sunai', familienName: 'Alie', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', position: 'Master Bäcker' },
-  { id: 9, vorName: 'Sunai', familienName: 'Alie', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', position: 'Master Bäcker' },
-  { id: 10, vorName: 'Sunai', familienName: 'Alie', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', position: 'Master Bäcker' },
-  { id: 11, vorName: 'Sunai', familienName: 'Alie', telefon: '0152525252535', adresse: 'Venoerstr. 275, 50823 Köln', position: 'Master Bäcker' },
+  {
+    field: 'kennzeichen',
+    headerName: 'Bus Kennzeichen',
+    width: 120,
+    editable: true,
+  },
   
 ];
 
-export default function Employees() {
-  return (
+export default function FirmenNamen() {
+  const { token } = useUser();
+
+  const { listData } = useMiterbeiter();
+  console.log("List Miterbeiter:", listData)
+
+const [listMiterbeiter, setListMiterbeter] = useState([]);
+
+useEffect(() => {
+ setListMiterbeter(listData)
+}, [listData]);
+
+let miterbeiter = listMiterbeiter;
+console.log("Miterbeitern:", miterbeiter)
+
+
+  return token ? (
     <Container maxWidth="xl">
-        <h1>Alle Miterbeiter Beckarei</h1>
-        <Box sx={{ bgcolor: '#cfe8fc', height: '75vh', padding: '1rem' }}>
+        <h1>Miterbeiter Dosyasi</h1>
+        <Box sx={{ bgcolor: '#cfe8fc', maxHeight: '80%', padding: '1rem' }}>
     <Box sx={{ height: '100%', width: '100%' }}>
       <DataGrid
-        rows={rows}
+        rows={miterbeiter}
         columns={columns}
-        pageSize={15}
-        rowsPerPageOptions={[15]}
+        pageSize={10}
+        rowsPerPageOptions={[12]}
         checkboxSelection
         disableSelectionOnClick
         experimentalFeatures={{ newEditingApi: true }}
@@ -76,5 +79,9 @@ export default function Employees() {
     </Box>
     </Box>
     </Container>
+  ) : (
+    <div>
+      <h1>Du bist nicht angemeldet!</h1>
+    </div>
   );
 }
