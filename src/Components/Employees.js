@@ -7,7 +7,6 @@ import { useUser } from '../Context/UserContext';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 60 },
-  // { field: 'kodu', headerName: 'Müsteri kodu', width: 100, sortable: true, },
   {
     field: 'mName',
     headerName: 'Name',
@@ -65,8 +64,8 @@ console.log("Miterbeitern:", miterbeiter)
 
   return token ? (
     <Container maxWidth="xl">
-        <h1>Kunden</h1>
-        <Box sx={{ bgcolor: '#cfe8fc', height: '75vh', padding: '1rem' }}>
+        <h1>Miterbeiter Dosyasi</h1>
+        <Box sx={{ bgcolor: '#cfe8fc', maxHeight: '80%', padding: '1rem' }}>
     <Box sx={{ height: '100%', width: '100%' }}>
       <DataGrid
         rows={miterbeiter}
