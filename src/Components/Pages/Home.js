@@ -7,8 +7,9 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import { Grid } from "@mui/material";
-import { useUser } from "../../Context/UserContext";
+import { useUser } from "../Context/UserContext";
 import { Image } from "react-bootstrap";
+import MiniDrawer from "../Menu/Drawer";
 
 
 function Home() {
@@ -26,6 +27,7 @@ console.log(user)
   return (
     <Fragment>
       <CssBaseline />
+
       <Container maxWidth="xl">
         <h1>Home</h1>
         <Box sx={{ bgcolor: "#cfe8fc", maxHeight: "80%", padding: "1rem" }}>
@@ -34,7 +36,8 @@ console.log(user)
           </Typography>
 {token ? (
   <Typography textColor="green" fontSize="xl" fontWeight="lg">
-            Hallo! - {user.name}
+            Hallo! -{bull} {user.name}
+            
           </Typography>
           ) :( 
             <Typography textColor="red" fontSize="xl" fontWeight="lg">

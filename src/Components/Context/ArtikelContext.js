@@ -2,7 +2,7 @@ import * as React from "react";
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 
-import { useUser } from "../Context/UserContext";
+import { useUser } from "./UserContext";
 
 export const NewArtikelContext = createContext();
 
