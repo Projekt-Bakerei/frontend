@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { CreateInvoice } from "./Components/CreateInvoice";
-import MenuComponents from "./Components/MenuComponent";
+import MenuComponents from "./Components/Menu/MenuComponent";
 import FirmenNamen from "./Components/FirmenNamen";
 
 import Home from "./Components/Pages/Home";

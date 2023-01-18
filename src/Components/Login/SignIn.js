@@ -44,7 +44,7 @@ export const LoginForm = () => {
         window.location.reload(false);
     }, 500);}}
     >
-      OK.
+      x
     </i>
   );
 
@@ -73,7 +73,7 @@ export const LoginForm = () => {
         })
         setTimeout(()=>{
           window.location.reload(false);
-      }, 10000);
+      }, 8000);
       }
     }
   }, [user, nav, errMsg])

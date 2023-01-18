@@ -14,7 +14,8 @@ import ListDivider from "@mui/joy/ListDivider";
 import Typography, { typographyClasses } from "@mui/joy/Typography";
 import { Link } from "react-router-dom";
 
-import { useUser } from "../Context/UserContext";
+import { useUser } from "../../Context/UserContext";
+import StatusBar from "./StatusBar";
 
 const MenuButton = forwardRef(
   ({ children, menu, open, onOpen, onKeyDown, ...props }, ref) => {
@@ -404,6 +405,7 @@ export default function MenuToolbarExample() {
       ):(null)}
       <ListItem>
         {token ? (
+          <>
           <Link
           onClick={logout}
           style={{
@@ -413,8 +415,9 @@ export default function MenuToolbarExample() {
             right: "25px"
           }}
         >
-          <Typography>Logout</Typography>
+          <Typography>Logout &nbsp;</Typography>
         </Link>
+        <StatusBar /></>
         ) : (
           <Link
           to="/login"
