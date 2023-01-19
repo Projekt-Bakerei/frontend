@@ -137,7 +137,7 @@ function AddArtikel() {
         <hr />
         <FormGroup style={{ minWidth: "80%" }}>
           <div
-            className="m-auto border border-primary rounded"
+            className="m-auto border rounded border-3"
             //style={{width: "50%"}}
           >
             <div className="d-flex flex-column p-3">
