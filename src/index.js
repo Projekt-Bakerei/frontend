@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { UserContextProvider } from "./Context/UserContext";
-import { MiterbeiterProvider } from "./Context/MiterbeiterContext";
+import { UserContextProvider } from "./Components/Context/UserContext";
+import { MiterbeiterProvider } from "./Components/Context/MiterbeiterContext";
 
 // Bootstrap CSS
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -10,8 +10,8 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 
 // import { ProductContextProvider } from "./Context/ProductContext";
 import App from "./App";
-import { CustomerProvider } from "./Context/CustomerContext";
-import { NewArtikelProvider } from "./Context/ArtikelContext";
+import { CustomerProvider } from "./Components/Context/CustomerContext";
+import { NewArtikelProvider } from "./Components/Context/ArtikelContext";
 // import { Provider } from 'react-redux';
 
 const container = document.getElementById("root");

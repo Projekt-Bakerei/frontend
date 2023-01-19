@@ -2,73 +2,71 @@ import  {React, useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import { Container } from '@mui/system';
-import { useMiterbeiter } from '../Context/MiterbeiterContext';
+import { useNewArtikel } from '../Context/ArtikelContext';
 import { useUser } from '../Context/UserContext';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 60 },
+  { field: 'NewartikelKodu', headerName: 'Ürün kodu', width: 120, sortable: true, },
   {
-    field: 'mName',
-    headerName: 'Name',
-    width: 250,
+    field: 'NewartikelName',
+    headerName: 'Ürün',
+    width: 200,
     editable: true,
     sortable: true,
   },
   {
-    field: 'mAdres',
-    headerName: 'Adresse',
+    field: 'NewartikelBeschreibung',
+    headerName: 'Beschreibung',
     type: 'text',
-    width: 350,
+    width: 450,
     editable: true,
     sortable: true,
   },
   {
-    field: 'tel',
-    headerName: 'Telefon',
+    field: 'NewartikelPrice',
+    headerName: 'Price',
+    description: 'Grund Price',
+    sortable: true,
+    width: 120,
+  //   valueGetter: (params) =>
+  //     `${params.row.cadde || ''}, ${params.row.plz || ''} ${params.row.yer|| ''}`,
+   },
+  {
+    field: 'NewartikelRabat',
+    headerName: 'Rabat %',
     type: 'number',
     width: 120,
     editable: true,
     sortable: true,
   },
-  {
-    field: 'position',
-    headerName: 'Position',
-    width: 120,
-    editable: true,
-    sortable: true,
-  },
-  {
-    field: 'kennzeichen',
-    headerName: 'Bus Kennzeichen',
-    width: 120,
-    editable: true,
-  },
+
   
 ];
 
 export default function FirmenNamen() {
   const { token } = useUser();
 
-  const { listData } = useMiterbeiter();
-  console.log("List Miterbeiter:", listData)
+  const { listNewArtikel } = useNewArtikel();
+  console.log("List Costumers:", listNewArtikel)
 
-const [listMiterbeiter, setListMiterbeter] = useState([]);
+const [listArtikel, setListArtikel] = useState([]);
 
 useEffect(() => {
- setListMiterbeter(listData)
-}, [listData]);
+ setListArtikel(listNewArtikel)
+}, [listNewArtikel]);
 
-let miterbeiter = listMiterbeiter;
-console.log("Miterbeitern:", miterbeiter)
+let artikel = listArtikel;
+console.log("Artikel:", artikel)
 
 
   return token ? (
     <Container maxWidth="xl">
-        <h1>Miterbeiter Dosyasi</h1>
-        <Box sx={{ bgcolor: '#cfe8fc', maxHeight: '80%', padding: '1rem' }}>
+        <h1>Alle Artikel / Ürün Dosiyes</h1>
+        <Box sx={{ bgcolor: '#EAEDF0', height: '75vh', padding: '1rem' }}>
     <Box sx={{ height: '100%', width: '100%' }}>
       <DataGrid
-        rows={miterbeiter}
+        rows={artikel}
         columns={columns}
         pageSize={10}
         rowsPerPageOptions={[12]}

@@ -15,6 +15,8 @@ import Typography, { typographyClasses } from "@mui/joy/Typography";
 import { Link } from "react-router-dom";
 
 import { useUser } from "../Context/UserContext";
+import StatusBar from "./StatusBar";
+import { Button } from "@mui/joy";
 
 const MenuButton = forwardRef(
   ({ children, menu, open, onOpen, onKeyDown, ...props }, ref) => {
@@ -159,9 +161,9 @@ export default function MenuToolbarExample() {
 
   // }
 
-  const onLinkVoucherClick = (e) => {
+  const onLinkBelegeClick = (e) => {
     e.preventDefault();
-    window.location.href = "/voucher";
+    window.location.href = "/belege";
   };
   const onClickCustomer = (e) => {
     e.preventDefault();
@@ -209,7 +211,7 @@ export default function MenuToolbarExample() {
       role="menubar"
       data-joy-color-scheme="dark"
       sx={{
-        bgcolor: "#E5E5E0",
+        bgcolor: "#D2CCCC",
         px: 2,
         borderRadius: "4px",
         maxWidth: "100",
@@ -261,46 +263,29 @@ export default function MenuToolbarExample() {
       {token ? (
         <>
       <ListItem>
-        <MenuButton
-          open={menuIndex === 1}
-          onOpen={() => setMenuIndex(1)}
-          onKeyDown={createHandleButtonKeyDown(1)}
-          onMouseEnter={() => {
-            if (typeof menuIndex === "number") {
-              setMenuIndex(1);
-            }
+        <Link
+           open={menuIndex === 1}
+          // onOpen={() => setMenuIndex(1)}
+          // onKeyDown={createHandleButtonKeyDown(1)}
+          onClick={onLinkBelegeClick}
+          // onMouseEnter={() => {
+          //   if (typeof menuIndex === "number") {
+          //     setMenuIndex(1);
+          //   }
+          // }}
+          // ref={(instance) => {
+          //   menus.current[1] = instance;
+          // }}
+          style={{
+            textDecoration: "none",
+            position: "display",
+            right: "25px",
+              color: "#424242"
           }}
-          ref={(instance) => {
-            menus.current[1] = instance;
-          }}
-          menu={
-            <Menu
-              onClose={() => {
-                menus.current[1]?.focus();
-                setMenuIndex(null);
-              }}
-            >
-              <ListItem nested>
-                <List aria-label="New">
-                  <MenuItem {...itemProps} onClick={onLinkVoucherClick}>
-                    Rechnung erstellen
-                  </MenuItem>
-                  <MenuItem {...itemProps}>Neuer Lieferschein</MenuItem>
-                  <MenuItem {...itemProps}>Neues Angebot</MenuItem>
-                </List>
-              </ListItem>
-              <ListDivider />
-              <ListItem nested>
-                <List aria-label="Open">
-                  <MenuItem {...itemProps}>Neue Auftragsbestätigung</MenuItem>
-                  <MenuItem {...itemProps}>Neue Abschlagsrechnung</MenuItem>
-                </List>
-              </ListItem>
-            </Menu>
-          }
+           className="JoyTypography-root JoyTypography-body1 css-z378h5-JoyTypography-root"
         >
-          Belege
-        </MenuButton>
+          <Typography>Belege</Typography>
+        </Link>
       </ListItem>
       <ListItem>
         <MenuButton
@@ -404,6 +389,7 @@ export default function MenuToolbarExample() {
       ):(null)}
       <ListItem>
         {token ? (
+          <>
           <Link
           onClick={logout}
           style={{
@@ -413,8 +399,9 @@ export default function MenuToolbarExample() {
             right: "25px"
           }}
         >
-          <Typography>Logout</Typography>
+          <Typography>Logout &nbsp;</Typography>
         </Link>
+        <StatusBar /></>
         ) : (
           <Link
           to="/login"

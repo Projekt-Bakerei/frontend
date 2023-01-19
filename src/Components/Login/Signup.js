@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from "react";
-import { useUser } from "../../Context/UserContext";
+import { useUser } from "../Context/UserContext";
 import { useNavigate } from 'react-router-dom';
 
 import Avatar from '@mui/material/Avatar';

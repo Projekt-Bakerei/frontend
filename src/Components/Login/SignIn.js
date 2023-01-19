@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
-import { useUser } from "../../Context/UserContext";
+import { useUser } from "../Context/UserContext";
 import { useNavigate } from 'react-router-dom';
 
 import Avatar from "@mui/material/Avatar";
@@ -20,6 +20,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Zoom } from 'react-toastify';
+
 
 const theme = createTheme();
 
@@ -44,7 +45,7 @@ export const LoginForm = () => {
         window.location.reload(false);
     }, 500);}}
     >
-      OK.
+      x
     </i>
   );
 
@@ -73,7 +74,7 @@ export const LoginForm = () => {
         })
         setTimeout(()=>{
           window.location.reload(false);
-      }, 10000);
+      }, 8000);
       }
     }
   }, [user, nav, errMsg])
@@ -93,7 +94,7 @@ export const LoginForm = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" className="d-flex m-auto border rounded border-3 align-item-center mt-5">
         <CssBaseline />
         <Box
           sx={{
@@ -103,7 +104,7 @@ export const LoginForm = () => {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "green" }}>
+          <Avatar sx={{ m: 1, bgcolor: "#184B29" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -152,7 +153,7 @@ export const LoginForm = () => {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, bgcolor: "#184B29" }}
               onClick={() => {
                 signIn(email, password);
               }}
