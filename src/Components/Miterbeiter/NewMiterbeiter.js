@@ -9,6 +9,9 @@ import Form from "react-bootstrap/Form";
 
 import { useMiterbeiter } from "../Context/MiterbeiterContext";
 import { useUser } from "../Context/UserContext";
+import Loading from "../Loading/Loading";
+
+import CircularProgress from "@mui/material/CircularProgress";
 
 function NewMiterbeiter() {
   const bull = (
@@ -77,9 +80,28 @@ function NewMiterbeiter() {
 
   console.log(miterbeiterData);
 
-  return token ? (
+
+  const [isFetching, setIsFetching] = useState(true); 
+
+  useEffect(() => {
+    setTimeout(function () {
+      console.log("Delayed for 5 second."); 
+      setIsFetching(false); 
+    }, 2000);
+  }, []);
+
+  if (isFetching) {
+    return (
+      <Loading/>
+      )
+      
+  }
+    
+    return  token ? (
+    
     <Container maxWidth="xl">
       <CssBaseline />
+
 
       <h1>Neu Miterbeiter anlegen</h1>
       <Box sx={{ bgcolor: "#EAEDF0", maxHeight: "80%", padding: "1rem" }}>
@@ -264,9 +286,13 @@ function NewMiterbeiter() {
                   kenzeichen
                 );
                 setTimeout(() => {
+                  return <Loading/>           
+                }, 5000);
+              
+                setTimeout(() => {
                   window.location.reload(false);
-                }, 500);
-              }}
+                }, 1000);
+               }}
             >
               Create
             </Button>

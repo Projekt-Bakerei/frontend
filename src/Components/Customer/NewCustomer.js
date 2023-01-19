@@ -12,8 +12,20 @@ import Form from "react-bootstrap/Form";
 
 import { useCustomer } from "../Context/CustomerContext";
 import { useUser } from "../Context/UserContext";
+import Loading from "../Loading/Loading";
 
 function NewCustomer() {
+
+  const [loading, setLoading] = useState(false);
+    const getDomainInfo = async () => {
+        try {
+            setLoading(true); // Set loading before sending API request
+            setLoading(false); // Stop loading
+        } catch (error) {
+            setLoading(false); // Stop loading in case of error
+            console.error(error);
+        }
+      }
   const bull = (
     <Box
       component="span"
@@ -548,6 +560,7 @@ function NewCustomer() {
                 variant="contained"
                 color="primary"
                 onClick={() => {
+                  loading ? <Loading/>:
                   addCustomer(
                     kodu,
                     passiv,
