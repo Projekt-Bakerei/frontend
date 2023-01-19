@@ -65,7 +65,7 @@ console.log("Miterbeitern:", miterbeiter)
   return token ? (
     <Container maxWidth="xl">
         <h1>Miterbeiter Dosyasi</h1>
-        <Box sx={{ bgcolor: '#cfe8fc', height: '80vh', padding: '1rem' }}>
+        <Box sx={{ bgcolor: '#EAEDF0', height: '80vh', padding: '1rem' }}>
     <Box sx={{ height: '100%', width: '100%' }}>
       <DataGrid
         rows={miterbeiter}

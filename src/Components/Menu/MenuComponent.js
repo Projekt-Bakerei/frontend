@@ -211,7 +211,7 @@ export default function MenuToolbarExample() {
       role="menubar"
       data-joy-color-scheme="dark"
       sx={{
-        bgcolor: "#E5E5E0",
+        bgcolor: "#D2CCCC",
         px: 2,
         borderRadius: "4px",
         maxWidth: "100",

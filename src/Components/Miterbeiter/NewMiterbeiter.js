@@ -82,14 +82,14 @@ function NewMiterbeiter() {
       <CssBaseline />
 
       <h1>Neu Miterbeiter anlegen</h1>
-      <Box sx={{ bgcolor: "#cfe8fc", maxHeight: "80%", padding: "1rem" }}>
+      <Box sx={{ bgcolor: "#EAEDF0", maxHeight: "80%", padding: "1rem" }}>
         <Typography textColor="neutral.800" fontSize="xl" fontWeight="lg">
           Yeni Isci
         </Typography>
         <hr />
         <FormGroup style={{ minWidth: "70vw" }}>
           <div
-            className="m-auto border border-primary rounded"
+            className="m-auto border rounded border-3"
           >
             <div className="d-flex flex-sm-wrap justify-content-center p-3">
               <div className="d-flex">

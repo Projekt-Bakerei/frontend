@@ -125,7 +125,7 @@ function AddArtikel() {
       <h1>Neu Artikel anlegen</h1>
       <Box
         sx={{
-          bgcolor: "#cfe8fc",
+          bgcolor: "#EAEDF0",
           minHeight: "100vh",
           padding: "1rem",
           minWidth: "70vw",

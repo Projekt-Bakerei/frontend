@@ -30,12 +30,12 @@ console.log(user)
 
       <Container maxWidth="xl">
         <h1>Home</h1>
-        <Box sx={{ bgcolor: "#cfe8fc", maxHeight: "80%", padding: "1rem" }}>
+        <Box sx={{ bgcolor: "#EAEDF0", maxHeight: "80%", padding: "1rem" }}>
           <Typography textColor="neutral.500" fontSize="xl" fontWeight="lg">
             Aufgaben
           </Typography>
 {token ? (
-  <Typography textColor="green" fontSize="xl" fontWeight="lg">
+  <Typography textColor="#184B29" fontSize="xl" fontWeight="lg">
             Hallo! -{bull} {user.name}
             
           </Typography>

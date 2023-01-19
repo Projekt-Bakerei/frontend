@@ -76,7 +76,7 @@ console.log("State FirmaData: ", firmaData)
       <CssBaseline />
       <Container maxWidth="xl">
         <h1>Ürün Dosyasi</h1>
-        <Box sx={{ bgcolor: "#cfe8fc", maxHeight: "80%", padding: "1rem" }}>
+        <Box sx={{ bgcolor: "#EAEDF0", maxHeight: "80%", padding: "1rem" }}>
         <Box sx={{ flexGrow: 1 }}>
               <Box variant="soft" sx={{ py: 0.4 }}>
                 <Box className="d-flex p-3 justify-content-around">

@@ -63,7 +63,7 @@ console.log("Artikel:", artikel)
   return token ? (
     <Container maxWidth="xl">
         <h1>Alle Artikel / Ürün Dosiyes</h1>
-        <Box sx={{ bgcolor: '#cfe8fc', height: '75vh', padding: '1rem' }}>
+        <Box sx={{ bgcolor: '#EAEDF0', height: '75vh', padding: '1rem' }}>
     <Box sx={{ height: '100%', width: '100%' }}>
       <DataGrid
         rows={artikel}

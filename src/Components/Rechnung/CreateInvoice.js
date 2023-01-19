@@ -172,7 +172,7 @@ export const CreateInvoice = () => {
       <CssBaseline />
       <Container maxWidth="xl">
         <br />
-        <Box sx={{ bgcolor: "#cfe8fc", height: "70vh", padding: "1rem" }}>
+        <Box sx={{ bgcolor: "#EAEDF0", height: "70vh", padding: "1rem" }}>
           <Box sx={{ flexGrow: 1 }}>
             <Box variant="soft" sx={{ py: 0.4 }}>
               {/* <code>
