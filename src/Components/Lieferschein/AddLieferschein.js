@@ -17,6 +17,10 @@ import { BsFillFileEarmarkPdfFill } from "react-icons/bs";
 import { AiFillPrinter } from "react-icons/ai";
 import { MdDeleteForever } from "react-icons/md";
 
+import AddArtikelTask from "../Artikel/AddArtikelTask";
+import ArtikelTaskList from "../Artikel/ListArtikelTask";
+import { ArtikelTasksProvider } from "../Context/ArtikelTasksContext";
+
 const columns = [
   { field: "id", headerName: "ID", width: 60 },
   // { field: 'kodu', headerName: 'Müsteri kodu', width: 100, sortable: true, },
@@ -95,7 +99,7 @@ export const HeuteDatum = () => {
   return <strong>{heute}</strong>;
 };
 
-export const CreateInvoice = () => {
+export const AddLieferschein = () => {
   const { token } = useUser();
 
   const { listData } = useCustomer();
@@ -121,7 +125,7 @@ export const CreateInvoice = () => {
 
   const LeistungsDatum = () => {
     const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
+    
 
     const dateStart = new Date(startDate);
     const start =
@@ -130,57 +134,43 @@ export const CreateInvoice = () => {
       String(dateStart.getMonth() + 1).padStart(2, "0") +
       "." +
       dateStart.getFullYear();
-    const dateEnd = new Date(endDate);
-    const ende =
-      String(dateEnd.getDate()).padStart(2, "0") +
-      "." +
-      String(dateEnd.getMonth() + 1).padStart(2, "0") +
-      "." +
-      dateEnd.getFullYear();
+    
     return (
       <>
         <Box
           sx={{
             display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
+            flexDirection: "column",
+            //justifyContent: "space-arownd",
           }}
         >
+          <FormText>
+          &nbsp; Lieferdatum: <strong>{start}</strong>
+          </FormText>
+          <br />
           <Box sx={{display: "flex", gap: 3}}>
             <DatePicker
               value={startDate}
               onChange={(date) => setStartDate(date)}
             />
-            <DatePicker
-              value={endDate}
-              onChange={(daten) => setEndDate(daten)}
-            />
+            
           </Box>
-          <FormText style={{paddingRight: "6rem"}}>
-            Leistungszeitraum: {start} - {ende}
-          </FormText>
+          
         </Box>
       </>
     );
   };
 
-  // const FirmaAdresse = kunden.find((adresse) => adresse.cadde === `${value}`);
-  // console.log("FirmAdresse:", Find.cadde)
-
   return token ? (
     <Fragment>
       <CssBaseline />
+      <ArtikelTasksProvider>
       <Container maxWidth="xl">
         <br />
         <Box sx={{ bgcolor: "#EAEDF0", height: "70vh", padding: "1rem" }}>
           <Box sx={{ flexGrow: 1 }}>
             <Box variant="soft" sx={{ py: 0.4 }}>
-              {/* <code>
-                  <strong>{`${
-                    value !== null ? `'${value}'` : "Firma"
-                  }`}</strong>
-                </code> */}
-              <h1>Rechnung</h1>
+              <h1>Lieferschein</h1>
               <Box className="d-flex p-3 justify-content-between">
                 <Box className="d-flex flex-column">
                   <Typography level="body1">Kundenangaben</Typography>
@@ -210,7 +200,7 @@ export const CreateInvoice = () => {
                 </Box>
                 <Box className="d-flex flex-column padding-right-6 w-25">
                   <Typography level="body1">
-                    Rechnungsnummer 012225325
+                  Lieferscheinnummer {"012225325"}
                   </Typography>
                   <FormText>
                     Kundennummer{" "}
@@ -220,21 +210,16 @@ export const CreateInvoice = () => {
                     Datum:
                     <HeuteDatum />
                   </FormText>
+                  <LeistungsDatum />
                   <br />
                 </Box>
               </Box>
-              <LeistungsDatum />
               <hr />
             </Box>
           </Box>
-          {/* <Typography variant="soft" sx={{ py: 0.4 }}>
-              <code>
-                <strong>Find: {JSON.stringify(Find)}</strong>
-              </code>
-            </Typography> */}
           <br />
           <Box sx={{ height: "50%", width: "100%" }}>
-            <DataGrid
+            {/* <DataGrid
               rows={artikel}
               columns={columns}
               pageSize={10}
@@ -242,9 +227,13 @@ export const CreateInvoice = () => {
               // checkboxSelection
               // disableSelectionOnClick
               experimentalFeatures={{ newEditingApi: true }}
-            />
+            /> */}
+                
+      <ArtikelTaskList />
+    
           </Box>
         </Box>
+        <div className="d-flex flex-wrap justify-content-around">
         <FormControl id="controllable" sx={{ marginTop: "1rem" }}>
           <FormLabel>Hier eine Firma wählen</FormLabel>
           <Autocomplete
@@ -262,9 +251,14 @@ export const CreateInvoice = () => {
             sx={{ width: 350, zIndex: 30 + "!important", borderRadius: 50 }}
             renderInput={(params) => (
               <TextField {...params} label="Ismiyle | Müsteri ara" />
-            )}
+              )}
           />
         </FormControl>
+        <FormControl sx={{ marginTop: "1rem" }}>
+        <FormLabel>Hier eine Artikel wählen</FormLabel>
+              <AddArtikelTask />
+        </FormControl>
+        </div>
         <div className="d-flex flex-wrap justify-content-around">
           <div className="d-flex flex-wrap mt-3 gap-3">
             <Button
@@ -309,6 +303,7 @@ export const CreateInvoice = () => {
           </div>
         </div>
       </Container>
+      </ArtikelTasksProvider>
     </Fragment>
   ) : (
     <div>
