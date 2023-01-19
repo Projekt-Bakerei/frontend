@@ -8,6 +8,9 @@ export default function BelegeMenuButton() {
   const handleRechnung = () => {
     window.location.href = "/createinvoice";
   } 
+  const handleLieferschein = () => {
+    window.location.href = "/lieferschein";
+  }
   return (
     <PopupState variant="popover" popupId="demo-popup-menu">
       {(popupState) => (
@@ -42,7 +45,7 @@ export default function BelegeMenuButton() {
           <Menu {...bindMenu(popupState)}>
             <MenuItem onClick={handleRechnung}>Rechnung</MenuItem>
             <MenuItem onClick={popupState.close}>Angebot</MenuItem>
-            <MenuItem onClick={popupState.close}>Liferschein</MenuItem>
+            <MenuItem onClick={handleLieferschein}>Lieferschein</MenuItem>
             <MenuItem onClick={popupState.close}>Abschlagsrechnung</MenuItem>
             <MenuItem onClick={popupState.close}>Rechnungskorrektur</MenuItem>
           </Menu>
