@@ -5,7 +5,7 @@ import Typography from "@mui/joy/Typography";
 import Autocomplete from "@mui/material/Autocomplete";
 import FormControl from "@mui/joy/FormControl";
 import { Button, Input } from "@mui/material";
-import TextField from '@mui/material/TextField';
+import TextField from "@mui/material/TextField";
 //import { DataGrid } from "@mui/x-data-grid";
 import DatePicker from "react-date-picker";
 
@@ -21,7 +21,7 @@ import { MdDeleteForever } from "react-icons/md";
 import AddArtikelTask from "../Artikel/AddArtikelTask";
 //import ArtikelTaskList from "../Artikel/ListArtikelTask";
 import { ArtikelTasksProvider } from "../Context/ArtikelTasksContext";
-import { useNewArtikel } from '../Context/ArtikelContext';
+import { useNewArtikel } from "../Context/ArtikelContext";
 
 // const columns = [
 //   { field: "id", headerName: "ID", width: 60 },
@@ -163,11 +163,11 @@ export const AddLieferschein = () => {
 
   const [listArtikel, setListArtikel] = useState([]);
   useEffect(() => {
-    setListArtikel(listNewArtikel)
-   }, [listNewArtikel]);
-   
-   let artikel = listArtikel;
-   console.log("Artikel:", artikel)
+    setListArtikel(listNewArtikel);
+  }, [listNewArtikel]);
+
+  let artikel = listArtikel;
+  console.log("Artikel:", artikel);
   const [inputArtikel, setInputArtikel] = useState([
     {
       artikelNameLe: "",
@@ -188,12 +188,15 @@ export const AddLieferschein = () => {
     setInputArtikel(list);
   };
   const handleAddClick = () => {
-    setInputArtikel([...inputArtikel, { 
-      artikelNameLe: "",
-      artikelMengeLe: "",
-      artikelEinheitLe: "",
-      artikelKistenLe: "", 
-    }]);
+    setInputArtikel([
+      ...inputArtikel,
+      {
+        artikelNameLe: "",
+        artikelMengeLe: "",
+        artikelEinheitLe: "",
+        artikelKistenLe: "",
+      },
+    ]);
   };
 
   return token ? (
@@ -202,7 +205,14 @@ export const AddLieferschein = () => {
       <ArtikelTasksProvider>
         <Container maxWidth="xl">
           <br />
-          <Box sx={{ bgcolor: "#EAEDF0", maxHeight: "100%", minHeight:"75vh", padding: "1rem" }}>
+          <Box
+            sx={{
+              bgcolor: "#EAEDF0",
+              maxHeight: "100%",
+              minHeight: "75vh",
+              padding: "1rem",
+            }}
+          >
             <Box sx={{ flexGrow: 1 }}>
               <Box variant="soft" sx={{ py: 0.4 }}>
                 <h1>Lieferschein</h1>
@@ -255,92 +265,94 @@ export const AddLieferschein = () => {
             <br />
             <Box sx={{ height: "50%", width: "100%" }}>
               <div>
-            {inputArtikel.map((x, i) => {
-        return (
-          <>
-          <div className="d-flex flex-wrap">
-            
-          <div className="d-flex">
-            
-            <Form.Label
-      htmlFor="input"
-      style={{
-        //  marginRight: "2rem",
-        //width: "18.5rem",
-        fontFamily: "Roboto",
-        fontSize: "0.875rem",
-        fontWeight: 500,
-      }}
-      
-      >
-        <Form.Select 
-        name="artikelName"
-        style={{ width: "20rem", height: "2rem" }}
-        value={x.artikelNameLe}
-          // onChange={e => {
-          //   dispatch({
-          //     type: 'changed',
-          //     task: {
-          //       ...task,
-          //       NewartikelName: e.target.value
-          //     }
-          //   });
-          // }}
-        >
-         {listArtikel.map((artikel, i) => (
-                      <option name={artikel.NewartikelName} key={i}>
-                        {artikel.NewartikelName}
-                      </option>
-                    ))}
-        </Form.Select>
-      </Form.Label>
+                {inputArtikel.map((x, i) => {
+                  return (
+                    <>
+                      <div className="d-flex flex-wrap">
+                        <div className="d-flex">
+                          <Form.Label
+                            htmlFor="input"
+                            style={{
+                              //  marginRight: "2rem",
+                              //width: "18.5rem",
+                              fontFamily: "Roboto",
+                              fontSize: "0.875rem",
+                              fontWeight: 500,
+                            }}
+                          >
+                            <Form.Select
+                              name="artikelName"
+                              style={{ width: "20rem", height: "2rem" }}
+                              value={x.artikelNameLe}
+                              // onChange={e => {
+                              //   dispatch({
+                              //     type: 'changed',
+                              //     task: {
+                              //       ...task,
+                              //       NewartikelName: e.target.value
+                              //     }
+                              //   });
+                              // }}
+                            >
+                              {listArtikel.map((artikel, i) => (
+                                <option name={artikel.NewartikelName} key={i}>
+                                  {artikel.NewartikelName}
+                                </option>
+                              ))}
+                            </Form.Select>
+                          </Form.Label>
 
-            <Form.Control
-            variant="outlined"
-            style={{ width: "10rem", height: "2rem"}}
-              name="menge"
-              placeholder="Menge"
-              value={x.artikelMengeLe}
-              onChange={e => handleInputChange(e, i)}
-            />
-            <Form.Control
-            variant="outlined"
-            style={{ width: "10rem", height: "2rem"}}
-              name="Einheit"
-              placeholder="Einheit"
-              value={x.artikelEinheitLe}
-              onChange={e => handleInputChange(e, i)}
-            />
-            <Form.Control
-              style={{ width: "10rem", height: "2rem"}}
-              name="kisten"
-              placeholder="Kisten"
-              value={x.artikelKistenLe}
-              onChange={e => handleInputChange(e, i)}
-            />
-            </div>
-            <div className="d-flex flex-row gap-1">
-            {inputArtikel.length  -1 === i && 
-              <Button 
-              color="success"
-              variant="outlined"
-              style={{ width: "5rem", height: "2rem"}}
-              onClick={handleAddClick}>
-                Neue
-                </Button>}
-              {inputArtikel.length !== 1 && 
-              <Button
-              color="error"
-              variant="outlined"
-              style={{ width: "5rem", height: "2rem"}}
-                onClick={() => handleRemoveClick(i)}>
-                  Löschen
-                  </Button>}
-            </div>
-          </div>
-          </>
-        );
-      })}</div>
+                          <Form.Control
+                            variant="outlined"
+                            style={{ width: "10rem", height: "2rem" }}
+                            name="menge"
+                            placeholder="Menge"
+                            value={x.artikelMengeLe}
+                            onChange={(e) => handleInputChange(e, i)}
+                          />
+                          <Form.Control
+                            variant="outlined"
+                            style={{ width: "10rem", height: "2rem" }}
+                            name="Einheit"
+                            placeholder="Einheit"
+                            value={x.artikelEinheitLe}
+                            onChange={(e) => handleInputChange(e, i)}
+                          />
+                          <Form.Control
+                            style={{ width: "10rem", height: "2rem" }}
+                            name="kisten"
+                            placeholder="Kisten"
+                            value={x.artikelKistenLe}
+                            onChange={(e) => handleInputChange(e, i)}
+                          />
+                        </div>
+                        <div className="d-flex flex-row gap-1">
+                          {inputArtikel.length !== 1 && (
+                            <Button
+                              color="error"
+                              variant="outlined"
+                              style={{ width: "5rem", height: "2rem" }}
+                              onClick={() => handleRemoveClick(i)}
+                            >
+                              Löschen
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                      {inputArtikel.length - 1 === i && (
+                        <Button
+                          color="success"
+                          variant="outlined"
+                          style={{ width: "5rem", height: "2rem" }}
+                          onClick={handleAddClick}
+                        >
+                          Neue
+                        </Button>
+                      )}
+                    </>
+                  );
+                })}
+              </div>
               {/* <DataGrid
               rows={artikel}
               columns={columns}
@@ -354,7 +366,7 @@ export const AddLieferschein = () => {
               {/* <ArtikelTaskList /> */}
             </Box>
           </Box>
-          <div className="d-flex flex-wrap justify-content-around">
+          <div className="d-flex flex-wrap justify-content-start">
             <FormControl id="controllable" sx={{ marginTop: "1rem" }}>
               <FormLabel>Hier eine Firma wählen</FormLabel>
               <Autocomplete
@@ -375,12 +387,12 @@ export const AddLieferschein = () => {
                 )}
               />
             </FormControl>
-            <FormControl sx={{ marginTop: "1rem" }}>
+            {/* <FormControl sx={{ marginTop: "1rem" }}>
               <FormLabel>Hier eine Artikel wählen</FormLabel>
               <AddArtikelTask />
-            </FormControl>
+            </FormControl> */}
           </div>
-          <div className="d-flex flex-wrap justify-content-around">
+          <div className="d-flex flex-wrap flex-row-reverse">
             <div className="d-flex flex-wrap mt-3 gap-3">
               <Button
                 variant="contained"
@@ -399,8 +411,7 @@ export const AddLieferschein = () => {
               >
                 Send to Mail
               </Button>
-            </div>
-            <div className="d-flex flex-wrap mt-3 gap-3">
+
               <Button
                 variant="contained"
                 color="success"

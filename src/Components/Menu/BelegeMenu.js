@@ -12,15 +12,18 @@ export default function BelegeMenuButton() {
     window.location.href = "/lieferschein";
   }
   return (
-    <PopupState variant="popover" popupId="demo-popup-menu">
+    <>
+    <div >
+    <PopupState  popupId="demo-popup-menu">
       {(popupState) => (
-        <React.Fragment>
+        <React.Fragment >
           <Button
             variant="contained"
             {...bindTrigger(popupState)}
             sx={{
               //width: 150,
               backgroundColor: "success.main",
+              
             }}
           >
             <svg
@@ -52,5 +55,7 @@ export default function BelegeMenuButton() {
         </React.Fragment>
       )}
     </PopupState>
+    </div>
+    </>
   );
 }

@@ -205,17 +205,22 @@ export default function MenuToolbarExample() {
   };
 
   return (
+    
     <List
       row
       aria-label="Example application menu bar"
       role="menubar"
       data-joy-color-scheme="dark"
       sx={{
+        ml: "10rem",
+        mr: "10rem",
+        boxShadow: 'sm',
         bgcolor: "#D2CCCC",
         px: 2,
         borderRadius: "4px",
         maxWidth: "100",
         "--List-item-radius": "8px",
+        zIndex: '1 !important',
       }}
     >
       <ListItem>
@@ -230,7 +235,7 @@ export default function MenuToolbarExample() {
         </Link>
       </ListItem>
 
-      <ListItem>
+      {/* <ListItem>
         <MenuButton
           open={menuIndex === 0}
           onOpen={() => setMenuIndex(0)}
@@ -259,7 +264,7 @@ export default function MenuToolbarExample() {
         >
           Dashboard
         </MenuButton>
-      </ListItem>
+      </ListItem> */}
       {token ? (
         <>
       <ListItem>
@@ -308,7 +313,7 @@ export default function MenuToolbarExample() {
               }}
             >
               <ListItem nested>
-                <List aria-label="Time travel">
+                <List aria-label="Time travel" style={{zIndex: '999 !important'}}>
                   <MenuItem {...itemProps} onClick={onClickNewCustomer}>Neue Kunde anlegen</MenuItem>
                   <MenuItem {...itemProps} onClick={onClickCustomer}>Alle Kunden</MenuItem>
                   <MenuItem {...itemProps} onClick={onClickCustomerArtikel}>Kunden Artikel anlegen</MenuItem>
@@ -417,5 +422,6 @@ export default function MenuToolbarExample() {
         )}
       </ListItem>
     </List>
+    
   );
 }
