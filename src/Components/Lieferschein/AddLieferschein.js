@@ -18,10 +18,11 @@ import { BsFillFileEarmarkPdfFill } from "react-icons/bs";
 import { AiFillPrinter } from "react-icons/ai";
 import { MdDeleteForever } from "react-icons/md";
 
-import AddArtikelTask from "../Artikel/AddArtikelTask";
+//import AddArtikelTask from "../Artikel/AddArtikelTask";
 //import ArtikelTaskList from "../Artikel/ListArtikelTask";
 import { ArtikelTasksProvider } from "../Context/ArtikelTasksContext";
 import { useNewArtikel } from "../Context/ArtikelContext";
+
 
 // const columns = [
 //   { field: "id", headerName: "ID", width: 60 },
@@ -103,8 +104,23 @@ export const HeuteDatum = () => {
 
 export const AddLieferschein = () => {
   const { token } = useUser();
+  const { createLieferschein, listData } = useCustomer();
 
-  const { listData } = useCustomer();
+  const [newLieferschein, setNewLieferschein] = useState({
+    artikelKodu: "",
+    artikelName: "",
+    artikelMenge: "",
+    artikelZutaten: "",
+    artikelKistenzahl: "",
+  });
+
+const {
+  artikelKodu,
+  artikelName,
+  artikelMenge,
+  artikelZutaten,
+  artikelKistenzahl,
+  } = newLieferschein;
   console.log("List Costumers:", listData);
 
   const [listKunden, setListKunden] = useState([]);
@@ -176,12 +192,12 @@ export const AddLieferschein = () => {
       artikelKistenLe: "",
     },
   ]);
-  const handleInputChange = (e, index) => {
-    const { name, value } = e.target;
-    const list = [...inputArtikel];
-    list[index][name] = value;
-    setInputArtikel(list);
-  };
+  // const handleInputChange = (e, index) => {
+  //   const { name, value } = e.target;
+  //   const list = [...inputArtikel];
+  //   list[index][name] = value;
+  //   setInputArtikel(list);
+  // };
   const handleRemoveClick = (index) => {
     const list = [...inputArtikel];
     list.splice(index, 1);
@@ -198,12 +214,34 @@ export const AddLieferschein = () => {
       },
     ]);
   };
+  const Print = () =>{     
+    //console.log('print');  
+    let printContents = document.getElementById('printablediv').innerHTML;
+    let originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+   document.body.innerHTML = originalContents; 
+  }
+  const onChangeArtikelLe = (e, index) => {
+    // e.preventDefault();
+    const { name, value } = e.target;
+    const list = [...inputArtikel];
+    list[index][name] = value;
+    setInputArtikel(list);
+    setNewLieferschein({ ...newLieferschein, [e.target.name]: e.target.value });
+  };
+
+  const handleCheckMenge = (e) => {
+    e.preventDefault();
+    setNewLieferschein({ ...newLieferschein, [e.target.name]: e.target.value });
+  };
+  console.log("Lieferschein: ", newLieferschein);
 
   return token ? (
     <Fragment>
       <CssBaseline />
       <ArtikelTasksProvider>
-        <Container maxWidth="xl">
+        <Container maxWidth="l">
           <br />
           <Box
             sx={{
@@ -211,10 +249,21 @@ export const AddLieferschein = () => {
               maxHeight: "100%",
               minHeight: "75vh",
               padding: "1rem",
-            }}
+            }} id='printablediv'
           >
             <Box sx={{ flexGrow: 1 }}>
               <Box variant="soft" sx={{ py: 0.4 }}>
+                <div className="d-flex flex-row justify-content-between">
+                  <div className="d-flex flex-column">
+                    <Typography>Öz Güven Warenhandels GmbH</Typography>
+                    <Typography>Keplerstr. 13/15, 50823 Köln</Typography>
+                  </div>
+                  <div className="d-flex flex-column">
+                    <Typography>Tel: 0221/562163</Typography>
+                    <Typography>Fax. 0221/525479</Typography>
+                  </div>
+                </div>
+                <hr />
                 <h1>Lieferschein</h1>
                 <Box className="d-flex p-3 justify-content-between">
                   <Box className="d-flex flex-column">
@@ -245,7 +294,7 @@ export const AddLieferschein = () => {
                   </Box>
                   <Box className="d-flex flex-column padding-right-6 w-25">
                     <Typography level="body1">
-                      Lieferscheinnummer {"012225325"}
+                      Lieferschein -Nr.: {"012225325"}
                     </Typography>
                     <FormText>
                       Kundennummer{" "}
@@ -256,7 +305,9 @@ export const AddLieferschein = () => {
                       <HeuteDatum />
                     </FormText>
                     <LeistungsDatum />
-                    <br />
+                    <hr />
+                    <Typography>Lieferant: Ali Mehmed</Typography>
+                    <Typography>Kennzeichen: K OS 0101</Typography>
                   </Box>
                 </Box>
                 <hr />
@@ -264,13 +315,49 @@ export const AddLieferschein = () => {
             </Box>
             <br />
             <Box sx={{ height: "50%", width: "100%" }}>
-              <div>
+              
+                <div className="d-flex border-top border-bottom">
+                        <Typography sx={{paddingLeft:"4rem", width: "12rem", height: "2rem" }}>
+                          Nr:
+                        </Typography>
+                        <Typography sx={{ width: "17rem", height: "2rem" }}>
+                          Ware
+                        </Typography>
+                        <Typography sx={{ width: "17rem", height: "2rem" }}>
+                          Zutaten
+                        </Typography>
+                        <Typography sx={{ width: "7rem", height: "2rem" }}>
+                          Menge
+                        </Typography>
+                        <Typography sx={{ width: "7rem", height: "2rem" }}>
+                          Retour
+                        </Typography>
+                        <Typography sx={{ width: "7rem", height: "2rem" }}>
+                          Kistenanzahl
+                        </Typography>
+                      </div>
                 {inputArtikel.map((x, i) => {
                   return (
                     <>
-                      <div className="d-flex flex-wrap">
-                        <div className="d-flex">
+                      
+                      <div className="d-flex flex-wrap justify-content-around">
+                        <div className="d-flex border-top border-bottom">
+                          
+                          <TextField
+                          key={i}
+                            style={{ width: "2rem", height: "2rem" }}
+                            id="outlined-read-only-input"
+                            label={x.artikelKodu}
+                            name="artikelKodu"
+                            defaultValue={artikel.NewartikelKodu !== undefined ? `${artikel.NewartikelKodu}` : i}
+                            InputProps={{
+                              readOnly: true,
+                            }}
+                            variant="standard"
+                            size="small"
+                          />
                           <Form.Label
+                          key={i}
                             htmlFor="input"
                             style={{
                               //  marginRight: "2rem",
@@ -281,9 +368,11 @@ export const AddLieferschein = () => {
                             }}
                           >
                             <Form.Select
-                              name="artikelName"
+                            key={i}
+                              name="artikelNameLe"
                               style={{ width: "20rem", height: "2rem" }}
-                              value={x.artikelNameLe}
+                              value={x.artikelName}
+                              onChange={onChangeArtikelLe}
                               // onChange={e => {
                               //   dispatch({
                               //     type: 'changed',
@@ -294,36 +383,54 @@ export const AddLieferschein = () => {
                               //   });
                               // }}
                             >
-                              {listArtikel.map((artikel, i) => (
-                                <option name={artikel.NewartikelName} key={i}>
+                              {listArtikel.map((artikel, k) => (
+                                <option name={artikel.NewartikelName} key={k}>
                                   {artikel.NewartikelName}
                                 </option>
                               ))}
                             </Form.Select>
                           </Form.Label>
-
-                          <Form.Control
-                            variant="outlined"
-                            style={{ width: "10rem", height: "2rem" }}
-                            name="menge"
-                            placeholder="Menge"
-                            value={x.artikelMengeLe}
-                            onChange={(e) => handleInputChange(e, i)}
+                          <TextField
+                          key={i}
+                            style={{ width: "20rem", height: "2rem" }}
+                            id="outlined-read-only-input"
+                            //label="Read Only"
+                            defaultValue="Mehl, Zucker, Wasser"
+                            InputProps={{
+                              readOnly: true,
+                            }}
+                            variant="standard"
+                            size="small"
                           />
                           <Form.Control
+                          key={i}
                             variant="outlined"
-                            style={{ width: "10rem", height: "2rem" }}
-                            name="Einheit"
-                            placeholder="Einheit"
+                            style={{ width: "7rem", height: "2rem" }}
+                            name="artikelMengeLe"
+                            placeholder="Menge"
+                            value={x.artikelMenge}
+                            onChange={(e) => handleCheckMenge(e)}
+                          />
+                          <div 
+                          className="border border-dark"
+                          style={{ width: "7rem", height: "2rem" }}
+                          >
+                          </div>
+                          {/* <Form.Control
+                            variant="outlined"
+                            
+                            name="retour"
+                            placeholder="Retour"
                             value={x.artikelEinheitLe}
                             onChange={(e) => handleInputChange(e, i)}
-                          />
+                          /> */}
                           <Form.Control
-                            style={{ width: "10rem", height: "2rem" }}
+                          key={i}
+                            style={{ width: "7rem", height: "2rem" }}
                             name="kisten"
                             placeholder="Kisten"
-                            value={x.artikelKistenLe}
-                            onChange={(e) => handleInputChange(e, i)}
+                            value={"artikelKistenLe"}
+                            //onChange={(e) => handleKistenChange()}
                           />
                         </div>
                         <div className="d-flex flex-row gap-1">
@@ -352,7 +459,7 @@ export const AddLieferschein = () => {
                     </>
                   );
                 })}
-              </div>
+              
               {/* <DataGrid
               rows={artikel}
               columns={columns}
@@ -408,6 +515,7 @@ export const AddLieferschein = () => {
                 sx={{
                   height: 40,
                 }}
+                
               >
                 Send to Mail
               </Button>
@@ -418,6 +526,7 @@ export const AddLieferschein = () => {
                 sx={{
                   height: 40,
                 }}
+                onClick={Print}
               >
                 <AiFillPrinter />
                 &nbsp;Print

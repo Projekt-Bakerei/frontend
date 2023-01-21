@@ -160,6 +160,40 @@ useEffect(() => {
       });
   };
 
+  // Create Lieferschein beim Customer
+  const createLieferschein = (
+    artikelKodu,
+    artikelName,
+    artikelMenge,
+    artikelZutaten,
+    artikelKistenzahl,
+  ) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+    };
+    console.log("Token addCustomer:", token);
+
+    const data = {
+    artikelKodu,
+    artikelName,
+    artikelMenge,
+    artikelZutaten,
+    artikelKistenzahl,
+    };
+    axios
+      .post(`${process.env.REACT_APP_API}/customers/addcustomer`, data, config)
+      .then((res) => {
+        setAddData(res.data);
+      })
+      .catch((error) => {
+        console.log("Create new Customer Error:", error);
+      });
+  };
+
+
   return (
     <CustomerContext.Provider
       value={{
@@ -172,6 +206,7 @@ useEffect(() => {
         addCustomer,
         editCustomer,
         delCustomer,
+        createLieferschein,
       }}
     >
       {children}
