@@ -1,127 +1,123 @@
-import React, { useState, useEffect } from "react";
-import CssBaseline from "@mui/material/CssBaseline";
-import { Box, Container } from "@mui/system";
-import Typography from "@mui/joy/Typography";
-import Button from "@mui/material/Button";
-import { FormGroup } from "@mui/material";
+import React, { useState, useEffect, useContext } from 'react'
+import '../../App.css';
+import CssBaseline from '@mui/material/CssBaseline'
+import { Box, Container } from '@mui/system'
+import Typography from '@mui/joy/Typography'
+import Button from '@mui/material/Button'
+import { FormGroup } from '@mui/material'
 
-import Form from "react-bootstrap/Form";
+import Form from 'react-bootstrap/Form'
 
-import { useMiterbeiter } from "../Context/MiterbeiterContext";
-import { useUser } from "../Context/UserContext";
-import Loading from "../Loading/Loading";
+import { useMiterbeiter } from '../Context/MiterbeiterContext'
+import { useUser } from '../Context/UserContext'
 
-import CircularProgress from "@mui/material/CircularProgress";
+//import { useLoading } from '../Context/LoadingContext'
+//import Loading from '../Loading/Loading'
+
+import { LoadingContext } from '../Context/LoadingContext';
+import Loading from '../Loading/Loading'
 
 function NewMiterbeiter() {
+  const { isLoading, showLoading, hideLoading } = useContext(LoadingContext);
+  console.log("Is loading:", isLoading)
+  const [submitted, setSubmitted] = useState(false);
+  
   const bull = (
     <Box
       component="span"
-      sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
+      sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
     >
       •
     </Box>
-  );
+  )
+  
+  
+  //const { loading, setLoading } = useLoading();
 
-  const { addMiterbeiter, listData } = useMiterbeiter();
-  console.log("List Miterbeiters:", listData);
-  const { token } = useUser();
+  //const {isLoading } = useLoading();
+  
+  const { addMiterbeiter, listData } = useMiterbeiter()
+  console.log('List Miterbeiters:', listData)
+  const { token } = useUser()
 
-  console.log("User Token:", token);
+  console.log('User Token:', token)
 
   const [miterbeiterData, setMiterbeiterData] = useState({
-    mName: "",
-    mAdres: "",
-    tel: "",
-    position: "",
-    kenzeichen: "",
-    extern: "",
-  });
+    mName: '',
+    mAdres: '',
+    tel: '',
+    position: '',
+    kenzeichen: '',
+    extern: '',
+  })
 
-  const [listMiterbeitern, setListMiterbeitern] = useState([]);
+  const [listMiterbeitern, setListMiterbeitern] = useState([])
 
   useEffect(() => {
-    setListMiterbeitern(listData);
-  }, [listData]);
+    setListMiterbeitern(listData)
+  }, [listData])
 
-  let miterbeitern = listMiterbeitern;
-  console.log("Miterbeitern:", miterbeitern);
+  let miterbeitern = listMiterbeitern
+  console.log('Miterbeitern:', miterbeitern)
 
-  const { mName, mAdres, tel, position, extern, kenzeichen } = miterbeiterData;
+  const { mName, mAdres, tel, position, extern, kenzeichen } = miterbeiterData
 
   const handleChangemName = (e) => {
-    e.preventDefault();
-    setMiterbeiterData({ ...miterbeiterData, [e.target.name]: e.target.value });
-  };
+    e.preventDefault()
+    setMiterbeiterData({ ...miterbeiterData, [e.target.name]: e.target.value })
+  }
   const handleChangemAdres = (e) => {
-    e.preventDefault();
-    setMiterbeiterData({ ...miterbeiterData, [e.target.name]: e.target.value });
-  };
+    e.preventDefault()
+    setMiterbeiterData({ ...miterbeiterData, [e.target.name]: e.target.value })
+  }
 
   const handleChangeTel = (e) => {
-    e.preventDefault();
-    setMiterbeiterData({ ...miterbeiterData, [e.target.name]: e.target.value });
-  };
+    e.preventDefault()
+    setMiterbeiterData({ ...miterbeiterData, [e.target.name]: e.target.value })
+  }
 
   const handleChangePosition = (e) => {
-    e.preventDefault();
-    setMiterbeiterData({ ...miterbeiterData, [e.target.name]: e.target.value });
-  };
+    e.preventDefault()
+    setMiterbeiterData({ ...miterbeiterData, [e.target.name]: e.target.value })
+  }
 
   const handleChangeExtern = (e) => {
-    e.preventDefault();
-    setMiterbeiterData({ ...miterbeiterData, [e.target.name]: e.target.value });
-  };
+    e.preventDefault()
+    setMiterbeiterData({ ...miterbeiterData, [e.target.name]: e.target.value })
+  }
 
   const handleChangeKenzeichen = (e) => {
-    e.preventDefault();
-    setMiterbeiterData({ ...miterbeiterData, [e.target.name]: e.target.value });
-  };
-
-  console.log(miterbeiterData);
-
-
-  const [isFetching, setIsFetching] = useState(true); 
-
-  useEffect(() => {
-    setTimeout(function () {
-      console.log("Delayed for 5 second."); 
-      setIsFetching(false); 
-    }, 2000);
-  }, []);
-
-  if (isFetching) {
-    return (
-      <Loading/>
-      )
-      
+    e.preventDefault()
+    setMiterbeiterData({ ...miterbeiterData, [e.target.name]: e.target.value })
   }
-    
-    return  token ? (
-    
-    <Container maxWidth="xl">
-      <CssBaseline />
 
+  console.log(miterbeiterData)
+  
+
+  return token ? (
+    <Container maxWidth="xl" >
+
+      <CssBaseline />
+      
+    {isLoading && <Loading />}
 
       <h1>Neu Miterbeiter anlegen</h1>
-      <Box sx={{ bgcolor: "#EAEDF0", maxHeight: "80%", padding: "1rem" }}>
+      <Box  className={`blur-background ${submitted ? 'blur-background-on-submit' : ''}`} sx={{ bgcolor: '#EAEDF0', maxHeight: '80%', padding: '1rem' }}>
         <Typography textColor="neutral.800" fontSize="xl" fontWeight="lg">
           Yeni Isci
         </Typography>
         <hr />
-        <FormGroup style={{ minWidth: "70vw" }}>
-          <div
-            className="m-auto border rounded border-3"
-          >
+        <FormGroup style={{ minWidth: '70vw' }} >
+          <div className="m-auto border rounded border-3">
             <div className="d-flex flex-sm-wrap justify-content-center p-3">
               <div className="d-flex">
                 <Form.Label
                   htmlFor="input"
                   style={{
-                    marginRight: "2rem",
-                    width: "10rem",
-                    fontFamily: "Roboto",
-                    fontSize: "0.875rem",
+                    marginRight: '2rem',
+                    width: '10rem',
+                    fontFamily: 'Roboto',
+                    fontSize: '0.875rem',
                     fontWeight: 500,
                   }}
                 >
@@ -144,10 +140,10 @@ function NewMiterbeiter() {
                 <Form.Label
                   htmlFor="mName"
                   style={{
-                    marginRight: "2rem",
-                    width: "10rem",
-                    fontFamily: "Roboto",
-                    fontSize: "0.875rem",
+                    marginRight: '2rem',
+                    width: '10rem',
+                    fontFamily: 'Roboto',
+                    fontSize: '0.875rem',
                     fontWeight: 500,
                   }}
                 >
@@ -172,10 +168,10 @@ function NewMiterbeiter() {
                 <Form.Label
                   htmlFor="tel"
                   style={{
-                    marginRight: "2rem",
-                    width: "10rem",
-                    fontFamily: "Roboto",
-                    fontSize: "0.875rem",
+                    marginRight: '2rem',
+                    width: '10rem',
+                    fontFamily: 'Roboto',
+                    fontSize: '0.875rem',
                     fontWeight: 500,
                   }}
                 >
@@ -200,10 +196,10 @@ function NewMiterbeiter() {
                 <Form.Label
                   htmlFor="position"
                   style={{
-                    marginRight: "2rem",
-                    width: "10rem",
-                    fontFamily: "Roboto",
-                    fontSize: "0.875rem",
+                    marginRight: '2rem',
+                    width: '10rem',
+                    fontFamily: 'Roboto',
+                    fontSize: '0.875rem',
                     fontWeight: 500,
                   }}
                 >
@@ -228,10 +224,10 @@ function NewMiterbeiter() {
                 <Form.Label
                   htmlFor="kenzeichen"
                   style={{
-                    marginRight: "2rem",
-                    width: "10rem",
-                    fontFamily: "Roboto",
-                    fontSize: "0.875rem",
+                    marginRight: '2rem',
+                    width: '10rem',
+                    fontFamily: 'Roboto',
+                    fontSize: '0.875rem',
                     fontWeight: 500,
                   }}
                 >
@@ -248,14 +244,14 @@ function NewMiterbeiter() {
               </div>
             </div>
             <div className="d-flex flex-sm-wrap p-3">
-            <div className="d-flex">
+              <div className="d-flex">
                 <Form.Label
                   htmlFor="extern"
                   style={{
-                    marginRight: "2rem",
-                    width: "10rem",
-                    fontFamily: "Roboto",
-                    fontSize: "0.875rem",
+                    marginRight: '2rem',
+                    width: '10rem',
+                    fontFamily: 'Roboto',
+                    fontSize: '0.875rem',
                     fontWeight: 500,
                   }}
                 >
@@ -272,27 +268,19 @@ function NewMiterbeiter() {
               </div>
             </div>
             <hr />
-            <Button sx={{margin: 3}}
+            <Button
+              sx={{ margin: 3 }}
               size="md"
               variant="contained"
               color="primary"
               onClick={() => {
-                addMiterbeiter(
-                  mName,
-                  mAdres,
-                  tel,
-                  position,
-                  extern,
-                  kenzeichen
-                );
+                addMiterbeiter(mName, mAdres, tel, position, extern, kenzeichen)
+                setSubmitted(true)
+                showLoading()
                 setTimeout(() => {
-                  return <Loading/>           
-                }, 5000);
-              
-                setTimeout(() => {
-                  window.location.reload(false);
-                }, 1000);
-               }}
+                  window.location.reload(false); 
+                }, 5000)
+              }}
             >
               Create
             </Button>
@@ -304,7 +292,7 @@ function NewMiterbeiter() {
     <div>
       <h1>Du bist nicht angemeldet!</h1>
     </div>
-  );
+  )
 }
 
-export default NewMiterbeiter;
+export default NewMiterbeiter
