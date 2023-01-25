@@ -3,21 +3,33 @@ import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 
 import { useUser } from "./UserContext";
+import { useParams } from "react-router-dom";
 
 export const CustomerContext = createContext();
 
-export const CustomerProvider = ({ children }) => {
-  const data = "Test Admin";
+export const CustomerProvider = ({ children, ID }) => {
+   const data = "Test Admin";
   const [listData, setListData] = useState([]);
   const [addData, setAddData] = useState([]);
   const [editData, setEditData] = useState([]);
   const [delData, setDelData] = useState([]);
+  const [addDataProduct, setAddDataProduct] = useState([]);
+
   const { token } = useUser();
+
+  const { id } = useParams();
 
 
 useEffect(() => {
     loadCustomer();
   }, []);
+  
+  function customerId(){
+    axios.get(`${process.env.REACT_APP_API}/customers/customer/${id}`)
+  .then(response => response.data.customerId)
+  .catch(error => console.log(error));
+console.log("ID: ",customerId) 
+} 
 
   function loadCustomer() {
     axios
@@ -43,7 +55,12 @@ useEffect(() => {
     plz,
     yer,
     telefon,
-    mobil
+    mobil,
+    artikelsCu,
+    artikelNameCu,
+      artikelPriceCu,
+      artikelBeschreibungCu,
+      artikelKoduCu,
   ) => {
     const config = {
       headers: {
@@ -67,6 +84,11 @@ useEffect(() => {
       yer,
       telefon,
       mobil,
+      artikelsCu,
+      artikelNameCu,
+      artikelPriceCu,
+      artikelBeschreibungCu,
+      artikelKoduCu,
     };
     axios
       .post(`${process.env.REACT_APP_API}/customers/addcustomer`, data, config)
@@ -160,10 +182,43 @@ useEffect(() => {
       });
   };
 
+  const createProduct = (
+    artikelNameCu,
+    artikelKoduCu,
+    artikelPriceCu,
+    artikelBeschreibungCu,
+    id,
+  ) => {
+    // const config = {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `${token}`,
+    //   },
+    // };
+    // console.log("Token addCustomer:", token);
+
+    const data = {
+      artikelNameCu,
+      artikelKoduCu,
+      artikelPriceCu,
+      artikelBeschreibungCu,
+      id,
+    };
+    axios
+      .post(`${process.env.REACT_APP_API}/customerproduct/addproduct/${id}`, data)
+      .then((res) => {
+        setAddDataProduct(res.data);
+      })
+      .catch((error) => {
+        console.log("Create new Customer Error:", error.message);
+      });
+  };
+
   // Create Lieferschein beim Customer
   const createLieferschein = (
-    artikelKodu,
+    artikelLe,
     artikelName,
+    artikelKodu,
     artikelMenge,
     artikelZutaten,
     artikelKistenzahl,
@@ -177,8 +232,9 @@ useEffect(() => {
     console.log("Token addCustomer:", token);
 
     const data = {
-    artikelKodu,
+      artikelLe,
     artikelName,
+    artikelKodu,
     artikelMenge,
     artikelZutaten,
     artikelKistenzahl,
@@ -207,6 +263,9 @@ useEffect(() => {
         editCustomer,
         delCustomer,
         createLieferschein,
+        createProduct,
+        addDataProduct,
+         customerId,
       }}
     >
       {children}

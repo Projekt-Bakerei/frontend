@@ -13,6 +13,7 @@ import Form from "react-bootstrap/Form";
 import { useCustomer } from "../Context/CustomerContext";
 import { useUser } from "../Context/UserContext";
 
+
 function NewCustomer() {
   const bull = (
     <Box
@@ -41,6 +42,7 @@ function NewCustomer() {
     yer: "",
     telefon: "",
     mobil: "",
+    artikelsCu:[],
   });
   // const [loading, setLoading] = useState(false);
   //const [coduCheck, setCoduCheck] = useState([]);
