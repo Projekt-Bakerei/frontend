@@ -14,21 +14,22 @@ export const CustomerProvider = ({ children, ID }) => {
   const [editData, setEditData] = useState([]);
   const [delData, setDelData] = useState([]);
   const [addDataProduct, setAddDataProduct] = useState([]);
+  const [delArtikel, setDelArtikel] = useState([]);
 
   const { token } = useUser();
-
-  const { id } = useParams();
+  
+  const { customerId } = useParams();
 
 
 useEffect(() => {
     loadCustomer();
   }, []);
   
-  function customerId(){
-    axios.get(`${process.env.REACT_APP_API}/customers/customer/${id}`)
+  function CustomerId(){
+    axios.get(`${process.env.REACT_APP_API}/customers/customer/${customerId}`)
   .then(response => response.data.customerId)
   .catch(error => console.log(error));
-console.log("ID: ",customerId) 
+console.log("Customer ID: ",CustomerId) 
 } 
 
   function loadCustomer() {
@@ -187,7 +188,7 @@ console.log("ID: ",customerId)
     artikelKoduCu,
     artikelPriceCu,
     artikelBeschreibungCu,
-    id,
+    customerId,
   ) => {
     // const config = {
     //   headers: {
@@ -202,15 +203,37 @@ console.log("ID: ",customerId)
       artikelKoduCu,
       artikelPriceCu,
       artikelBeschreibungCu,
-      id,
+      customerId,
     };
     axios
-      .post(`${process.env.REACT_APP_API}/customerproduct/addproduct/${id}`, data)
+      .post(`${process.env.REACT_APP_API}/customerproduct/addproduct/${customerId}`, data)
       .then((res) => {
         setAddDataProduct(res.data);
       })
       .catch((error) => {
         console.log("Create new Customer Error:", error.message);
+      });
+  };
+
+  // Delete Product
+  
+  const delProduct = (
+    customerId,
+    artikelsId,
+  ) => {
+    const data = {
+      customerId,
+      artikelsId,
+    };
+    console.log("ID Delete: ", artikelsId);
+    axios
+      .delete(`${process.env.REACT_APP_API}/customerproduct/deleteproduct/${customerId}/${artikelsId}`, data)
+      .then((res) => {
+        setDelArtikel(res.data);
+        console.log("Delete Customer Artikel OK!", customerId);
+      })
+      .catch((error) => {
+        console.log("Delete Customer Artikel Error:", error.message);
       });
   };
 
@@ -265,7 +288,8 @@ console.log("ID: ",customerId)
         createLieferschein,
         createProduct,
         addDataProduct,
-         customerId,
+        customerId,
+         delProduct,
       }}
     >
       {children}

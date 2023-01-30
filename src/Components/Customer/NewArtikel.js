@@ -12,23 +12,23 @@ import { useUser } from "../Context/UserContext";
 import { useNewArtikel } from "../Context/ArtikelContext";
 
 import { FormLabel } from "@mui/joy";
-import { FormText } from "react-bootstrap";
+import { FormText, Placeholder } from "react-bootstrap";
 
 import Table from "react-bootstrap/Table";
 import { Button } from "@mui/material";
+import { MdDeleteForever } from "react-icons/md";
+import { toast, ToastContainer, Zoom } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-import { useParams } from "react-router-dom";
+
 export const NewArtikel = () => {
   const { token } = useUser();
 
-  const { listData } = useCustomer();
+  const { listData, delProduct} = useCustomer();
   const { listNewArtikel } = useNewArtikel();
-  console.log("List Costumers:", listData);
-  console.log("List Alle Artikel: ", listNewArtikel);
   const [listKunden, setListKunden] = useState([]);
   const [listKundenArtikel, setListKundenArtikel] = useState([]);
-
-  const params = useParams();
 
   let kunden = listKunden;
 
@@ -36,6 +36,7 @@ export const NewArtikel = () => {
 
   const firmenMap = kunden.map(({ ismi }) => ismi);
   console.log("FirmenMap: ", firmenMap);
+
   const artikelMap = artikel.map(({ NewartikelName }) => NewartikelName);
 
   const [valueFirma, setValueFirma] = useState("");
@@ -45,8 +46,10 @@ export const NewArtikel = () => {
   const [inputArtikelValue, setInputArtikelValue] = useState();
   //const [inputArtikel, setInputArtikel] = useState("");
 
-  const [customerId, setCustomerId] = useState();
+   const [customerId, setCustomerId] = useState();
   let id = customerId;
+
+  const [customerArtikels, setCustomerArtikels] = useState();
 
   const { createProduct } = useCustomer();
   // const [firmaData, setFirmaData] = useState([]);
@@ -54,71 +57,208 @@ export const NewArtikel = () => {
   const Find = kunden.find((firma) => firma.ismi === `${valueFirma}`);
   console.log("Find Firma: ", Find);
 
+  // const FindCustomerArtikel = kunden.map(({artikels}) => artikels.artikelName
+  // //  === `${valueArtikles}`
+  //  );
+  // console.log("Find Firma Artikles: ", FindCustomerArtikel);
+  
   const [customerArtikelData, setCustomerArtikelData] = useState({
     artikelNameCu: "",
     artikelPriceCu: "",
     artikelBeschreibungCu: "",
-    // artikelRabatCu: "",
     artikelKoduCu: "",
   });
-  console.log("Customer Artikel State:", customerArtikelData);
-
+  
   const {
     artikelNameCu,
     artikelKoduCu,
     artikelPriceCu,
     artikelBeschreibungCu,
   } = customerArtikelData;
-
-  //console.log("Firma data: ", firmaData)
+  
   const FindArtikel = artikel.find(
     (artikel) => artikel.NewartikelName === `${valueArtikel}`
+    );
+    
+    // const artikelCustomerMap =  customerArtikels?.map(({_id}) =>
+    //     _id
+    // )
+  // const [customerDeleteArtikelData, setCustomerDeleteArtikelData] = useState({
+      
+  //   });
+
+
+    
+    const [artikelsId, setArtikelsId] = useState();
+    const handleDeleteArtikel = () => {
+      
+  delProduct(customerId, artikelsId)
+// deleteArtikel()
+      console.log("Id Customer Delete", customerId, artikelsId);
+      setTimeout(() => {
+        window.location.reload(false);
+      }, 10);
+  }
+//   let Id = artikelsId
+      
+// const deleteArtikel = async ()=> {await axios
+// .delete(`${process.env.REACT_APP_API}/customerproduct/deleteproduct/${Id}`, customerId)
+// .then((res) => {
+  
+//   console.log("Delete Customer Artikel OK!");
+// })
+// .catch((error) => {
+//   console.log("Delete Customer Artikel Error:", error.message);
+// });}
+  const onClickNein = () => {
+    setTimeout(() => {
+      window.location.reload(false);
+    }, 500);
+  }
+
+  const CloseButton = ({ closeToast }) => (
+    <>
+      {/* <div className="d-flex flex-column"> */}
+      <i
+      className="material-icons"
+      onClick={closeToast}
+    >
+      </i>
+      <div className="d-flex flex-wrap gap-2">
+      <Button
+        variant="contained" color="success"
+        onClick={
+          onClickNein && closeToast
+        }
+      >Nein</Button>
+      <Button
+          variant="contained"
+          color="error"
+          startIcon={<DeleteIcon />}
+      onClick={handleDeleteArtikel}
+          >Delete</Button>
+        </div>
+      {/* </div> */}
+    </>
   );
 
-  useEffect(() => {
-    setListKunden(listData);
-    setListKundenArtikel(listNewArtikel);
-  }, [listData, listNewArtikel, valueArtikel]);
-
-  const handleChangeName = (e) => {
-    e.preventDefault();
-    setCustomerArtikelData(
-      {
-        ...customerArtikelData,
-        [e.target.name]: e.target.value,
-        artikelBeschreibungCu: FindArtikel.NewartikelBeschreibung,
-        artikelKoduCu: FindArtikel.NewartikelKodu,
-      },
-      token,
-      id
-    );
-  };
-  const handleAddProduct = () => {
-    createProduct(
-    artikelNameCu,
-    artikelKoduCu,
-    artikelPriceCu,
-    artikelBeschreibungCu, id);
-  };
-
-  const handleChangePrice = (e) => {
-    e.preventDefault();
-    setCustomerArtikelData({
-      ...customerArtikelData,
-      [e.target.name]: e.target.value,
+  //const toastId = useRef(null);
+  
+  const notify = () => {
+    toast.error("Bist du sicher diese Artikel löschen?", {
+      closeButton: true,
+      position: toast.POSITION.TOP_CENTER,
+          theme: "colored"
     });
+    
   };
-  // useEffect(() => {
-  //   if (id) {
-  //     kunden({ id, setCustomerArtikelData, token });
-  //     window.scrollTo(0, 0)
-  //   }
-  // }, [kunden, id, token]);
 
-  console.log("ValueArtikel:", valueArtikel, inputArtikelValue);
-  console.log("FindArtikel:", FindArtikel);
-  console.log("Firma ID:", id);
+useEffect(() => {
+  setListKunden(listData);
+  setListKundenArtikel(listNewArtikel);
+}, [listData, listNewArtikel]);
 
+const handleChangeName = (e) => {
+  e.preventDefault();
+  setCustomerArtikelData(
+    {
+          ...customerArtikelData,
+          [e.target.name]: e.target.value,
+          artikelBeschreibungCu: FindArtikel.NewartikelBeschreibung,
+          artikelKoduCu: FindArtikel.NewartikelKodu,
+        },
+        token,
+        id
+        );
+  };
+  
+ 
+      const handleAddProduct = () => {
+        createProduct(
+          artikelNameCu,
+          artikelKoduCu,
+          artikelPriceCu,
+          artikelBeschreibungCu,
+          id
+        );
+        
+        //const reload = document.querySelector('#reload');
+        setTimeout(() => {
+          window.location.reload(false);
+        }, 500);
+        };
+        
+        const handleChangePrice = (e) => {
+          e.preventDefault();
+          setCustomerArtikelData({
+            ...customerArtikelData,
+            [e.target.name]: e.target.value,
+          });
+        };
+        
+        
+        const formatPrice = (price) => {
+          return new Intl.NumberFormat('de-DE', {
+            style: 'currency',
+            currency: 'EUR',
+          }).format(price);
+        };
+        console.log("ValueArtikel:", valueArtikel, inputArtikelValue);
+        // console.log("FindArtikel:", FindArtikel);
+        console.log("Firma ID:", id);
+        console.log("Customer Artikel State:", customerArtikelData);
+        console.log("List Costumers:", listData);
+        console.log("List Alle Artikel: ", listNewArtikel);
+        // console.log("Map Artikel: ", kunden.artikels[0])
+        console.log("Kustomer Artikels Array: ", customerArtikels);
+  console.log("Kustomer Artikels ID: ", artikelsId)
+  
+//   const reload = document.querySelector('#reload');
+//   const componentDidMount = () => {
+//     reload.window.onbeforeunload = function() {
+//         return true;
+//     };
+// }
+        
+        const CustomerArtikelsMap = customerArtikels?.map((artikels, index) => (
+          
+          (<tr key={index}> 
+                              {/* {artikels !== undefined ? setArtikelsId(artikels.id) : setArtikelsId(undefined)} */}
+                             
+                              <td>{artikels.artikelKodu}</td>
+                              <td>{artikels.artikelName}</td>
+                              <td>{artikels.artikelBeschreibung}</td>
+                              <td>{formatPrice(artikels.artikelPrice)}</td>
+                              <td>
+                                <Button
+                                variant="contained"
+                                color="error"
+                                sx={{
+                                  height: 30,
+                }}
+                
+                                onClick={() => {
+                                  setArtikelsId(artikels.id)
+                                  notify()
+                                
+                                  // handleDeleteArtikel()
+                                }}
+                                >
+                                <MdDeleteForever/>
+                &nbsp;Löschen</Button>
+              <ToastContainer
+                transition={Zoom} 
+                style={{ marginTop: "10rem", width: "300px", bottom: "25rem"  }}
+                closeButton={CloseButton}
+                autoClose={false}
+                limit={1}
+                toastClassName={ 
+        " relative flex flex-column gap-1 p-1 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer"
+      }
+              /></td>
+          </tr>
+          )))
+  
   return token ? (
     <Fragment>
       <CssBaseline />
@@ -155,6 +295,7 @@ export const NewArtikel = () => {
                         {...params}
                         onSelect={() => {
                           setCustomerId(Find.id);
+                          setCustomerArtikels(Find.artikels);
                         }}
                         label="Ismiyle | Müsteri ara"
                       />
@@ -195,11 +336,12 @@ export const NewArtikel = () => {
                   <th style={{ width: "5%" }}>Ürün kodu</th>
                   <th style={{ width: "25%" }}>Ürün</th>
                   <th>Zutaten</th>
+                  <th>Grund Price</th>
                   <th style={{ width: "10%" }}>
                     Price
                     <small> /0.00</small>
                   </th>
-                  <th style={{ width: "10%" }}>Rabat(beta)</th>
+                  <th style={{ width: "10%" }}></th>
                 </tr>
               </thead>
               <tbody>
@@ -255,6 +397,15 @@ export const NewArtikel = () => {
                     </FormText>
                   </td>
                   <td>
+                  <FormText>
+                      {FindArtikel !== undefined ? (
+                        <b>{formatPrice(FindArtikel.NewartikelPrice)}</b>
+                      ) : (
+                        " Grund Price"
+                      )}
+                    </FormText>
+                  </td>
+                  <td>
                     <TextField
                       id="input"
                       // label="Price"
@@ -268,25 +419,58 @@ export const NewArtikel = () => {
                       onChange={(e) => handleChangePrice(e)}
                     />
                   </td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </Table>
-            <hr />
-            <Button
+                  <td>
+                    <Button
+                      id="reload"
               sx={{ margin: 3 }}
               size="md"
               variant="contained"
               color="primary"
               onClick={
                 handleAddProduct
-                // setTimeout(() => {
-                //   window.location.reload(false);
-                // }, 500);
+                
+              //   setTimeout(() => {
+              //     window.location.reload(false);
+              //   }, 500);
+                // }
               }
             >
               Create
             </Button>
+                  </td>
+                </tr>
+              </tbody>
+            </Table>
+            {/* <hr style={{height: ".2rem", backgroundColor:"red"}}/> */}
+            <Placeholder as="p" animation="wave">
+        <Placeholder xs={12} size="xs"/>
+      </Placeholder>
+            {Find !== undefined ? <b> {Find.ismi} &nbsp;|&nbsp; {Find.kisi} &nbsp;|&nbsp;Tel: {Find.telefon} &nbsp;|&nbsp;Mobil: {Find.mobil }</b> : ""}
+            <hr/>
+            {Find !== undefined ? (
+              <Box>
+                <table className="table">
+                  <thead className="dark">
+                    <tr>
+                      <th scope="col">Kodu</th>
+                      <th scope="col">Ürün</th>
+                      <th scope="col">Zutaten</th>
+                      <th scope="col">Price</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {CustomerArtikelsMap}
+                    {/* {customerArtikels?.map((artikels, index) => (
+                      
+                    ))} */}
+                  </tbody>
+                </table>
+              </Box>
+            ) : (
+              "Firma Name"
+            )}
+            <hr />
           </Box>
         </Box>
       </Container>
