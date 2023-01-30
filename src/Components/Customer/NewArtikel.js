@@ -17,15 +17,14 @@ import { FormText, Placeholder } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import { Button } from "@mui/material";
 import { MdDeleteForever } from "react-icons/md";
-import { toast, ToastContainer, Zoom } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import DeleteIcon from '@mui/icons-material/Delete';
-
+import { toast, ToastContainer, Zoom } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export const NewArtikel = () => {
   const { token } = useUser();
 
-  const { listData, delProduct} = useCustomer();
+  const { listData, delProduct } = useCustomer();
   const { listNewArtikel } = useNewArtikel();
   const [listKunden, setListKunden] = useState([]);
   const [listKundenArtikel, setListKundenArtikel] = useState([]);
@@ -46,7 +45,7 @@ export const NewArtikel = () => {
   const [inputArtikelValue, setInputArtikelValue] = useState();
   //const [inputArtikel, setInputArtikel] = useState("");
 
-   const [customerId, setCustomerId] = useState();
+  const [customerId, setCustomerId] = useState();
   let id = customerId;
 
   const [customerArtikels, setCustomerArtikels] = useState();
@@ -61,204 +60,197 @@ export const NewArtikel = () => {
   // //  === `${valueArtikles}`
   //  );
   // console.log("Find Firma Artikles: ", FindCustomerArtikel);
-  
+
   const [customerArtikelData, setCustomerArtikelData] = useState({
     artikelNameCu: "",
     artikelPriceCu: "",
     artikelBeschreibungCu: "",
     artikelKoduCu: "",
   });
-  
+
   const {
     artikelNameCu,
     artikelKoduCu,
     artikelPriceCu,
     artikelBeschreibungCu,
   } = customerArtikelData;
-  
+
   const FindArtikel = artikel.find(
     (artikel) => artikel.NewartikelName === `${valueArtikel}`
-    );
-    
-    // const artikelCustomerMap =  customerArtikels?.map(({_id}) =>
-    //     _id
-    // )
+  );
+
+  // const artikelCustomerMap =  customerArtikels?.map(({_id}) =>
+  //     _id
+  // )
   // const [customerDeleteArtikelData, setCustomerDeleteArtikelData] = useState({
-      
+
   //   });
 
+  const [artikelsId, setArtikelsId] = useState();
+  const handleDeleteArtikel = () => {
+    delProduct(customerId, artikelsId);
+    // deleteArtikel()
+    console.log("Id Customer Delete", customerId, artikelsId);
+    setTimeout(() => {
+      window.location.reload(false);
+    }, 10);
+  };
+  //   let Id = artikelsId
 
-    
-    const [artikelsId, setArtikelsId] = useState();
-    const handleDeleteArtikel = () => {
-      
-  delProduct(customerId, artikelsId)
-// deleteArtikel()
-      console.log("Id Customer Delete", customerId, artikelsId);
-      setTimeout(() => {
-        window.location.reload(false);
-      }, 10);
-  }
-//   let Id = artikelsId
-      
-// const deleteArtikel = async ()=> {await axios
-// .delete(`${process.env.REACT_APP_API}/customerproduct/deleteproduct/${Id}`, customerId)
-// .then((res) => {
-  
-//   console.log("Delete Customer Artikel OK!");
-// })
-// .catch((error) => {
-//   console.log("Delete Customer Artikel Error:", error.message);
-// });}
+  // const deleteArtikel = async ()=> {await axios
+  // .delete(`${process.env.REACT_APP_API}/customerproduct/deleteproduct/${Id}`, customerId)
+  // .then((res) => {
+
+  //   console.log("Delete Customer Artikel OK!");
+  // })
+  // .catch((error) => {
+  //   console.log("Delete Customer Artikel Error:", error.message);
+  // });}
   const onClickNein = () => {
     setTimeout(() => {
       window.location.reload(false);
     }, 500);
-  }
+  };
 
   const CloseButton = ({ closeToast }) => (
     <>
       {/* <div className="d-flex flex-column"> */}
-      <i
-      className="material-icons"
-      onClick={closeToast}
-    >
-      </i>
+      <i className="material-icons" onClick={closeToast}></i>
       <div className="d-flex flex-wrap gap-2">
-      <Button
-        variant="contained" color="success"
-        onClick={
-          onClickNein && closeToast
-        }
-      >Nein</Button>
-      <Button
+        <Button
+          variant="contained"
+          color="success"
+          onClick={onClickNein && closeToast}
+        >
+          Nein
+        </Button>
+        <Button
           variant="contained"
           color="error"
           startIcon={<DeleteIcon />}
-      onClick={handleDeleteArtikel}
-          >Delete</Button>
-        </div>
+          onClick={handleDeleteArtikel}
+        >
+          Delete
+        </Button>
+      </div>
       {/* </div> */}
     </>
   );
 
   //const toastId = useRef(null);
-  
+
   const notify = () => {
     toast.error("Bist du sicher diese Artikel löschen?", {
       closeButton: true,
       position: toast.POSITION.TOP_CENTER,
-          theme: "colored"
+      theme: "colored",
     });
-    
   };
 
-useEffect(() => {
-  setListKunden(listData);
-  setListKundenArtikel(listNewArtikel);
-}, [listData, listNewArtikel]);
+  useEffect(() => {
+    setListKunden(listData);
+    setListKundenArtikel(listNewArtikel);
+  }, [listData, listNewArtikel]);
 
-const handleChangeName = (e) => {
-  e.preventDefault();
-  setCustomerArtikelData(
-    {
-          ...customerArtikelData,
-          [e.target.name]: e.target.value,
-          artikelBeschreibungCu: FindArtikel.NewartikelBeschreibung,
-          artikelKoduCu: FindArtikel.NewartikelKodu,
-        },
-        token,
-        id
-        );
+  const handleChangeName = (e) => {
+    e.preventDefault();
+    setCustomerArtikelData(
+      {
+        ...customerArtikelData,
+        [e.target.name]: e.target.value,
+        artikelBeschreibungCu: FindArtikel.NewartikelBeschreibung,
+        artikelKoduCu: FindArtikel.NewartikelKodu,
+      },
+      token,
+      id
+    );
   };
-  
- 
-      const handleAddProduct = () => {
-        createProduct(
-          artikelNameCu,
-          artikelKoduCu,
-          artikelPriceCu,
-          artikelBeschreibungCu,
-          id
-        );
-        
-        //const reload = document.querySelector('#reload');
-        setTimeout(() => {
-          window.location.reload(false);
-        }, 500);
-        };
-        
-        const handleChangePrice = (e) => {
-          e.preventDefault();
-          setCustomerArtikelData({
-            ...customerArtikelData,
-            [e.target.name]: e.target.value,
-          });
-        };
-        
-        
-        const formatPrice = (price) => {
-          return new Intl.NumberFormat('de-DE', {
-            style: 'currency',
-            currency: 'EUR',
-          }).format(price);
-        };
-        console.log("ValueArtikel:", valueArtikel, inputArtikelValue);
-        // console.log("FindArtikel:", FindArtikel);
-        console.log("Firma ID:", id);
-        console.log("Customer Artikel State:", customerArtikelData);
-        console.log("List Costumers:", listData);
-        console.log("List Alle Artikel: ", listNewArtikel);
-        // console.log("Map Artikel: ", kunden.artikels[0])
-        console.log("Kustomer Artikels Array: ", customerArtikels);
-  console.log("Kustomer Artikels ID: ", artikelsId)
-  
-//   const reload = document.querySelector('#reload');
-//   const componentDidMount = () => {
-//     reload.window.onbeforeunload = function() {
-//         return true;
-//     };
-// }
-        
-        const CustomerArtikelsMap = customerArtikels?.map((artikels, index) => (
-          
-          (<tr key={index}> 
-                              {/* {artikels !== undefined ? setArtikelsId(artikels.id) : setArtikelsId(undefined)} */}
-                             
-                              <td>{artikels.artikelKodu}</td>
-                              <td>{artikels.artikelName}</td>
-                              <td>{artikels.artikelBeschreibung}</td>
-                              <td>{formatPrice(artikels.artikelPrice)}</td>
-                              <td>
-                                <Button
-                                variant="contained"
-                                color="error"
-                                sx={{
-                                  height: 30,
-                }}
-                
-                                onClick={() => {
-                                  setArtikelsId(artikels.id)
-                                  notify()
-                                
-                                  // handleDeleteArtikel()
-                                }}
-                                >
-                                <MdDeleteForever/>
-                &nbsp;Löschen</Button>
-              <ToastContainer
-                transition={Zoom} 
-                style={{ marginTop: "10rem", width: "300px", bottom: "25rem"  }}
-                closeButton={CloseButton}
-                autoClose={false}
-                limit={1}
-                toastClassName={ 
-        " relative flex flex-column gap-1 p-1 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer"
-      }
-              /></td>
-          </tr>
-          )))
-  
+
+  const handleAddProduct = () => {
+    createProduct(
+      artikelNameCu,
+      artikelKoduCu,
+      artikelPriceCu,
+      artikelBeschreibungCu,
+      id
+    );
+
+    //const reload = document.querySelector('#reload');
+    setTimeout(() => {
+      window.location.reload(false);
+    }, 500);
+  };
+
+  const handleChangePrice = (e) => {
+    e.preventDefault();
+    setCustomerArtikelData({
+      ...customerArtikelData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat("de-DE", {
+      style: "currency",
+      currency: "EUR",
+    }).format(price);
+  };
+  console.log("ValueArtikel:", valueArtikel, inputArtikelValue);
+  // console.log("FindArtikel:", FindArtikel);
+  console.log("Firma ID:", id);
+  console.log("Customer Artikel State:", customerArtikelData);
+  console.log("List Costumers:", listData);
+  console.log("List Alle Artikel: ", listNewArtikel);
+  // console.log("Map Artikel: ", kunden.artikels[0])
+  console.log("Kustomer Artikels Array: ", customerArtikels);
+  console.log("Kustomer Artikels ID: ", artikelsId);
+
+  //   const reload = document.querySelector('#reload');
+  //   const componentDidMount = () => {
+  //     reload.window.onbeforeunload = function() {
+  //         return true;
+  //     };
+  // }
+
+  const CustomerArtikelsMap = customerArtikels?.map((artikels, index) => (
+    <tr key={index}>
+      {/* {artikels !== undefined ? setArtikelsId(artikels.id) : setArtikelsId(undefined)} */}
+
+      <td>{artikels.artikelKodu}</td>
+      <td>{artikels.artikelName}</td>
+      <td>{artikels.artikelBeschreibung}</td>
+      <td>{formatPrice(artikels.artikelPrice)}</td>
+      <td>
+        <Button
+          variant="contained"
+          color="error"
+          sx={{
+            height: 30,
+          }}
+          onClick={() => {
+            setArtikelsId(artikels.id);
+            notify();
+
+            // handleDeleteArtikel()
+          }}
+        >
+          <MdDeleteForever />
+          &nbsp;Löschen
+        </Button>
+        <ToastContainer
+          transition={Zoom}
+          style={{ marginTop: "10rem", width: "300px", bottom: "25rem" }}
+          closeButton={CloseButton}
+          autoClose={false}
+          limit={1}
+          toastClassName={
+            " relative flex flex-column gap-1 p-1 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer"
+          }
+        />
+      </td>
+    </tr>
+  ));
+
   return token ? (
     <Fragment>
       <CssBaseline />
@@ -397,7 +389,7 @@ const handleChangeName = (e) => {
                     </FormText>
                   </td>
                   <td>
-                  <FormText>
+                    <FormText>
                       {FindArtikel !== undefined ? (
                         <b>{formatPrice(FindArtikel.NewartikelPrice)}</b>
                       ) : (
@@ -422,31 +414,39 @@ const handleChangeName = (e) => {
                   <td>
                     <Button
                       id="reload"
-              sx={{ margin: 3 }}
-              size="md"
-              variant="contained"
-              color="primary"
-              onClick={
-                handleAddProduct
-                
-              //   setTimeout(() => {
-              //     window.location.reload(false);
-              //   }, 500);
-                // }
-              }
-            >
-              Create
-            </Button>
+                      sx={{ margin: 3 }}
+                      size="md"
+                      variant="contained"
+                      color="primary"
+                      onClick={
+                        handleAddProduct
+
+                        //   setTimeout(() => {
+                        //     window.location.reload(false);
+                        //   }, 500);
+                        // }
+                      }
+                    >
+                      Create
+                    </Button>
                   </td>
                 </tr>
               </tbody>
             </Table>
             {/* <hr style={{height: ".2rem", backgroundColor:"red"}}/> */}
             <Placeholder as="p" animation="wave">
-        <Placeholder xs={12} size="xs"/>
-      </Placeholder>
-            {Find !== undefined ? <b> {Find.ismi} &nbsp;|&nbsp; {Find.kisi} &nbsp;|&nbsp;Tel: {Find.telefon} &nbsp;|&nbsp;Mobil: {Find.mobil }</b> : ""}
-            <hr/>
+              <Placeholder xs={12} size="xs" />
+            </Placeholder>
+            {Find !== undefined ? (
+              <b>
+                {" "}
+                {Find.ismi} &nbsp;|&nbsp; {Find.kisi} &nbsp;|&nbsp;Tel:{" "}
+                {Find.telefon} &nbsp;|&nbsp;Mobil: {Find.mobil}
+              </b>
+            ) : (
+              ""
+            )}
+            <hr />
             {Find !== undefined ? (
               <Box>
                 <table className="table">
