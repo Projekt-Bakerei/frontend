@@ -183,7 +183,7 @@ export const CreateInvoice = () => {
               <h1>Rechnung</h1>
               <Box className="d-flex p-3 justify-content-between">
                 <Box className="d-flex flex-column">
-                  <Typography level="body1">Empfänger</Typography>
+                  <Typography level="body1">Kundenangaben</Typography>
                   <FormText>
                     {/* <Typography component="b">Firma: </Typography> */}
                     {Find !== undefined ? <b>{Find.hitab} </b> : " An das"}

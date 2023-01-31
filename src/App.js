@@ -22,6 +22,7 @@ import { CreateInvoice } from "./Components/Rechnung/CreateInvoice";
 import BelegeMenu from "./Components/Rechnung/Belege";
 import Ausgangsbelege from "./Components/Rechnung/Ausgangsbelege";
 import Eingagngsbelege from "./Components/Rechnung/Eingangsbelege";
+import { AddLieferschein } from "./Components/Lieferschein/AddLieferschein";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
           <Route path="/belege" exact element={<BelegeMenu />} />
           <Route path="/ausgangsbelege" exact element={<Ausgangsbelege />} />
           <Route path="/eingangsbelege" exact element={<Eingagngsbelege />} />
+          <Route path="/lieferschein" exact element={<AddLieferschein />} />
 
 
         </Routes>
