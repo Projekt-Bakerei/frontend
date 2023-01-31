@@ -4,6 +4,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Container } from '@mui/system';
 import { useCustomer } from '../Context/CustomerContext';
 import { useUser } from '../Context/UserContext';
+import { Button } from '@mui/material';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 60 },
@@ -82,7 +83,11 @@ useEffect(() => {
 }, [listData]);
 
 let kunden = listKunden;
-console.log("Kunden:", kunden)
+  const deleteButton = () => {
+    return (
+      <Button>Delete</Button>
+    )
+}
 
 
   return token ? (
@@ -95,7 +100,7 @@ console.log("Kunden:", kunden)
         columns={columns}
         pageSize={10}
         rowsPerPageOptions={[12]}
-        checkboxSelection
+            // checkboxSelection
         disableSelectionOnClick
         experimentalFeatures={{ newEditingApi: true }}
       />
