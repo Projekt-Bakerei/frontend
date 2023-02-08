@@ -116,16 +116,9 @@ export const HeuteDatum = () => {
 
 export const AddLieferschein = () => {
 
-  
-
-  
-
-
   const { token } = useUser();
   const { listData } = useCustomer();
   const { listLieferscheinNummer } = useLieferscheinNummer();
-  
- 
   
   // LieferscheinNummer
   const [lieferscheinNummer, setLieferscheinNummer] = useState(
@@ -139,7 +132,9 @@ export const AddLieferschein = () => {
   } = lieferscheinNummer
 
   //Lieferschein State
-  const [newLieferschein, setNewLieferschein] = useState({
+  const [newLieferscheinArtikeln, setNewLieferscheinArtikeln] = useState(
+    
+    {
     artikelKoduLe: "",
     artikelNameLe: "",
     artikelMengeLe: "",
@@ -155,7 +150,7 @@ export const AddLieferschein = () => {
     artikelZutatenLe,
     artikelKistenzahlLe,
     artikelPriceLe,
-  } = newLieferschein;
+  }= newLieferscheinArtikeln;
 
   // Customer Daten einladen
   const [listKunden, setListKunden] = useState([]);
@@ -210,6 +205,7 @@ export const AddLieferschein = () => {
           <br />
           <Box sx={{ display: "flex", gap: 3 }}>
             <DatePicker
+              key={1}
               value={startDate}
               onChange={(date) => setStartDate(date)}
             />
@@ -231,7 +227,7 @@ export const AddLieferschein = () => {
   }, [findCustomer]);
 
   const FindArtikel = customerArtikels.map((artikels) => artikels);
-  const artikelMap = FindArtikel.map(({ artikelName }) => artikelName);
+  // const artikelMap = FindArtikel.map(({ artikelName }) => artikelName);
   const FindArtikelName = FindArtikel.find(
     (artikel) => artikel.artikelName === `${valueArtikel}`
   );
@@ -239,39 +235,67 @@ export const AddLieferschein = () => {
   // const findArtikelBeschreibung = customerArtikels.map(({ artikelBeschreibung
   // }) => artikelBeschreibung
   // );
-  console.log("Find Artikels: ", customerArtikels, FindArtikel);
+  console.log("Find Artikels: ", FindArtikel);
 
   const [inputArtikel, setInputArtikel] = useState([
     {
-      inputArtikelNameLe: "",
-      inputArtikelMengeLe: "",
-      inputArtikelEinheitLe: "",
-      inputArtikelKistenLe: "",
+      inputArtikelNameIn: "",
+      inputArtikelMengeIn: "",
+      inputArtikelEinheitIn: "",
+      inputArtikelKistenIn: "",
     },
   ]);
+  const {
+    inputArtikelNameIn,
+    inputArtikelMengeIn,
+    inputArtikelEinheitIn,
+    inputArtikelKistenIn,
+  } = inputArtikel
+
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
     const list = [...inputArtikel];
     list[index][name] = value;
     setInputArtikel(list);
   };
-  const handleRemoveClick = (index) => {
-    const list = [inputArtikel];
-    list.splice(index, 1);
+  const handleRemoveClick = (i) => {
+    const list = [...inputArtikel];
+     list.splice(i, 1);
     setInputArtikel(list);
   };
   const handleAddClick = () => {
     setInputArtikel([
       ...inputArtikel,
       {
-        inputArtikelNameLe: "",
-        inputArtikelMengeLe: "",
-        inputArtikelEinheitLe: "",
-        inputArtikelKistenLe: "",
+        inputArtikelNameIn: "",
+        inputArtikelMengeIn: "",
+        inputArtikelEinheitIn: "",
+        inputArtikelKistenIn: "",
       },
     ]);
   };
-console.log("Input Artikel:", inputArtikel);
+
+  // Lieferschein State submit
+  const onChangeArtikelLe = (e, index) => {
+    // e.preventDefault();
+    //const { name, value } = e.target;
+    const list = [...inputArtikel];
+    list[index].value = e.target.value;
+    setInputArtikel(list);
+    //setNewLieferscheinArtikeln({ ...newLieferscheinArtikeln, [e.target.name]: e.target.value });
+  };
+  
+  const handleChangeMenge = (e, index) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    const list = [...inputArtikel];
+    list[index][name] = value;
+    setInputArtikel([{...list, [e.target.name]: e.target.value}] );
+    // setInputArtikel({ ...inputArtikel, [e.target.name]: e.target.value });
+  };
+  
+  console.log("New data: ", inputArtikel);
+
   // Print die Lieferschein
   const Print = () => {
     let printContents = document.getElementById("printablediv").innerHTML;
@@ -280,23 +304,10 @@ console.log("Input Artikel:", inputArtikel);
     window.print();
     document.body.innerHTML = originalContents;
   };
-  // Lieferschein State submit
-  const onChangeArtikelLe = (e, index) => {
-    // e.preventDefault();
-    const { name, value } = e.target;
-    const list = [...inputArtikel];
-    list[index][name] = value;
-    setInputArtikel(list);
-    setNewLieferschein({ ...newLieferschein, [e.target.name]: e.target.value });
-  };
-  const handleCheckMenge = (e) => {
-    e.preventDefault();
-    setNewLieferschein({ ...newLieferschein, [e.target.name]: e.target.value });
-  };
-
+  
   // const ArtikelTabele = () => {
-
-  //   return (
+    
+    //   return (
       
   //     <div>
   //     {/* <div>{`value: ${value !== null ? `'${value}'` : 'null'}`}</div>
@@ -543,7 +554,8 @@ console.log("Input Artikel:", inputArtikel);
                 <Box className="d-flex p-3 justify-content-between">
                   <Box className="d-flex flex-column">
                     <Typography level="body1">Kundenangaben</Typography>
-                    <FormText>
+                    <FormText
+                    key={2}>
                       {/* <Typography component="b">Firma: </Typography> */}
                       {findCustomer !== undefined ? (
                         <b>{findCustomer.hitab} </b>
@@ -556,7 +568,8 @@ console.log("Input Artikel:", inputArtikel);
                         " Name"
                       )}
                     </FormText>
-                    <FormText>
+                    <FormText
+                    key={3}>
                       {findCustomer !== undefined ? (
                         <b>{findCustomer.cadde}</b>
                       ) : (
@@ -570,7 +583,9 @@ console.log("Input Artikel:", inputArtikel);
                         " Straße & Nummer"
                       )}
                     </FormText>
-                    <FormText>
+                    <FormText
+                      key={4}
+                    >
                       {findCustomer !== undefined ? (
                         <b>{findCustomer.plz} </b>
                       ) : (
@@ -652,7 +667,7 @@ console.log("Input Artikel:", inputArtikel);
                             }}
                             variant="standard"
                             size="small"
-                          />
+                          ></TextField>
                           <Form.Label
                           key={i}
                             htmlFor="input"
@@ -664,6 +679,8 @@ console.log("Input Artikel:", inputArtikel);
                               fontWeight: 500,
                             }}
                           >
+
+                          </Form.Label>
                             <Form.Select
                             key={i}
                               name="artikelNameLe"
@@ -686,13 +703,13 @@ console.log("Input Artikel:", inputArtikel);
                                 </option>
                               ))}
                             </Form.Select>
-                          </Form.Label>
+                          
                           <TextField
                           key={i}
                             style={{ width: "20rem", height: "2rem" }}
                             id="outlined-read-only-input"
                             //label="Read Only"
-                            defaultValue="Mehl, Zucker, Wasser"
+                            defaultValue={FindArtikel[0]?.artikelBeschreibung}
                             InputProps={{
                               readOnly: true,
                             }}
@@ -703,12 +720,13 @@ console.log("Input Artikel:", inputArtikel);
                           key={i}
                             variant="outlined"
                             style={{ width: "7rem", height: "2rem" }}
-                            name="artikelMengeLe"
+                            name="inputArtikelMengeIn"
                             placeholder="Menge"
-                            value={x.artikelMenge}
-                            onChange={(e) => handleCheckMenge(e)}
+                            value={inputArtikelMengeIn}
+                            onChange={(e) => handleChangeMenge(e)}
                           />
                           <div 
+                            key={i}
                           className="border border-dark"
                           style={{ width: "7rem", height: "2rem" }}
                           >
@@ -726,11 +744,13 @@ console.log("Input Artikel:", inputArtikel);
                             style={{ width: "7rem", height: "2rem" }}
                             name="kisten"
                             placeholder="Kisten"
-                            value={"artikelKistenLe"}
+                            //value={artikelKistenLe}
                             //onChange={(e) => handleKistenChange()}
                           />
                         </div>
-                        <div className="d-flex flex-row gap-1">
+                        <div
+                          key={i}
+                          className="d-flex flex-row gap-1">
                           {inputArtikel.length  !== 1 && (
                             <Button
                               color="error"
@@ -743,7 +763,7 @@ console.log("Input Artikel:", inputArtikel);
                           )}
                         </div>
                       </div>
-                      {inputArtikel.length - 1 === i && (
+                      {!findCustomer ? (null): (inputArtikel.length - 1 === i && (
                         <Button
                           color="success"
                           variant="outlined"
@@ -752,7 +772,7 @@ console.log("Input Artikel:", inputArtikel);
                         >
                           Neue
                         </Button>
-                      )}
+                      ))}
                     </>
                   );
                 })}
