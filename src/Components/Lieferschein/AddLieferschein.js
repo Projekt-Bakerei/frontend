@@ -3,6 +3,8 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { Box, Container } from "@mui/system";
 import Typography from "@mui/joy/Typography";
 import Autocomplete from "@mui/material/Autocomplete";
+//import parse from "autosuggest-highlight/parse";
+//import match from "autosuggest-highlight/match";
 import FormControl from "@mui/joy/FormControl";
 import { Button, Input } from "@mui/material";
 import TextField from "@mui/material/TextField";
@@ -16,15 +18,20 @@ import { Form, FormText } from "react-bootstrap";
 
 import { BsFillFileEarmarkPdfFill } from "react-icons/bs";
 import { AiFillPrinter } from "react-icons/ai";
-import { MdDeleteForever } from "react-icons/md";
+import { BiSave } from "react-icons/bi";
+//import { MdDeleteForever } from "react-icons/md";
 
 //import AddArtikelTask from "../Artikel/AddArtikelTask";
 //import ArtikelTaskList from "../Artikel/ListArtikelTask";
 import { ArtikelTasksProvider } from "../Context/ArtikelTasksContext";
-import { useNewArtikel } from "../Context/ArtikelContext";
+//import { useNewArtikel } from "../Context/ArtikelContext";
+//import Stack from '@mui/material/Stack';
+//import { DataGrid } from '@mui/x-data-grid';
 
+import { useLieferscheinNummer } from "../Context/LieferscheinContext";
 
 // const columns = [
+
 //   { field: "id", headerName: "ID", width: 60 },
 //   // { field: 'kodu', headerName: 'Müsteri kodu', width: 100, sortable: true, },
 //   {
@@ -91,8 +98,14 @@ import { useNewArtikel } from "../Context/ArtikelContext";
 //     artikelMenge: "250",
 //   },
 // ];
+
+// Befor Jhre vechseln
+let initialYear = 2023;
+
+// Actuel Datum Heute
+const date = new Date();
+let getYear = date.getFullYear();
 export const HeuteDatum = () => {
-  const date = new Date();
   const heute =
     String(date.getDate()).padStart(2, "0") +
     "." +
@@ -104,46 +117,68 @@ export const HeuteDatum = () => {
 
 export const AddLieferschein = () => {
   const { token } = useUser();
-  const { createLieferschein, listData } = useCustomer();
+  const { listData } = useCustomer();
+  const { listLieferscheinNummer } = useLieferscheinNummer();
 
-  const [newLieferschein, setNewLieferschein] = useState({
-    artikelKodu: "",
-    artikelName: "",
-    artikelMenge: "",
-    artikelZutaten: "",
-    artikelKistenzahl: "",
+  // LieferscheinNummer
+  const [lieferscheinNummer, setLieferscheinNummer] = useState({
+    lieferscheinNummerNew: "",
   });
 
-const {
-  artikelKodu,
-  artikelName,
-  artikelMenge,
-  artikelZutaten,
-  artikelKistenzahl,
-  } = newLieferschein;
-  console.log("List Costumers:", listData);
+  const { lieferscheinNummerNew } = lieferscheinNummer;
 
+  //Lieferschein State
+  const [newLieferscheinArtikeln, setNewLieferscheinArtikeln] = useState({
+    artikelKoduLe: "",
+    artikelNameLe: "",
+    artikelMengeLe: "",
+    artikelZutatenLe: "",
+    artikelKistenzahlLe: "",
+    artikelPriceLe: "",
+  });
+
+  const {
+    artikelKoduLe,
+    artikelNameLe,
+    artikelMengeLe,
+    artikelZutatenLe,
+    artikelKistenzahlLe,
+    artikelPriceLe,
+  } = newLieferscheinArtikeln;
+
+  // Customer Daten einladen
   const [listKunden, setListKunden] = useState([]);
-
   useEffect(() => {
     setListKunden(listData);
-  }, [listData]);
+  }, [listData, listLieferscheinNummer]);
 
+  // Lieferschein Aktuelnummer rechnen
+  let lieferscheinnummer = listLieferscheinNummer;
+  const newNummer = lieferscheinnummer.map(
+    (nummer) => nummer.LieferscheinNummer
+  );
+  console.log("Nummer", newNummer);
+  let newNummerLieferschein = Math.max.apply(null, newNummer);
+  if (getYear === initialYear) {
+    newNummerLieferschein += 1;
+  } else {
+    newNummerLieferschein += 1000000;
+  }
+  // Customer map
   let kunden = listKunden;
-  console.log("Kunden:", kunden);
-
   const firmenMap = kunden.map(({ ismi }) => ismi);
-  console.log("FirmenMap: ", firmenMap);
 
+  // Customer value select
   const [value, setValue] = useState("Firma");
   const [inputValue, setInputValue] = useState("");
 
-  const Find = kunden.find((firma) => firma.ismi === `${value}`);
-  console.log("Find: ", Find);
+  // Customer nach Firmen name filter
+  const findCustomer = kunden.find((firma) => firma.ismi === `${value}`);
+  console.log("Customer : ", findCustomer);
 
+  // Leistungs Datum laden auf Lieferschein ein
   const LeistungsDatum = () => {
     const [startDate, setStartDate] = useState(new Date());
-
     const dateStart = new Date(startDate);
     const start =
       String(dateStart.getDate()).padStart(2, "0") +
@@ -151,7 +186,6 @@ const {
       String(dateStart.getMonth() + 1).padStart(2, "0") +
       "." +
       dateStart.getFullYear();
-
     return (
       <>
         <Box
@@ -167,6 +201,7 @@ const {
           <br />
           <Box sx={{ display: "flex", gap: 3 }}>
             <DatePicker
+              key={1}
               value={startDate}
               onChange={(date) => setStartDate(date)}
             />
@@ -175,68 +210,314 @@ const {
       </>
     );
   };
-  const { listNewArtikel } = useNewArtikel();
 
-  const [listArtikel, setListArtikel] = useState([]);
+  // Laden Artikels von Customer
+  const [customerArtikels, setCustomerArtikels] = useState([]);
+  const [valueArtikel, setValueArtikel] = useState("Artikel");
+  const [inputArtikelValue, setInputArtikelValue] = useState();
+
   useEffect(() => {
-    setListArtikel(listNewArtikel);
-  }, [listNewArtikel]);
+    if (findCustomer !== undefined) {
+      setCustomerArtikels(findCustomer.artikels);
+    }
+  }, [findCustomer]);
 
-  let artikel = listArtikel;
-  console.log("Artikel:", artikel);
+  const FindArtikel = customerArtikels.map((artikels) => artikels);
+  // const artikelMap = FindArtikel.map(({ artikelName }) => artikelName);
+  const FindArtikelName = FindArtikel.find(
+    (artikel) => artikel.artikelName === `${valueArtikel}`
+  );
+  //const findArtikelName = customerArtikels.map(( artikels ) => artikels);
+  // const findArtikelBeschreibung = customerArtikels.map(({ artikelBeschreibung
+  // }) => artikelBeschreibung
+  // );
+  console.log("Find Artikels: ", FindArtikel);
+
   const [inputArtikel, setInputArtikel] = useState([
     {
-      artikelNameLe: "",
-      artikelMengeLe: "",
-      artikelEinheitLe: "",
-      artikelKistenLe: "",
+      inputArtikelNameIn: "",
+      inputArtikelMengeIn: "",
+      inputArtikelEinheitIn: "",
+      inputArtikelKistenIn: "",
     },
   ]);
-  // const handleInputChange = (e, index) => {
-  //   const { name, value } = e.target;
-  //   const list = [...inputArtikel];
-  //   list[index][name] = value;
-  //   setInputArtikel(list);
-  // };
-  const handleRemoveClick = (index) => {
+
+  const [inputArtikelLe, setInputArtikelLe] = useState([]);
+
+  const {
+    inputArtikelNameIn,
+    inputArtikelMengeIn,
+    inputArtikelEinheitIn,
+    inputArtikelKistenIn,
+  } = inputArtikel;
+
+  const handleInputChange = (e, index) => {
+    const { name, value } = e.target;
     const list = [...inputArtikel];
-    list.splice(index, 1);
+    list[index][name] = value;
+    setInputArtikel(list);
+  };
+  const handleRemoveClick = (i) => {
+    const list = [...inputArtikel];
+    list.splice(i, 1);
     setInputArtikel(list);
   };
   const handleAddClick = () => {
     setInputArtikel([
       ...inputArtikel,
       {
-        artikelNameLe: "",
-        artikelMengeLe: "",
-        artikelEinheitLe: "",
-        artikelKistenLe: "",
+        inputArtikelNameIn: "",
+        inputArtikelMengeIn: "",
+        inputArtikelEinheitIn: "",
+        inputArtikelKistenIn: "",
       },
     ]);
   };
-  const Print = () =>{     
-    //console.log('print');  
-    let printContents = document.getElementById('printablediv').innerHTML;
-    let originalContents = document.body.innerHTML;
-    document.body.innerHTML = printContents;
-    window.print();
-   document.body.innerHTML = originalContents; 
-  }
+
+  // Lieferschein State submit
   const onChangeArtikelLe = (e, index) => {
     // e.preventDefault();
+    //const { name, value } = e.target;
+    const list = [...inputArtikel];
+    list[index].value = e.target.value;
+    setInputArtikel(list);
+    //setNewLieferscheinArtikeln({ ...newLieferscheinArtikeln, [e.target.name]: e.target.value });
+  };
+
+  const handleChangeMenge = (e, index) => {
+    e.preventDefault();
     const { name, value } = e.target;
     const list = [...inputArtikel];
     list[index][name] = value;
-    setInputArtikel(list);
-    setNewLieferschein({ ...newLieferschein, [e.target.name]: e.target.value });
+    setInputArtikel([{ ...inputArtikel, [e.target.name]: e.target.value }]);
+    // setInputArtikel({ ...inputArtikel, [e.target.name]: e.target.value });
   };
 
-  const handleCheckMenge = (e) => {
-    e.preventDefault();
-    setNewLieferschein({ ...newLieferschein, [e.target.name]: e.target.value });
-  };
-  console.log("Lieferschein: ", newLieferschein);
+  console.log("New data: ", inputArtikel);
 
+  // Print die Lieferschein
+  const Print = () => {
+    let printContents = document.getElementById("printablediv").innerHTML;
+    let originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+  };
+
+  // const ArtikelTabele = () => {
+
+  //   return (
+
+  //     <div>
+  //     {/* <div>{`value: ${value !== null ? `'${value}'` : 'null'}`}</div>
+  //     <div>{`inputValue: '${inputValue}'`}</div> */}
+  //     <br />
+  //     <Autocomplete
+  //                     placeholder="Artikel"
+  //                     // value={valueArtikel}
+  //                     name="artikelNameCu"
+  //                     onChange={(e, newValueArtikel) => {
+  //                       // handleChangeBeschreibung(e);
+  //                       setValueArtikel(newValueArtikel);
+  //                     }}
+  //                     inputValue={inputArtikelValue}
+  //                     onInputChange={(e, newInputArtikelValue) => {
+  //                       setInputArtikelValue(newInputArtikelValue);
+  //                     }}
+  //                    // key={FindArtikel}
+  //                     options={artikelMap}
+  //                     sx={{
+  //                       width: 350,
+  //                       zIndex: 30 + "!important",
+  //                       borderRadius: 50,
+  //                     }}
+  //                     renderInput={(params) => (
+  //                       <TextField
+  //                         {...params}
+  //                         // onSelect={(e) => handleChangeName(e)}
+  //                         name="artikelNameLe"
+  //                         value={!artikelNameLe ? { valueArtikel } : "Artikel"}
+  //                         // onChange={(e)=>handleChangeName(e)}
+  //                       />
+  //                     )}
+  //                   />
+  //   </div>
+
+  //       )
+
+  //     //   <Autocomplete
+  //     //     id="highlights"
+  //     //     sx={{ width: 300 }}
+  //     //     options={FindArtikel}
+  //     //     getOptionLabel={(option) => option.artikelName}
+  //     //     renderInput={(params) => (
+  //     //       <TextField {...params} label="Artikel" margin="normal" />
+  //     //     )}
+  //     //     renderOption={(props, option, { inputValue }) => {
+  //     //       const matches = match(option.artikelName, inputValue, {
+  //     //         insideWords: true,
+  //     //       });
+  //     //       const parts = parse(option.artikelName, matches);
+
+  //     //       return (
+  //     //         <li {...props}>
+  //     //           <div>
+  //     //             {parts.map((part, index) => (
+  //     //               <span
+  //     //                 key={index}
+  //     //                 style={{
+  //     //                   fontWeight: part.highlight ? 700 : 400,
+  //     //                 }}
+  //     //               >
+  //     //                 {part.text}
+  //     //               </span>
+  //     //             ))}
+  //     //           </div>
+  //     //         </li>
+  //     //       );
+  //     //     }}
+  //     //   />
+  //     //   </>
+  //     // );
+  //     // customerArtikels.map((x, i) => (
+  //     //   <>
+  //     //     <div className="d-flex flex-wrap justify-content-around">
+  //     //       <div className="d-flex border-top border-bottom">
+  //     //         <TextField
+  //     //           key={i}
+  //     //           style={{ width: "2rem", height: "2rem" }}
+  //     //           id="outlined-read-only-input"
+  //     //           label={x.artikelKodu}
+  //     //           name="artikelKodu"
+  //     //           defaultValue={
+  //     //             x.artikelKodu !== undefined ? `${x.artikelKodu}` : i
+  //     //           }
+  //     //           InputProps={{
+  //     //             readOnly: true,
+  //     //           }}
+  //     //           variant="standard"
+  //     //           size="small"
+  //     //         />
+  //     //         <Form.Label
+  //     //           key={i}
+  //     //           htmlFor="input"
+  //     //           style={{
+  //     //             //  marginRight: "2rem",
+  //     //             //width: "18.5rem",
+  //     //             fontFamily: "Roboto",
+  //     //             fontSize: "0.875rem",
+  //     //             fontWeight: 500,
+  //     //           }}
+  //     //         >
+  //     //           <Form.Select
+  //     //             key={i}
+  //     //             name="artikelNameLe"
+  //     //             style={{ width: "20rem", height: "2rem" }}
+  //     //             value={x.inputArtikelNameLe}
+  //     //             onChange={onChangeArtikelLe}
+  //     //             // onChange={e => {
+  //     //             //   dispatch({
+  //     //             //     type: 'changed',
+  //     //             //     task: {
+  //     //             //       ...task,
+  //     //             //       NewartikelName: e.target.value
+  //     //             //     }
+  //     //             //   });
+  //     //             // }}
+  //     //           >
+  //     //             {FindArtikel.map((artikel, k) => (
+  //     //               <option name={artikel.artikelName} key={k}>
+  //     //                 {artikel.artikelName}
+  //     //               </option>
+  //     //             ))}
+  //     //           </Form.Select>
+  //     //         </Form.Label>
+  //     //         <TextField
+  //     //           key={i}
+  //     //           style={{ width: "20rem", height: "2rem" }}
+  //     //           id="outlined-read-only-input"
+  //     //           //label="Read Only"
+  //     //           defaultValue="Mehl, Zucker, Wasser"
+  //     //           InputProps={{
+  //     //             readOnly: true,
+  //     //           }}
+  //     //           variant="standard"
+  //     //           size="small"
+  //     //         />
+  //     //         <Form.Control
+  //     //           key={i}
+  //     //           variant="outlined"
+  //     //           style={{ width: "7rem", height: "2rem" }}
+  //     //           name="artikelMengeLe"
+  //     //           placeholder="Menge"
+  //     //           value={x.inputArtikelMengeLe}
+  //     //           onChange={(e) => handleCheckMenge(e)}
+  //     //         />
+  //     //         <div
+  //     //           className="border border-dark"
+  //     //           style={{ width: "7rem", height: "2rem" }}
+  //     //         ></div>
+  //     //         <Form.Control
+  //     //           variant="outlined"
+  //     //           name="retour"
+  //     //           placeholder="Retour"
+  //     //           value={x.artikelEinheitLe}
+  //     //           // onChange={(e) => handleInputChange(e, i)}
+  //     //         />
+  //     //         <Form.Control
+  //     //           key={i}
+  //     //           style={{ width: "7rem", height: "2rem" }}
+  //     //           name="kisten"
+  //     //           placeholder="Kisten"
+  //     //           value={"artikelKistenLe"}
+  //     //           //onChange={(e) => handleKistenChange()}
+  //     //         />
+  //     //       </div>
+  //     //       <div className="d-flex flex-row gap-1">
+  //     //         {inputArtikel.length !== 1 && (
+  //     //           <Button
+  //     //             color="error"
+  //     //             variant="outlined"
+  //     //             style={{ width: "5rem", height: "2rem" }}
+  //     //             onClick={() => handleRemoveClick(i)}
+  //     //           >
+  //     //             Löschen
+  //     //           </Button>
+  //     //         )}
+  //     //       </div>
+  //     //     </div>
+  //     //     {inputArtikel.length - 1 === i && (
+  //     //       <Button
+  //     //         color="success"
+  //     //         variant="outlined"
+  //     //         style={{ width: "5rem", height: "2rem" }}
+  //     //         onClick={handleAddClick}
+  //     //       >
+  //     //         Neue
+  //     //       </Button>
+  //     //     )}
+  //     //   </>
+  //     // ))
+
+  // };
+
+  // const [nbRows, setNbRows] = useState(0);
+  // const [product, setProduct] = useState("");
+
+  // const addRow = () => {
+
+  //   const length = FindArtikel.length;
+
+  //   setNbRows(c => Math.min(length, c + 1)) ;
+  //   if (findCustomer) {
+  //     setProduct(FindArtikel[nbRows].artikelName);
+  //     }
+  // }
+  //  const removeRow = () => {
+  //    setNbRows(c => Math.max(0, c - 1));
+  //   setProduct(FindArtikel[nbRows].artikelName);
+  // }
+  // console.log("Product" ,product, nbRows, FindArtikel.length);
   return token ? (
     <Fragment>
       <CssBaseline />
@@ -249,7 +530,8 @@ const {
               maxHeight: "100%",
               minHeight: "75vh",
               padding: "1rem",
-            }} id='printablediv'
+            }}
+            id="printablediv"
           >
             <Box sx={{ flexGrow: 1 }}>
               <Box variant="soft" sx={{ py: 0.4 }}>
@@ -268,38 +550,59 @@ const {
                 <Box className="d-flex p-3 justify-content-between">
                   <Box className="d-flex flex-column">
                     <Typography level="body1">Kundenangaben</Typography>
-                    <FormText>
+                    <FormText key={2}>
                       {/* <Typography component="b">Firma: </Typography> */}
-                      {Find !== undefined ? <b>{Find.hitab} </b> : " An das"}
-                      {Find !== undefined ? <b> {Find.ismi}</b> : " Name"}
+                      {findCustomer !== undefined ? (
+                        <b>{findCustomer.hitab} </b>
+                      ) : (
+                        " An das"
+                      )}
+                      {findCustomer !== undefined ? (
+                        <b> {findCustomer.ismi}</b>
+                      ) : (
+                        " Name"
+                      )}
                     </FormText>
-                    <FormText>
-                      {Find !== undefined ? (
-                        <b>{Find.cadde}</b>
+                    <FormText key={3}>
+                      {findCustomer !== undefined ? (
+                        <b>{findCustomer.cadde}</b>
                       ) : (
                         " Straße & Nummer"
                       )}
                     </FormText>
                     <FormText>
-                      {Find !== undefined ? (
-                        <b>{Find.kisi}</b>
+                      {findCustomer !== undefined ? (
+                        <b>{findCustomer.kisi}</b>
                       ) : (
                         " Straße & Nummer"
                       )}
                     </FormText>
-                    <FormText>
-                      {Find !== undefined ? <b>{Find.plz} </b> : " PLZ"}
-                      {Find !== undefined ? <b>{Find.yer} </b> : " Stadt"}
+                    <FormText key={4}>
+                      {findCustomer !== undefined ? (
+                        <b>{findCustomer.plz} </b>
+                      ) : (
+                        " PLZ"
+                      )}
+                      {findCustomer !== undefined ? (
+                        <b>{findCustomer.yer} </b>
+                      ) : (
+                        " Stadt"
+                      )}
                     </FormText>
                   </Box>
                   <Box className="d-flex flex-column padding-right-6 w-25">
                     <Typography level="body1">
-                      Lieferschein -Nr.: {"012225325"}
+                      Lieferschein -Nr.: {newNummerLieferschein}
                     </Typography>
                     <FormText>
                       Kundennummer{" "}
-                      {Find !== undefined ? <b>{Find.kodu} </b> : "none"}
+                      {findCustomer !== undefined ? (
+                        <b>{findCustomer.kodu} </b>
+                      ) : (
+                        "none"
+                      )}
                     </FormText>
+
                     <FormText>
                       Datum:
                       <HeuteDatum />
@@ -315,108 +618,111 @@ const {
             </Box>
             <br />
             <Box sx={{ height: "50%", width: "100%" }}>
-              
-                <div className="d-flex border-top border-bottom">
-                        <Typography sx={{paddingLeft:"4rem", width: "12rem", height: "2rem" }}>
-                          Nr:
-                        </Typography>
-                        <Typography sx={{ width: "17rem", height: "2rem" }}>
-                          Ware
-                        </Typography>
-                        <Typography sx={{ width: "17rem", height: "2rem" }}>
-                          Zutaten
-                        </Typography>
-                        <Typography sx={{ width: "7rem", height: "2rem" }}>
-                          Menge
-                        </Typography>
-                        <Typography sx={{ width: "7rem", height: "2rem" }}>
-                          Retour
-                        </Typography>
-                        <Typography sx={{ width: "7rem", height: "2rem" }}>
-                          Kistenanzahl
-                        </Typography>
-                      </div>
-                {inputArtikel.map((x, i) => {
-                  return (
-                    <>
-                      
-                      <div className="d-flex flex-wrap justify-content-around">
-                        <div className="d-flex border-top border-bottom">
-                          
-                          <TextField
+              <div className="d-flex border-top border-bottom">
+                <Typography
+                  sx={{ paddingLeft: "4rem", width: "12rem", height: "2rem" }}
+                >
+                  Nr:
+                </Typography>
+                <Typography sx={{ width: "17rem", height: "2rem" }}>
+                  Ware
+                </Typography>
+                <Typography sx={{ width: "17rem", height: "2rem" }}>
+                  Zutaten
+                </Typography>
+                <Typography sx={{ width: "7rem", height: "2rem" }}>
+                  Menge
+                </Typography>
+                <Typography sx={{ width: "7rem", height: "2rem" }}>
+                  Retour
+                </Typography>
+                <Typography sx={{ width: "7rem", height: "2rem" }}>
+                  Kistenanzahl
+                </Typography>
+              </div>
+              {inputArtikel.map((x, i) => {
+                return (
+                  <>
+                    <div className="d-flex flex-wrap justify-content-around">
+                      <div className="d-flex border-top border-bottom">
+                        <TextField
                           key={i}
-                            style={{ width: "2rem", height: "2rem" }}
-                            id="outlined-read-only-input"
-                            label={x.artikelKodu}
-                            name="artikelKodu"
-                            defaultValue={artikel.NewartikelKodu !== undefined ? `${artikel.NewartikelKodu}` : i}
-                            InputProps={{
-                              readOnly: true,
-                            }}
-                            variant="standard"
-                            size="small"
-                          />
-                          <Form.Label
+                          style={{ width: "2rem", height: "2rem" }}
+                          id="outlined-read-only-input"
+                          label={x.artikelKodu}
+                          name="artikelKodu"
+                          defaultValue={
+                            FindArtikel.artikelKodu !== undefined
+                              ? `${FindArtikel.artikelKodu}`
+                              : i + 1
+                          }
+                          InputProps={{
+                            readOnly: true,
+                          }}
+                          variant="standard"
+                          size="small"
+                        ></TextField>
+                        <Form.Label
                           key={i}
-                            htmlFor="input"
-                            style={{
-                              //  marginRight: "2rem",
-                              //width: "18.5rem",
-                              fontFamily: "Roboto",
-                              fontSize: "0.875rem",
-                              fontWeight: 500,
-                            }}
-                          >
-                            <Form.Select
-                            key={i}
-                              name="artikelNameLe"
-                              style={{ width: "20rem", height: "2rem" }}
-                              value={x.artikelName}
-                              onChange={onChangeArtikelLe}
-                              // onChange={e => {
-                              //   dispatch({
-                              //     type: 'changed',
-                              //     task: {
-                              //       ...task,
-                              //       NewartikelName: e.target.value
-                              //     }
-                              //   });
-                              // }}
-                            >
-                              {listArtikel.map((artikel, k) => (
-                                <option name={artikel.NewartikelName} key={k}>
-                                  {artikel.NewartikelName}
-                                </option>
-                              ))}
-                            </Form.Select>
-                          </Form.Label>
-                          <TextField
+                          htmlFor="input"
+                          style={{
+                            //  marginRight: "2rem",
+                            //width: "18.5rem",
+                            fontFamily: "Roboto",
+                            fontSize: "0.875rem",
+                            fontWeight: 500,
+                          }}
+                        ></Form.Label>
+                        <Form.Select
                           key={i}
-                            style={{ width: "20rem", height: "2rem" }}
-                            id="outlined-read-only-input"
-                            //label="Read Only"
-                            defaultValue="Mehl, Zucker, Wasser"
-                            InputProps={{
-                              readOnly: true,
-                            }}
-                            variant="standard"
-                            size="small"
-                          />
-                          <Form.Control
+                          name="artikelNameLe"
+                          style={{ width: "20rem", height: "2rem" }}
+                          value={x.artikelName}
+                          onChange={onChangeArtikelLe}
+                          // onChange={e => {
+                          //   dispatch({
+                          //     type: 'changed',
+                          //     task: {
+                          //       ...task,
+                          //       NewartikelName: e.target.value
+                          //     }
+                          //   });
+                          // }}
+                        >
+                          {FindArtikel.map((artikel, k) => (
+                            <option name={artikel.artikelName} key={k}>
+                              {artikel.artikelName}
+                            </option>
+                          ))}
+                        </Form.Select>
+
+                        <TextField
                           key={i}
-                            variant="outlined"
-                            style={{ width: "7rem", height: "2rem" }}
-                            name="artikelMengeLe"
-                            placeholder="Menge"
-                            value={x.artikelMenge}
-                            onChange={(e) => handleCheckMenge(e)}
-                          />
-                          <div 
+                          style={{ width: "20rem", height: "2rem" }}
+                          id="outlined-read-only-input"
+                          //label="Read Only"
+                          defaultValue={FindArtikel[i]?.artikelBeschreibung}
+                          InputProps={{
+                            readOnly: true,
+                          }}
+                          variant="standard"
+                          size="small"
+                        />
+                        <Form.Control
+                          key={i}
+                          variant="outlined"
+                          style={{ width: "7rem", height: "2rem" }}
+                          name="inputArtikelMengeIn"
+                          placeholder="Menge"
+                          value={inputArtikelMengeIn}
+                          onChange={(e) => handleChangeMenge(e)}
+                        />
+                        <div
+                          key={i}
                           className="border border-dark"
                           style={{ width: "7rem", height: "2rem" }}
-                          >
-                          </div>
-                          {/* <Form.Control
+                        ></div>
+                        {/* <Form.Control
                             variant="outlined"
                             
                             name="retour"
@@ -424,53 +730,43 @@ const {
                             value={x.artikelEinheitLe}
                             onChange={(e) => handleInputChange(e, i)}
                           /> */}
-                          <Form.Control
+                        <Form.Control
                           key={i}
-                            style={{ width: "7rem", height: "2rem" }}
-                            name="kisten"
-                            placeholder="Kisten"
-                            value={"artikelKistenLe"}
-                            //onChange={(e) => handleKistenChange()}
-                          />
-                        </div>
-                        <div className="d-flex flex-row gap-1">
-                          {inputArtikel.length !== 1 && (
-                            <Button
-                              color="error"
-                              variant="outlined"
-                              style={{ width: "5rem", height: "2rem" }}
-                              onClick={() => handleRemoveClick(i)}
-                            >
-                              Löschen
-                            </Button>
-                          )}
-                        </div>
+                          style={{ width: "7rem", height: "2rem" }}
+                          name="kisten"
+                          placeholder="Kisten"
+                          //value={artikelKistenLe}
+                          //onChange={(e) => handleKistenChange()}
+                        />
                       </div>
-                      {inputArtikel.length - 1 === i && (
-                        <Button
-                          color="success"
-                          variant="outlined"
-                          style={{ width: "5rem", height: "2rem" }}
-                          onClick={handleAddClick}
-                        >
-                          Neue
-                        </Button>
-                      )}
-                    </>
-                  );
-                })}
-              
-              {/* <DataGrid
-              rows={artikel}
-              columns={columns}
-              pageSize={10}
-              rowsPerPageOptions={[10]}
-              // checkboxSelection
-              // disableSelectionOnClick
-              experimentalFeatures={{ newEditingApi: true }}
-            /> */}
-
-              {/* <ArtikelTaskList /> */}
+                      <div key={i} className="d-flex flex-row gap-1">
+                        {inputArtikel.length !== 1 && (
+                          <Button
+                            color="error"
+                            variant="outlined"
+                            style={{ width: "5rem", height: "2rem" }}
+                            onClick={() => handleRemoveClick(i)}
+                          >
+                            Löschen
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                    {!findCustomer
+                      ? null
+                      : inputArtikel.length - 1 === i && (
+                          <Button
+                            color="success"
+                            variant="outlined"
+                            style={{ width: "5rem", height: "2rem" }}
+                            onClick={handleAddClick}
+                          >
+                            Neue
+                          </Button>
+                        )}
+                  </>
+                );
+              })}
             </Box>
           </Box>
           <div className="d-flex flex-wrap justify-content-start">
@@ -500,7 +796,16 @@ const {
             </FormControl> */}
           </div>
           <div className="d-flex flex-wrap flex-row-reverse">
-            <div className="d-flex flex-wrap mt-3 gap-3">
+            <div className="d-flex flex-wrap mt-3 gap-3 pb-5">
+              <Button
+                variant="outlined"
+                sx={{
+                  height: 40,
+                }}
+              >
+                <BiSave />
+                &nbsp;Zwischenspeichern
+              </Button>
               <Button
                 variant="contained"
                 sx={{
@@ -508,16 +813,7 @@ const {
                 }}
               >
                 <BsFillFileEarmarkPdfFill />
-                &nbsp;Save to PDF
-              </Button>
-              <Button
-                variant="outlined"
-                sx={{
-                  height: 40,
-                }}
-                
-              >
-                Send to Mail
+                &nbsp;Speichern in PDF
               </Button>
 
               <Button
@@ -529,9 +825,9 @@ const {
                 onClick={Print}
               >
                 <AiFillPrinter />
-                &nbsp;Print
+                &nbsp;Drucken
               </Button>
-              <Button
+              {/* <Button
                 variant="contained"
                 color="error"
                 sx={{
@@ -540,7 +836,7 @@ const {
               >
                 <MdDeleteForever />
                 &nbsp;Delete
-              </Button>
+              </Button> */}
             </div>
           </div>
         </Container>

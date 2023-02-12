@@ -9,10 +9,12 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min'
 
 // import { ProductContextProvider } from "./Context/ProductContext";
+
 import App from './App'
 import { CustomerProvider } from './Components/Context/CustomerContext'
 import { NewArtikelProvider } from './Components/Context/ArtikelContext'
 //import { LoadingContextProveider } from './Components/Context/LoadingContext'
+
 // import { Provider } from 'react-redux';
 //import { LoadingContext, LoadingProvider } from "../src/Components/Context/LoadingContext";
 
@@ -25,17 +27,20 @@ root.render(
     {/* <Provider store={store}> */}
 
     {/* <AdminContextProvider>  */}
+
     
     <LoadingProvider>
       <UserContextProvider>
         <NewArtikelProvider>
           <MiterbeiterProvider>
             <CustomerProvider>
+
               {/* <ProductContextProvider> */}
               {/* <CartContextProvider> */}
               <App />
               {/* </CartContextProvider> */}
               {/* </ProductContextProvider> */}
+
             </CustomerProvider>
           </MiterbeiterProvider>
         </NewArtikelProvider>
