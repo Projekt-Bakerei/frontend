@@ -3,9 +3,9 @@ import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useUser } from "./UserContext";
 
-export const LieferscheinNummerContext = createContext();
+export const LieferscheinContext = createContext();
 
-export const LieferscheinNummerProvider = ({ children }) => {
+export const LieferscheinProvider = ({ children }) => {
   const data = "Test Admin";
   const [listLieferscheinNummer, setListLieferscheinNummer] = useState([]);
   const [addLieferscheinNummer, setAddLieferscheinNummer] = useState([]);
@@ -88,7 +88,7 @@ useEffect(() => {
   };
 
   return (
-    <LieferscheinNummerContext.Provider
+    <LieferscheinContext.Provider
       value={{
         data,
         listLieferscheinNummer,
@@ -102,10 +102,10 @@ useEffect(() => {
       }}
     >
       {children}
-    </LieferscheinNummerContext.Provider>
+    </LieferscheinContext.Provider>
   );
 };
 
-export const useLieferscheinNummer = () => {
-  return useContext(LieferscheinNummerContext);
+export const useLieferscheinContext = () => {
+  return useContext(LieferscheinContext);
 };
