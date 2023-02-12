@@ -28,7 +28,9 @@ import { ArtikelTasksProvider } from "../Context/ArtikelTasksContext";
 //import Stack from '@mui/material/Stack';
 //import { DataGrid } from '@mui/x-data-grid';
 
+
 import {useLieferscheinContext} from "../Context/LieferscheinContext"
+
 
 // const columns = [
 
@@ -99,7 +101,9 @@ import {useLieferscheinContext} from "../Context/LieferscheinContext"
 //   },
 // ];
 
+
 // Befor Jhre vechseln 
+
 let initialYear = 2023;
 
 // Actuel Datum Heute
@@ -120,6 +124,7 @@ export const AddLieferschein = () => {
 
   const { token } = useUser();
   const { listData } = useCustomer();
+
   const { listLieferscheinNummer, loadLieferscheinNummer } = useLieferscheinContext();
   // console.log(listLieferscheinNummer, loadLieferscheinNummer);
   // // LieferscheinNummer
@@ -154,11 +159,13 @@ export const AddLieferschein = () => {
     artikelPriceLe,
   }= newLieferscheinArtikeln;
 
+
   // Customer Daten einladen
   const [listKunden, setListKunden] = useState([]);
   useEffect(() => {
     setListKunden(listData);
-  }, [listData]);
+  }, [listData, listLieferscheinNummer]);
+
 
 // Lieferschein Aktuelnummer rechnen
   let lieferscheinnummer = listLieferscheinNummer;
@@ -170,6 +177,7 @@ export const AddLieferschein = () => {
   } else {
     newNummerLieferschein += 1000000;
 }
+
   // Customer map
   let kunden = listKunden;
   const firmenMap = kunden.map(({ ismi }) => ismi);
@@ -248,13 +256,16 @@ export const AddLieferschein = () => {
     },
   ]);
 
+
   const [inputArtikelLe, setInputArtikelLe] = useState([])
+
 
   const {
     inputArtikelNameIn,
     inputArtikelMengeIn,
     inputArtikelEinheitIn,
     inputArtikelKistenIn,
+
   } = inputArtikel
 
   const handleInputChange = (e, index) => {
@@ -266,6 +277,7 @@ export const AddLieferschein = () => {
   const handleRemoveClick = (i) => {
     const list = [...inputArtikel];
      list.splice(i, 1);
+
     setInputArtikel(list);
   };
   const handleAddClick = () => {
@@ -284,6 +296,7 @@ export const AddLieferschein = () => {
   const onChangeArtikelLe = (e, index) => {
     // e.preventDefault();
     //const { name, value } = e.target;
+
     const list = [...inputArtikel];
     list[index].value = e.target.value;
     setInputArtikel(list);
@@ -297,9 +310,11 @@ export const AddLieferschein = () => {
     list[index][name] = value;
     setInputArtikel([{...inputArtikel, [e.target.name]: e.target.value}] );
     // setInputArtikel({ ...inputArtikel, [e.target.name]: e.target.value });
+
   };
   
   console.log("New data: ", inputArtikel);
+
 
   // Print die Lieferschein
   const Print = () => {
@@ -517,6 +532,7 @@ export const AddLieferschein = () => {
    
   //   const length = FindArtikel.length; 
     
+
   //   setNbRows(c => Math.min(length, c + 1)) ;
   //   if (findCustomer) {
   //     setProduct(FindArtikel[nbRows].artikelName);
@@ -559,8 +575,10 @@ export const AddLieferschein = () => {
                 <Box className="d-flex p-3 justify-content-between">
                   <Box className="d-flex flex-column">
                     <Typography level="body1">Kundenangaben</Typography>
+
                     <FormText
                     key={2}>
+
                       {/* <Typography component="b">Firma: </Typography> */}
                       {findCustomer !== undefined ? (
                         <b>{findCustomer.hitab} </b>
@@ -573,8 +591,10 @@ export const AddLieferschein = () => {
                         " Name"
                       )}
                     </FormText>
+
                     <FormText
                     key={3}>
+
                       {findCustomer !== undefined ? (
                         <b>{findCustomer.cadde}</b>
                       ) : (
@@ -588,9 +608,11 @@ export const AddLieferschein = () => {
                         " Straße & Nummer"
                       )}
                     </FormText>
+
                     <FormText
                       key={4}
                     >
+
                       {findCustomer !== undefined ? (
                         <b>{findCustomer.plz} </b>
                       ) : (
@@ -605,8 +627,10 @@ export const AddLieferschein = () => {
                   </Box>
                   <Box className="d-flex flex-column padding-right-6 w-25">
                     <Typography level="body1">
+
                       Lieferschein -Nr.:
                       {newNummerLieferschein}
+
                     </Typography>
                     <FormText>
                       Kundennummer{" "}
@@ -655,6 +679,7 @@ export const AddLieferschein = () => {
                 </Typography>
               </div>
               {inputArtikel.map((x, i) => {
+
                   return (
                     <>
                       
@@ -733,11 +758,11 @@ export const AddLieferschein = () => {
                           />
                           <div 
                             key={i}
+
                           className="border border-dark"
                           style={{ width: "7rem", height: "2rem" }}
-                          >
-                          </div>
-                          {/* <Form.Control
+                        ></div>
+                        {/* <Form.Control
                             variant="outlined"
                             
                             name="retour"
@@ -745,7 +770,7 @@ export const AddLieferschein = () => {
                             value={x.artikelEinheitLe}
                             onChange={(e) => handleInputChange(e, i)}
                           /> */}
-                          <Form.Control
+                        <Form.Control
                           key={i}
                             style={{ width: "7rem", height: "2rem" }}
                             name="kisten"
@@ -782,6 +807,7 @@ export const AddLieferschein = () => {
                     </>
                   );
                 })}
+
             </Box>
           </Box>
           <div className="d-flex flex-wrap justify-content-start">
@@ -812,6 +838,7 @@ export const AddLieferschein = () => {
           </div>
           <div className="d-flex flex-wrap flex-row-reverse">
             <div className="d-flex flex-wrap mt-3 gap-3 pb-5">
+
                 <Button
                   variant="outlined"
                   sx={{
@@ -821,8 +848,9 @@ export const AddLieferschein = () => {
                 <BiSave/>
                   &nbsp;Zwischenspeichern
                 </Button>
+
               <Button
-                variant="contained"
+                variant="outlined"
                 sx={{
                   height: 40,
                 }}

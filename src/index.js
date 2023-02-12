@@ -10,9 +10,11 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 
 // import { ProductContextProvider } from "./Context/ProductContext";
 
+
 import App from "./App";
 import { CustomerProvider } from "./Components/Context/CustomerContext";
 import { NewArtikelProvider } from "./Components/Context/ArtikelContext";
+
 //import { LoadingContextProveider } from './Components/Context/LoadingContext'
 
 // import { Provider } from 'react-redux';
@@ -34,6 +36,7 @@ root.render(
         <NewArtikelProvider>
           <MiterbeiterProvider>
             <CustomerProvider>
+
               <LieferscheinProvider>
                 {/* <ProductContextProvider> */}
                 {/* <CartContextProvider> */}
@@ -41,6 +44,7 @@ root.render(
                 {/* </CartContextProvider> */}
                 {/* </ProductContextProvider> */}
               </LieferscheinProvider>
+
             </CustomerProvider>
           </MiterbeiterProvider>
         </NewArtikelProvider>
