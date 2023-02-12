@@ -52,19 +52,19 @@ const columns = [
 
 export default function ListFahrer() {
   const { token } = useUser();
-  const { listMiterbeiter, delMiterbeiter } = useMiterbeiter();
+  const { listFahrer, delFahrer } = useMiterbeiter();
 
-  const [listMiterbeitern, setListMiterbeitern] = useState([]);
-  const [selectedMiterbeiter, setSelectedMiterbeiter] = useState([]);
+  const [listFahrern, setListFahrern] = useState([]);
+  const [selectedFahrer, setSelectedFahrer] = useState([]);
   const [selected, setSelected] = useState(false);
-  const [selectedMiterbeiterName, setSelectedMiterbeiterName] = useState();
+  const [selectedFahrerName, setSelectedFahrerName] = useState();
 
   useEffect(() => {
-    setListMiterbeitern(listMiterbeiter);
-  }, [listMiterbeiter]);
+    setListFahrern(listFahrer);
+  }, [listFahrer]);
 
-  let miterbeiter = listMiterbeitern;
-  let miterbeiterId = selectedMiterbeiter;
+  let miterbeiter = listFahrern;
+  let fahrerId = selectedFahrer;
 
   const CloseButton = ({ closeToast }) => (
     <>
@@ -97,8 +97,8 @@ export default function ListFahrer() {
     }, 500);
   };
   const handleDelete = () => {
-    delMiterbeiter(miterbeiterId);
-    console.log("Id for delete: ", miterbeiterId);
+    delFahrer(fahrerId);
+    console.log("Id for delete: ", fahrerId);
     setTimeout(() => {
       window.location.reload(false);
     }, 10);
@@ -146,7 +146,7 @@ export default function ListFahrer() {
 
   return token ? (
     <Container maxWidth="xl">
-      <h1>Miterbeiter Dosyasi</h1>
+      <h1>Fahrer Dosyasi</h1>
       <Box sx={{ bgcolor: "#EAEDF0", height: "70vh", padding: "1rem" }}>
         <Box sx={{ height: "100%", width: "100%" }}>
           <DataGrid
@@ -155,16 +155,18 @@ export default function ListFahrer() {
             pageSize={10}
             rowsPerPageOptions={[12]}
             // checkboxSelection
+            onCellEditStop
+            onRowEditStop
             experimentalFeatures={{ newEditingApi: true, editable: false }}
             onSelectionModelChange={(ids) => {
               const selectedIDs = new Set(ids);
               const selectedRows = miterbeiter?.filter((row) =>
                 selectedIDs.has(row.id)
               );
-              const miterbeiterId = selectedRows.map(({ id }) => id);
-              const miterbeiterName = selectedRows.map(({ mName }) => mName);
-              setSelectedMiterbeiterName(miterbeiterName);
-              setSelectedMiterbeiter(miterbeiterId);
+              const fahrerId = selectedRows.map(({ id }) => id);
+              const fahrerName = selectedRows.map(({ mName }) => mName);
+              setSelectedFahrerName(fahrerName);
+              setSelectedFahrer(fahrerId);
               setSelected(true);
             }}
             {...miterbeiter}
@@ -180,7 +182,7 @@ export default function ListFahrer() {
             <Typography variant="h5" component="h5">
               Möchetest du diese Miterbeiter löschen?
             </Typography>
-            {selectedMiterbeiterName}
+            {selectedFahrerName}
           </Box>
           {deleteButton()}
         </>

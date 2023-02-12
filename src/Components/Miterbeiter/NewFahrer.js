@@ -17,7 +17,7 @@ import { useUser } from '../Context/UserContext'
 import { LoadingContext } from '../Context/LoadingContext';
 import Loading from '../Loading/Loading'
 
-function NewMiterbeiter() {
+function NewFahrer() {
   const { isLoading, showLoading, hideLoading } = useContext(LoadingContext);
   console.log("Is loading:", isLoading)
   const [submitted, setSubmitted] = useState(false);
@@ -36,61 +36,62 @@ function NewMiterbeiter() {
 
   //const {isLoading } = useLoading();
   
-  const { addMiterbeiter, listData } = useMiterbeiter()
-  console.log('List Miterbeiters:', listData)
+  const { addFahrer, listFahrer } = useMiterbeiter()
+  console.log('List Fahrer:', listFahrer)
   const { token } = useUser()
 
   console.log('User Token:', token)
 
-  const [miterbeiterData, setMiterbeiterData] = useState({
+  const [fahrerData, setFahrerData] = useState({
     mName: '',
     mAdres: '',
     tel: '',
     position: '',
+    kenzeichen: '',
     extern: '',
   })
 
-  const [listMiterbeitern, setListMiterbeitern] = useState([])
+  const [listFahrern, setListFahrern] = useState([])
 
   useEffect(() => {
-    setListMiterbeitern(listData)
-  }, [listData])
+    setListFahrern(listFahrer)
+  }, [listFahrer])
 
-  let miterbeitern = listMiterbeitern
-  console.log('Miterbeitern:', miterbeitern)
+  let miterbeitern = listFahrern
+  console.log('Fahrern:', miterbeitern)
 
-  const { mName, mAdres, tel, position, extern } = miterbeiterData
+  const { mName, mAdres, tel, position, extern, kenzeichen } = fahrerData
 
   const handleChangemName = (e) => {
     e.preventDefault()
-    setMiterbeiterData({ ...miterbeiterData, [e.target.name]: e.target.value })
+    setFahrerData({ ...fahrerData, [e.target.name]: e.target.value })
   }
   const handleChangemAdres = (e) => {
     e.preventDefault()
-    setMiterbeiterData({ ...miterbeiterData, [e.target.name]: e.target.value })
+    setFahrerData({ ...fahrerData, [e.target.name]: e.target.value })
   }
 
   const handleChangeTel = (e) => {
     e.preventDefault()
-    setMiterbeiterData({ ...miterbeiterData, [e.target.name]: e.target.value })
+    setFahrerData({ ...fahrerData, [e.target.name]: e.target.value })
   }
 
   const handleChangePosition = (e) => {
     e.preventDefault()
-    setMiterbeiterData({ ...miterbeiterData, [e.target.name]: e.target.value })
+    setFahrerData({ ...fahrerData, [e.target.name]: e.target.value })
   }
 
   const handleChangeExtern = (e) => {
     e.preventDefault()
-    setMiterbeiterData({ ...miterbeiterData, [e.target.name]: e.target.value })
+    setFahrerData({ ...fahrerData, [e.target.name]: e.target.value })
   }
 
-  // const handleChangeKenzeichen = (e) => {
-  //   e.preventDefault()
-  //   setMiterbeiterData({ ...miterbeiterData, [e.target.name]: e.target.value })
-  // }
+  const handleChangeKenzeichen = (e) => {
+    e.preventDefault()
+    setFahrerData({ ...fahrerData, [e.target.name]: e.target.value })
+  }
 
-  console.log(miterbeiterData)
+  console.log(fahrerData)
   
 
   return token ? (
@@ -100,7 +101,7 @@ function NewMiterbeiter() {
       
     {isLoading && <Loading />}
 
-      <h1>Neu Miterbeiter anlegen</h1>
+      <h1>Neu Fahrer anlegen</h1>
       <Box  className={`blur-background ${submitted ? 'blur-background-on-submit' : ''}`} sx={{ bgcolor: '#EAEDF0', maxHeight: '80%', padding: '1rem' }}>
         <Typography textColor="neutral.800" fontSize="xl" fontWeight="lg">
           Yeni Isci
@@ -125,11 +126,11 @@ function NewMiterbeiter() {
                 <Form.Control
                   type="text"
                   id="input"
-                  required="required"
                   aria-describedby="mName"
                   placeholder="Ismi"
                   name="mName"
                   onChange={(e) => handleChangemName(e)}
+                  required
                 />
               </div>
             </div>
@@ -153,7 +154,6 @@ function NewMiterbeiter() {
                 <Form.Control
                   type="text"
                   id="input"
-                  required="required"
                   aria-describedby="mAdres"
                   placeholder="Isci Adresi"
                   name="mAdres"
@@ -181,8 +181,7 @@ function NewMiterbeiter() {
                      size="lx" label='"inge Taube"'
                    /> */}
                 <Form.Control
-                  type="number"
-                  required="required"
+                  type="text"
                   id="input"
                   aria-describedby="tel"
                   placeholder="Tel: +90 123 456 78"
@@ -211,12 +210,36 @@ function NewMiterbeiter() {
                    /> */}
                 <Form.Control
                   type="text"
-                  required="required"
                   id="input"
                   aria-describedby="position"
                   placeholder="Position"
                   name="position"
                   onChange={(e) => handleChangePosition(e)}
+                />
+              </div>
+            </div>
+
+            <div className="d-flex flex-sm-wrap p-3">
+              <div className="d-flex">
+                <Form.Label
+                  htmlFor="kenzeichen"
+                  style={{
+                    marginRight: '2rem',
+                    width: '10rem',
+                    fontFamily: 'Roboto',
+                    fontSize: '0.875rem',
+                    fontWeight: 500,
+                  }}
+                >
+                  {bull} Kenzeichen:
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  id="input"
+                  aria-describedby="kenzeichen"
+                  placeholder="kenzeichen"
+                  name="kenzeichen"
+                  onChange={(e) => handleChangeKenzeichen(e)}
                 />
               </div>
             </div>
@@ -251,7 +274,7 @@ function NewMiterbeiter() {
               variant="contained"
               color="primary"
               onClick={() => {
-                addMiterbeiter(mName, mAdres, tel, position, extern,)
+                addFahrer(mName, mAdres, tel, position, extern, kenzeichen)
                 setSubmitted(true)
                 showLoading()
                 setTimeout(() => {
@@ -272,4 +295,4 @@ function NewMiterbeiter() {
   )
 }
 
-export default NewMiterbeiter
+export default NewFahrer

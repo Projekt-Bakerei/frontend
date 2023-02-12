@@ -23,6 +23,8 @@ import BelegeMenu from "./Components/Rechnung/Belege";
 import Ausgangsbelege from "./Components/Rechnung/Ausgangsbelege";
 import Eingagngsbelege from "./Components/Rechnung/Eingangsbelege";
 import { AddLieferschein } from "./Components/Lieferschein/AddLieferschein";
+import NewFahrer from "./Components/Miterbeiter/NewFahrer";
+import ListFahrer from "./Components/Miterbeiter/ListFahrer";
 
 function App() {
   return (
@@ -35,6 +37,9 @@ function App() {
           <Route path="/customers" exact element={<FirmenNamen />} />
           <Route path="/newcustomer" exact element={<NewCustomer />} />
           <Route path="/newmiterbeiter" exact element={<NewMiterbeiter />} />
+          <Route path="/newfahrer" exact element={<NewFahrer />} />
+          <Route path="/listfahrer" exact element={<ListFahrer />} />
+
           <Route path="/employees" exact element={<Employees />} />
           <Route path="/products" exact element={<Produkte />} />
           <Route path="/about" exact element={<FirmenDaten />} />
