@@ -34,17 +34,31 @@ console.log(user)
           <Typography textColor="neutral.500" fontSize="xl" fontWeight="lg">
             Aufgaben
           </Typography>
-{token ? (
+          {token ? (
+            <Box>
   <Typography textColor="#184B29" fontSize="xl" fontWeight="lg">
-            Hallo! -{bull} {user.name}
-            
-          </Typography>
+              Hallo! -{bull} {user.name}
+              </Typography>
+              <small>Update:</small>
+              <div className="d-flex flex-row gap-1">
+              <Card sx={{width: 220, padding: 1}}>
+                <small>12.02.23 - </small>
+                  <code>Mitterbeiter und Fahrer getrend, fixiert kann löschen von liste und DB.</code>
+                  <code>Lieferschein Nummer fixiert begin von 2023000001</code>
+              </Card>
+              <Card sx={{width: 220, padding: 1}}>
+                <small>13.02.23 - </small>
+                  <code>Kunden und Artikel list, fixiert kann löschen von liste und DB.</code>
+                  
+                </Card>
+              </div>
+            </Box>
           ) :( 
             <Typography textColor="red" fontSize="xl" fontWeight="lg">
             Du bist nicht angemeldet!
           </Typography>
           )}
-          <Grid container spacing={2} gap={2} marginTop={5} padding={5} className="d-flex flex-column">
+          <Grid container spacing={2} gap={2} padding={5} className="d-flex flex-column">
             <Typography fontSize="xl" fontWeight="lg">Öz Güven Warenhandelsgesellschaft mbH</Typography>
 <Typography fontSize="xl" fontWeight="m">
 Kepler Straße 15
