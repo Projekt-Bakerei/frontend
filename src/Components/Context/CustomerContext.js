@@ -8,39 +8,40 @@ import { useParams } from "react-router-dom";
 export const CustomerContext = createContext();
 
 export const CustomerProvider = ({ children, ID }) => {
-   const data = "Test Admin";
+  const data = "Test Admin";
   const [listData, setListData] = useState([]);
   const [addData, setAddData] = useState([]);
   const [editData, setEditData] = useState([]);
-  const [delData, setDelData] = useState([]);
+  const [delCustomers, setDelCustomers] = useState([]);
   const [addDataProduct, setAddDataProduct] = useState([]);
   const [delArtikel, setDelArtikel] = useState([]);
 
   const { token } = useUser();
-  
+
   const { customerId } = useParams();
 
-
-useEffect(() => {
+  useEffect(() => {
     loadCustomer();
   }, []);
-  
-  function CustomerId(){
-    axios.get(`${process.env.REACT_APP_API}/customers/customer/${customerId}`)
-  .then(response => response.data.customerId)
-  .catch(error => console.log(error));
-console.log("Customer ID: ",CustomerId) 
-} 
+
+  function CustomerId() {
+    axios
+      .get(`${process.env.REACT_APP_API}/customers/customer/${customerId}`)
+      .then((response) => response.data.customerId)
+      .catch((error) => console.log(error));
+    console.log("Customer ID: ", CustomerId);
+  }
 
   function loadCustomer() {
     axios
       .get(`${process.env.REACT_APP_API}/customers`)
       .then((res) => {
         setListData(res.data);
-        console.log("Load Customer OK")
-      }).catch((error) => {
-              console.log("Load Customer Error:", error);
-            });
+        console.log("Load Customer OK");
+      })
+      .catch((error) => {
+        console.log("Load Customer Error:", error);
+      });
   }
 
   const addCustomer = (
@@ -59,9 +60,9 @@ console.log("Customer ID: ",CustomerId)
     mobil,
     artikelsCu,
     artikelNameCu,
-      artikelPriceCu,
-      artikelBeschreibungCu,
-      artikelKoduCu,
+    artikelPriceCu,
+    artikelBeschreibungCu,
+    artikelKoduCu
   ) => {
     const config = {
       headers: {
@@ -135,60 +136,39 @@ console.log("Customer ID: ",CustomerId)
       .put(`${process.env.REACT_APP_API}/customers/addcustomer`, data)
       .then((res) => {
         setEditData(res.data);
-        console.log("Edit Customer OK")
+        console.log("Edit Customer OK");
       })
       .catch((error) => {
         console.log("Edit Customer Error:", error);
       });
   };
 
-  const delCustomer = (
-    kodu,
-    passiv,
-    hitab,
-    kategory,
-    ismi,
-    kdv,
-    kisi,
-    sekli,
-    cadde,
-    plz,
-    yer,
-    telefon,
-    mobil
-  ) => {
+  // Delete Customer
+  const delCustomer = (customerId) => {
     const data = {
-      kodu,
-      passiv,
-      hitab,
-      kategory,
-      ismi,
-      kdv,
-      kisi,
-      sekli,
-      cadde,
-      plz,
-      yer,
-      telefon,
-      mobil,
+      customerId,
     };
     axios
-      .get(`${process.env.REACT_APP_API}/customers/addcustomer`, data)
+      .delete(
+        `${process.env.REACT_APP_API}/customers/deletecustomer/${customerId}`,
+        data
+      )
       .then((res) => {
-        setDelData(res.data);
-        console.log("Delete Customer OK")
+        setDelCustomers(res.data);
+        console.log("Delete Miterbeiter OK!", customerId);
       })
       .catch((error) => {
-        console.log("Delete Customer Error:", error);
+        console.log("Delete Miterbeiter Error:", error.message);
       });
   };
 
+  // Add product to customer
   const createProduct = (
     artikelNameCu,
     artikelKoduCu,
     artikelPriceCu,
     artikelBeschreibungCu,
-    customerId,
+    customerId
   ) => {
     // const config = {
     //   headers: {
@@ -206,7 +186,10 @@ console.log("Customer ID: ",CustomerId)
       customerId,
     };
     axios
-      .post(`${process.env.REACT_APP_API}/customerproduct/addproduct/${customerId}`, data)
+      .post(
+        `${process.env.REACT_APP_API}/customerproduct/addproduct/${customerId}`,
+        data
+      )
       .then((res) => {
         setAddDataProduct(res.data);
       })
@@ -216,18 +199,18 @@ console.log("Customer ID: ",CustomerId)
   };
 
   // Delete Product
-  
-  const delProduct = (
-    customerId,
-    artikelsId,
-  ) => {
+
+  const delProduct = (customerId, artikelsId) => {
     const data = {
       customerId,
       artikelsId,
     };
     console.log("ID Delete: ", artikelsId);
     axios
-      .delete(`${process.env.REACT_APP_API}/customerproduct/deleteproduct/${customerId}/${artikelsId}`, data)
+      .delete(
+        `${process.env.REACT_APP_API}/customerproduct/deleteproduct/${customerId}/${artikelsId}`,
+        data
+      )
       .then((res) => {
         setDelArtikel(res.data);
         console.log("Delete Customer Artikel OK!", customerId);
@@ -244,7 +227,7 @@ console.log("Customer ID: ",CustomerId)
     artikelKodu,
     artikelMenge,
     artikelZutaten,
-    artikelKistenzahl,
+    artikelKistenzahl
   ) => {
     const config = {
       headers: {
@@ -256,11 +239,11 @@ console.log("Customer ID: ",CustomerId)
 
     const data = {
       artikelLe,
-    artikelName,
-    artikelKodu,
-    artikelMenge,
-    artikelZutaten,
-    artikelKistenzahl,
+      artikelName,
+      artikelKodu,
+      artikelMenge,
+      artikelZutaten,
+      artikelKistenzahl,
     };
     axios
       .post(`${process.env.REACT_APP_API}/customers/addcustomer`, data, config)
@@ -272,7 +255,6 @@ console.log("Customer ID: ",CustomerId)
       });
   };
 
-
   return (
     <CustomerContext.Provider
       value={{
@@ -280,7 +262,6 @@ console.log("Customer ID: ",CustomerId)
         listData,
         addData,
         editData,
-        delData,
         loadCustomer,
         addCustomer,
         editCustomer,
@@ -289,7 +270,7 @@ console.log("Customer ID: ",CustomerId)
         createProduct,
         addDataProduct,
         customerId,
-         delProduct,
+        delProduct,
       }}
     >
       {children}
