@@ -32,76 +32,6 @@ import { ArtikelTasksProvider } from "../Context/ArtikelTasksContext";
 import {useLieferscheinContext} from "../Context/LieferscheinContext"
 
 
-// const columns = [
-
-//   { field: "id", headerName: "ID", width: 60 },
-//   // { field: 'kodu', headerName: 'Müsteri kodu', width: 100, sortable: true, },
-//   {
-//     field: "artikelName",
-//     headerName: "Artikel",
-//     width: 150,
-//     editable: true,
-//     sortable: true,
-//   },
-//   {
-//     field: "artikelBeschreibung",
-//     headerName: "Beschreibung",
-//     type: "text",
-//     width: 150,
-//     editable: true,
-//     sortable: true,
-//   },
-//   {
-//     field: "artikelPrice",
-//     headerName: "Price",
-//     description: "Einzel Price",
-//     sortable: true,
-//     width: 250,
-//     //   valueGetter: (params) =>
-//     //     `${params.row.cadde || ''}, ${params.row.plz || ''} ${params.row.yer|| ''}`,
-//   },
-//   {
-//     field: "artikelMenge",
-//     headerName: "Menge",
-//     type: "number",
-//     width: 120,
-//     editable: true,
-//     sortable: true,
-//   },
-// ];
-
-// const artikel = [
-//   {
-//     id: "1",
-//     artikelName: "Brot pide",
-//     artikelBeschreibung: "250 gr",
-//     artikelPrice: "0.80",
-//     artikelMenge: "25",
-//   },
-//   {
-//     id: 2,
-//     artikelName: "Lachmadgun",
-//     artikelBeschreibung: "Halbar",
-//     artikelPrice: "1.80",
-//     artikelMenge: "120",
-//   },
-//   {
-//     id: 3,
-//     artikelName: "Börek klein",
-//     artikelBeschreibung: "Hackfleisch, Zwiebel, Petersilie",
-//     artikelPrice: "2.50",
-//     artikelMenge: "80",
-//   },
-//   {
-//     id: 4,
-//     artikelName: "Döner Pide",
-//     artikelBeschreibung: "180 gr",
-//     artikelPrice: "3.50",
-//     artikelMenge: "250",
-//   },
-// ];
-
-
 // Befor Jhre vechseln 
 
 let initialYear = 2023;
@@ -227,8 +157,8 @@ export const AddLieferschein = () => {
 
   // Laden Artikels von Customer
   const [customerArtikels, setCustomerArtikels] = useState([]);
-  const [valueArtikel, setValueArtikel] = useState("Artikel");
-  const [inputArtikelValue, setInputArtikelValue] = useState();
+  // const [valueArtikel, setValueArtikel] = useState("Artikel");
+  // const [inputArtikelValue, setInputArtikelValue] = useState();
 
   useEffect(() => {
     if (findCustomer !== undefined) {
@@ -238,9 +168,9 @@ export const AddLieferschein = () => {
 
   const FindArtikel = customerArtikels.map((artikels) => artikels);
   // const artikelMap = FindArtikel.map(({ artikelName }) => artikelName);
-  const FindArtikelName = FindArtikel.find(
-    (artikel) => artikel.artikelName === `${valueArtikel}`
-  );
+  // const FindArtikelName = FindArtikel.find(
+  //   (artikel) => artikel.artikelName === `${valueArtikel}`
+  // );
   //const findArtikelName = customerArtikels.map(( artikels ) => artikels);
   // const findArtikelBeschreibung = customerArtikels.map(({ artikelBeschreibung
   // }) => artikelBeschreibung
@@ -259,59 +189,65 @@ export const AddLieferschein = () => {
 
   const [inputArtikelLe, setInputArtikelLe] = useState([])
 
-
+console.log(inputArtikelLe);
   const {
     inputArtikelNameIn,
     inputArtikelMengeIn,
     inputArtikelEinheitIn,
     inputArtikelKistenIn,
 
-  } = inputArtikel
+  } = inputArtikelLe
 
-  const handleInputChange = (e, index) => {
-    const { name, value } = e.target;
-    const list = [...inputArtikel];
-    list[index][name] = value;
-    setInputArtikel(list);
+  const handleInputChange = (index, event) => {
+     const list = [...inputArtikel];
+     list[index][event.target.name] = event.target.value;
+    setInputArtikelLe(list);
   };
+
   const handleRemoveClick = (i) => {
     const list = [...inputArtikel];
      list.splice(i, 1);
-
     setInputArtikel(list);
   };
-  const handleAddClick = () => {
-    setInputArtikel([
-      ...inputArtikel,
-      {
+
+  const handleAddClick = (i) => {
+    let newFeld = {
         inputArtikelNameIn: "",
         inputArtikelMengeIn: "",
         inputArtikelEinheitIn: "",
         inputArtikelKistenIn: "",
-      },
+      }
+    setInputArtikel([
+      ...inputArtikel,
+      newFeld
     ]);
   };
 
   // Lieferschein State submit
-  const onChangeArtikelLe = (e, index) => {
-    // e.preventDefault();
-    //const { name, value } = e.target;
-
-    const list = [...inputArtikel];
-    list[index].value = e.target.value;
-    setInputArtikel(list);
-    //setNewLieferscheinArtikeln({ ...newLieferscheinArtikeln, [e.target.name]: e.target.value });
-  };
+  // const onChangeArtikelLe = (e, index) => {
+  //    e.preventDefault();
+  //   const { name, value } = e.target;
+  //    const list = [...inputArtikel];
+  //    list[index][name] = value;
+  //   setInputArtikel([{...list, [e.target.name]: e.target.value}]);
+  //   //setNewLieferscheinArtikeln({ ...newLieferscheinArtikeln, [e.target.name]: e.target.value });
+  // };
   
-  const handleChangeMenge = (e, index) => {
-    e.preventDefault();
-    const { name, value } = e.target;
-    const list = [...inputArtikel];
-    list[index][name] = value;
-    setInputArtikel([{...inputArtikel, [e.target.name]: e.target.value}] );
-    // setInputArtikel({ ...inputArtikel, [e.target.name]: e.target.value });
+  // const handleChangeMenge = (e, index) => {
+  //   //e.preventDefault();
+  //   const list = [...inputArtikel];
+  //   list[index].value = e.target.value;
+  //   // const { name, value, } = e.target;
+  //   // const list = [...inputArtikel];
+  //   // list[index][name] = e.target.value;
+  //   setInputArtikel([{...list, [e.target.name]: e.target.value}] );
+  //   // setInputArtikel({ ...inputArtikel, [e.target.name]: e.target.value });
 
-  };
+  // };
+  const submit = (e) => {
+    e.preventDefault();
+    console.log(inputArtikel)
+}
   
   console.log("New data: ", inputArtikel);
 
@@ -678,21 +614,21 @@ export const AddLieferschein = () => {
                   Kistenanzahl
                 </Typography>
               </div>
-              {inputArtikel.map((x, i) => {
+              {inputArtikel.map((x, index) => {
 
                   return (
                     <>
                       
                       <div className="d-flex flex-wrap justify-content-around">
-                        <div className="d-flex border-top border-bottom">
+                        <div key={index} className="d-flex border-top border-bottom">
                           
                           <TextField
-                          key={i}
                             style={{ width: "2rem", height: "2rem" }}
                             id="outlined-read-only-input"
                             label={x.artikelKodu}
                             name="artikelKodu"
-                            defaultValue={FindArtikel.artikelKodu !== undefined ? `${FindArtikel.artikelKodu}` : i}
+                            value={x.artikelKodu}
+                            defaultValue={index+1}
                             InputProps={{
                               readOnly: true,
                             }}
@@ -700,7 +636,7 @@ export const AddLieferschein = () => {
                             size="small"
                           ></TextField>
                           <Form.Label
-                          key={i}
+                          // key={i}
                             htmlFor="input"
                             style={{
                               //  marginRight: "2rem",
@@ -710,37 +646,31 @@ export const AddLieferschein = () => {
                               fontWeight: 500,
                             }}
                           >
-
                           </Form.Label>
                             <Form.Select
-                            key={i}
-                              name="artikelNameLe"
+                            // key={i}
+                              name="inputArtikelNameIn"
                               style={{ width: "20rem", height: "2rem" }}
-                              value={x.artikelName}
-                              onChange={onChangeArtikelLe}
-                              // onChange={e => {
-                              //   dispatch({
-                              //     type: 'changed',
-                              //     task: {
-                              //       ...task,
-                              //       NewartikelName: e.target.value
-                              //     }
-                              //   });
-                              // }}
-                            >
+                              value={x.inputArtikelNameIn}
+                              onChange={event => handleInputChange(index, event)}
+                          >
+                            <option></option>
                               {FindArtikel.map((artikel, k) => (
-                                <option name={artikel.artikelName} key={k}>
+                                <option
+                                  value={k.inputArtikelNameIn}
+                                  name={inputArtikelNameIn}
+                                  key={k}
+                                > 
                                   {artikel.artikelName}
                                 </option>
                               ))}
                             </Form.Select>
-                          
                           <TextField
-                          key={i}
+                          // key={k}
                             style={{ width: "20rem", height: "2rem" }}
                             id="outlined-read-only-input"
                             //label="Read Only"
-                            defaultValue={FindArtikel[0]?.artikelBeschreibung}
+                            defaultValue={FindArtikel[index+1]?.artikelBeschreibung}
                             InputProps={{
                               readOnly: true,
                             }}
@@ -748,16 +678,16 @@ export const AddLieferschein = () => {
                             size="small"
                           />
                           <Form.Control
-                          key={i}
+                          // key={x.id}
                             variant="outlined"
                             style={{ width: "7rem", height: "2rem" }}
                             name="inputArtikelMengeIn"
                             placeholder="Menge"
-                            value={inputArtikelMengeIn}
-                            onChange={(e) => handleChangeMenge(e)}
+                            value={x.inputArtikelMengeIn}
+                            onChange={event => handleInputChange(index, event)}
                           />
                           <div 
-                            key={i}
+                            // key={i}
 
                           className="border border-dark"
                           style={{ width: "7rem", height: "2rem" }}
@@ -771,35 +701,35 @@ export const AddLieferschein = () => {
                             onChange={(e) => handleInputChange(e, i)}
                           /> */}
                         <Form.Control
-                          key={i}
+                          // key={i}
                             style={{ width: "7rem", height: "2rem" }}
-                            name="kisten"
+                            name="inputArtikelKistenIn"
                             placeholder="Kisten"
-                            //value={artikelKistenLe}
-                            //onChange={(e) => handleKistenChange()}
+                            value={x.inputArtikelKistenIn}
+                            onChange={event => handleInputChange(index, event)}
                           />
                         </div>
                         <div
-                          key={i}
+                          // key={i}
                           className="d-flex flex-row gap-1">
                           {inputArtikel.length  !== 1 && (
                             <Button
                               color="error"
                               variant="outlined"
                               style={{ width: "5rem", height: "2rem" }}
-                              onClick={() => handleRemoveClick(i)}
+                              onClick={() => handleRemoveClick(index)}
                             >
                               Löschen
                             </Button>
                           )}
                         </div>
                       </div>
-                      {!findCustomer ? (null): (inputArtikel.length - 1 === i && (
+                      {!findCustomer ? (null): (inputArtikel.length - 1 === index && (
                         <Button
                           color="success"
                           variant="outlined"
                           style={{ width: "5rem", height: "2rem" }}
-                          onClick={handleAddClick}
+                          onClick={() => handleAddClick(index)}
                         >
                           Neue
                         </Button>
@@ -843,7 +773,8 @@ export const AddLieferschein = () => {
                   variant="outlined"
                   sx={{
                     height: 40,
-                  }}
+                }}
+                onClick={submit}
               >
                 <BiSave/>
                   &nbsp;Zwischenspeichern

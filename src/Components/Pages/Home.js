@@ -49,6 +49,9 @@ console.log(user)
               <Card sx={{width: 220, padding: 1}}>
                 <small>13.02.23 - </small>
                   <code>Kunden und Artikel list, fixiert kann löschen von liste und DB.</code>
+                  <code>Lieferschein Feld fix.</code>
+                  <code>TODO: Muliple array muss nach documentation suchen! </code>
+                  <code>ArtikelBeschreibung muss fixiert!</code>
                   
                 </Card>
               </div>
