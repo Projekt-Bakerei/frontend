@@ -84,7 +84,7 @@ export default function ListFahrer() {
           startIcon={<DeleteIcon />}
           onClick={handleDelete}
         >
-          Delete
+          Löschen
         </Button>
       </div>
       {/* </div> */}
@@ -154,9 +154,6 @@ export default function ListFahrer() {
             columns={columns}
             pageSize={10}
             rowsPerPageOptions={[12]}
-            // checkboxSelection
-            onCellEditStop
-            onRowEditStop
             experimentalFeatures={{ newEditingApi: true, editable: false }}
             onSelectionModelChange={(ids) => {
               const selectedIDs = new Set(ids);
