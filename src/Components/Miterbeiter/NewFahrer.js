@@ -11,15 +11,13 @@ import Form from 'react-bootstrap/Form'
 import { useMiterbeiter } from '../Context/MiterbeiterContext'
 import { useUser } from '../Context/UserContext'
 
-//import { useLoading } from '../Context/LoadingContext'
-//import Loading from '../Loading/Loading'
 
 import { LoadingContext } from '../Context/LoadingContext';
 import Loading from '../Loading/Loading'
 
 function NewFahrer() {
   const { isLoading, showLoading, hideLoading } = useContext(LoadingContext);
-  console.log("Is loading:", isLoading)
+  
   const [submitted, setSubmitted] = useState(false);
   
   const bull = (
@@ -30,12 +28,7 @@ function NewFahrer() {
       •
     </Box>
   )
-  
-  
-  //const { loading, setLoading } = useLoading();
 
-  //const {isLoading } = useLoading();
-  
   const { addFahrer, listFahrer } = useMiterbeiter()
   console.log('List Fahrer:', listFahrer)
   const { token } = useUser()
@@ -62,31 +55,7 @@ function NewFahrer() {
 
   const { mName, mAdres, tel, position, extern, kenzeichen } = fahrerData
 
-  const handleChangemName = (e) => {
-    e.preventDefault()
-    setFahrerData({ ...fahrerData, [e.target.name]: e.target.value })
-  }
-  const handleChangemAdres = (e) => {
-    e.preventDefault()
-    setFahrerData({ ...fahrerData, [e.target.name]: e.target.value })
-  }
-
-  const handleChangeTel = (e) => {
-    e.preventDefault()
-    setFahrerData({ ...fahrerData, [e.target.name]: e.target.value })
-  }
-
-  const handleChangePosition = (e) => {
-    e.preventDefault()
-    setFahrerData({ ...fahrerData, [e.target.name]: e.target.value })
-  }
-
-  const handleChangeExtern = (e) => {
-    e.preventDefault()
-    setFahrerData({ ...fahrerData, [e.target.name]: e.target.value })
-  }
-
-  const handleChangeKenzeichen = (e) => {
+  const handleChange = (e) => {
     e.preventDefault()
     setFahrerData({ ...fahrerData, [e.target.name]: e.target.value })
   }
@@ -129,7 +98,7 @@ function NewFahrer() {
                   aria-describedby="mName"
                   placeholder="Ismi"
                   name="mName"
-                  onChange={(e) => handleChangemName(e)}
+                  onChange={(e) => handleChange(e)}
                   required
                 />
               </div>
@@ -157,7 +126,7 @@ function NewFahrer() {
                   aria-describedby="mAdres"
                   placeholder="Isci Adresi"
                   name="mAdres"
-                  onChange={(e) => handleChangemAdres(e)}
+                  onChange={(e) => handleChange(e)}
                 />
               </div>
               {/* Isci Adresi */}
@@ -186,7 +155,7 @@ function NewFahrer() {
                   aria-describedby="tel"
                   placeholder="Tel: +90 123 456 78"
                   name="tel"
-                  onChange={(e) => handleChangeTel(e)}
+                  onChange={(e) => handleChange(e)}
                 />
               </div>
             </div>
@@ -214,7 +183,7 @@ function NewFahrer() {
                   aria-describedby="position"
                   placeholder="Position"
                   name="position"
-                  onChange={(e) => handleChangePosition(e)}
+                  onChange={(e) => handleChange(e)}
                 />
               </div>
             </div>
@@ -239,7 +208,7 @@ function NewFahrer() {
                   aria-describedby="kenzeichen"
                   placeholder="kenzeichen"
                   name="kenzeichen"
-                  onChange={(e) => handleChangeKenzeichen(e)}
+                  onChange={(e) => handleChange(e)}
                 />
               </div>
             </div>
@@ -263,7 +232,7 @@ function NewFahrer() {
                   aria-describedby="extern"
                   placeholder="extern"
                   name="extern"
-                  onChange={(e) => handleChangeExtern(e)}
+                  onChange={(e) => handleChange(e)}
                 />
               </div>
             </div>

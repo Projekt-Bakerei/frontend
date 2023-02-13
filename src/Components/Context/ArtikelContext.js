@@ -12,6 +12,7 @@ export const NewArtikelProvider = ({ children }) => {
   const [addData, setAddData] = useState([]);
   const [editData, setEditData] = useState([]);
   const [delData, setDelData] = useState([]);
+  const [delArtikeln, setDelArtikel] = useState([]);
   const { token } = useUser();
 
   useEffect(() => {
@@ -88,30 +89,23 @@ export const NewArtikelProvider = ({ children }) => {
       });
   };
 
-  const delNewArtikel = (
-    NewartikelName,
-    NewartikelPrice,
-    NewartikelBeschreibung,
-    NewartikelRabat,
-    NewartikelKodu,
+  // Delete Artikel
+  const delArtikel = (
+    artikelId,
   ) => {
     const data = {
-      NewartikelName,
-      NewartikelPrice,
-      NewartikelBeschreibung,
-      NewartikelRabat,
-      NewartikelKodu,
+      artikelId,
     };
     axios
-      .get(`${process.env.REACT_APP_API}/newartikels/deleteartikel`, data)
+      .delete(`${process.env.REACT_APP_API}/newartikels/deleteartikel/${artikelId}`, data)
       .then((res) => {
-        setDelData(res.data);
-        console.log("Delete Artikel OK");
+        setDelArtikel(res.data);
+        console.log("Delete Miterbeiter OK!", artikelId);
       })
       .catch((error) => {
-        console.log("Delete Artikel Error:", error);
+        console.log("Delete Miterbeiter Error:", error.message);
       });
-  };
+  }
 
   return (
     <NewArtikelContext.Provider
@@ -124,7 +118,7 @@ export const NewArtikelProvider = ({ children }) => {
         loadNewArtikel,
         AddNewArtikel,
         editNewArtikel,
-        delNewArtikel,
+        delArtikel,
       }}
     >
       {children}
