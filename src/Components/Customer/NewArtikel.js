@@ -31,11 +31,11 @@ export const NewArtikel = () => {
 
   let kunden = listKunden;
 
-  let artikel = listKundenArtikel;
-
+  
   const firmenMap = kunden.map(({ ismi }) => ismi);
   console.log("FirmenMap: ", firmenMap);
-
+  
+  let artikel = listKundenArtikel;
   const artikelMap = artikel.map(({ NewartikelName }) => NewartikelName);
 
   const [valueFirma, setValueFirma] = useState("");

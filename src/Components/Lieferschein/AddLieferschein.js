@@ -28,85 +28,97 @@ import { ArtikelTasksProvider } from "../Context/ArtikelTasksContext";
 //import Stack from '@mui/material/Stack';
 //import { DataGrid } from '@mui/x-data-grid';
 
+import { useLieferscheinContext } from "../Context/LieferscheinContext";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
-import {useLieferscheinContext} from "../Context/LieferscheinContext"
 
-
-// Befor Jhre vechseln 
-
-let initialYear = 2023;
-
-// Actuel Datum Heute
-const date = new Date();
-let getYear = date.getFullYear();
-
-export const HeuteDatum = () => {
-  const heute =
-    String(date.getDate()).padStart(2, "0") +
-    "." +
-    String(date.getMonth() + 1).padStart(2, "0") +
-    "." +
-    date.getFullYear();
-  return <strong>{heute}</strong>;
-};
+// Befor Jhre vechseln
 
 export const AddLieferschein = () => {
+  let initialYear = 2023;
 
+  // Actuel Datum Heute
+  const date = new Date();
+  let getYear = date.getFullYear();
+
+  const [heuteIst, setHeuteIst] = useState();
+  const HeuteDatum = () => {
+    const heute =
+      String(date.getDate()).padStart(2, "0") +
+      "." +
+      String(date.getMonth() + 1).padStart(2, "0") +
+      "." +
+      date.getFullYear();
+    setHeuteIst(heute);
+    return <strong>{heute}</strong>;
+  };
+  const { customerId } = useParams();
   const { token } = useUser();
-  const { listData } = useCustomer();
+  const { listData, createLieferschein } = useCustomer();
 
-  const { listLieferscheinNummer, loadLieferscheinNummer } = useLieferscheinContext();
+  const { listLieferscheinNummer, loadLieferscheinNummer } =
+    useLieferscheinContext();
   // console.log(listLieferscheinNummer, loadLieferscheinNummer);
   // // LieferscheinNummer
-  const [lieferscheinNummer, setLieferscheinNummer] = useState(
-    {
-      lieferscheinNummerNew: "",
-    }
-  );
+  // const [lieferscheinNummer, setLieferscheinNummer] = useState(
+  //   {
+  //     lieferscheinNummerNew: "",
+  //   }
+  // );
 
   // const {
   //   lieferscheinNummerNew,
   // } = lieferscheinNummer
 
   //Lieferschein State
-  const [newLieferscheinArtikeln, setNewLieferscheinArtikeln] = useState(
-    
-    {
-    artikelKoduLe: "",
-    artikelNameLe: "",
-    artikelMengeLe: "",
-    artikelZutatenLe: "",
-    artikelKistenzahlLe: "",
-    artikelPriceLe: "",
-  });
+  // const [newLieferscheinArtikeln, setNewLieferscheinArtikeln] = useState(
 
-  const {
-    artikelKoduLe,
-    artikelNameLe,
-    artikelMengeLe,
-    artikelZutatenLe,
-    artikelKistenzahlLe,
-    artikelPriceLe,
-  }= newLieferscheinArtikeln;
+  //   {
+  //   artikelKoduLe: "",
+  //   artikelNameLe: "",
+  //   artikelMengeLe: "",
+  //   artikelZutatenLe: "",
+  //   artikelKistenzahlLe: "",
+  //   artikelPriceLe: "",
+  // });
 
+  // const {
+  //   artikelKoduLe,
+  //   artikelNameLe,
+  //   artikelMengeLe,
+  //   artikelZutatenLe,
+  //   artikelKistenzahlLe,
+  //   artikelPriceLe,
+  // }= newLieferscheinArtikeln;
 
   // Customer Daten einladen
+  // const [valueArtikel, setValueArtikel] = useState("Artikel");
+  // const [inputArtikelValue, setInputArtikelValue] = useState();
+  // let artikel = listData;
+  // const artikelMap = artikel.map(({ NewartikelName }) => NewartikelName);
+
   const [listKunden, setListKunden] = useState([]);
+  const [customerid, setCustomerId] = useState();
+  let id = customerid;
+
+
   useEffect(() => {
     setListKunden(listData);
   }, [listData, listLieferscheinNummer]);
 
-
-// Lieferschein Aktuelnummer rechnen
+  // Lieferschein Aktuelnummer rechnen
   let lieferscheinnummer = listLieferscheinNummer;
-  const newNummer = lieferscheinnummer.map((nummer) => nummer.LieferscheinNummer);
+  const newNummer = lieferscheinnummer.map(
+    (nummer) => nummer.LieferscheinNummer
+  );
   console.log("Nummer", newNummer);
   let newNummerLieferschein = Math.max.apply(null, newNummer);
-  if (getYear === initialYear){
-  newNummerLieferschein += 1;
+  if (getYear === initialYear) {
+    newNummerLieferschein += 1;
   } else {
     newNummerLieferschein += 1000000;
-}
+  }
 
   // Customer map
   let kunden = listKunden;
@@ -121,8 +133,9 @@ export const AddLieferschein = () => {
   console.log("Customer : ", findCustomer);
 
   // Leistungs Datum laden auf Lieferschein ein
+  const [startDate, setStartDate] = useState(new Date());
+  const [datumLeistung, setDatumLeistung] = useState();
   const LeistungsDatum = () => {
-    const [startDate, setStartDate] = useState(new Date());
     const dateStart = new Date(startDate);
     const start =
       String(dateStart.getDate()).padStart(2, "0") +
@@ -130,6 +143,7 @@ export const AddLieferschein = () => {
       String(dateStart.getMonth() + 1).padStart(2, "0") +
       "." +
       dateStart.getFullYear();
+    setDatumLeistung(start);
     return (
       <>
         <Box
@@ -157,16 +171,29 @@ export const AddLieferschein = () => {
 
   // Laden Artikels von Customer
   const [customerArtikels, setCustomerArtikels] = useState([]);
-  // const [valueArtikel, setValueArtikel] = useState("Artikel");
-  // const [inputArtikelValue, setInputArtikelValue] = useState();
-
+  const [valueArtikel, setValueArtikel] = useState("Artikel");
+  const [inputArtikelValue, setInputArtikelValue] = useState();
+  const [inputArtikel, setInputArtikel] = useState([
+    {
+      inputArtikelNameIn: "",
+      inputArtikelMengeIn: "",
+      inputArtikelEinheitIn: "",
+      inputArtikelKistenIn: "",
+    },
+  ]);
+  
   useEffect(() => {
     if (findCustomer !== undefined) {
+      setCustomerId(findCustomer?.id);
       setCustomerArtikels(findCustomer.artikels);
     }
-  }, [findCustomer]);
+    if (inputArtikel !== null) {
+      setInputArtikelLe(inputArtikel);
+    }
+      
+  }, [findCustomer, inputArtikel]);
 
-  const FindArtikel = customerArtikels.map((artikels) => artikels);
+  const FindArtikel = customerArtikels?.map((artikels) => artikels);
   // const artikelMap = FindArtikel.map(({ artikelName }) => artikelName);
   // const FindArtikelName = FindArtikel.find(
   //   (artikel) => artikel.artikelName === `${valueArtikel}`
@@ -177,52 +204,41 @@ export const AddLieferschein = () => {
   // );
   console.log("Find Artikels: ", FindArtikel);
 
-  const [inputArtikel, setInputArtikel] = useState([
-    {
-      inputArtikelNameIn: "",
-      inputArtikelMengeIn: "",
-      inputArtikelEinheitIn: "",
-      inputArtikelKistenIn: "",
-    },
-  ]);
 
 
-  const [inputArtikelLe, setInputArtikelLe] = useState([])
+  const [inputArtikelLe, setInputArtikelLe] = useState([]);
 
-console.log(inputArtikelLe);
+  console.log("Input Artikel Array: ",inputArtikelLe);
   const {
     inputArtikelNameIn,
     inputArtikelMengeIn,
     inputArtikelEinheitIn,
     inputArtikelKistenIn,
-
-  } = inputArtikelLe
+  } = inputArtikelLe;
 
   const handleInputChange = (index, event) => {
-     const list = [...inputArtikel];
-     list[index][event.target.name] = event.target.value;
-    setInputArtikelLe(list);
+    const list = [...inputArtikel];
+    list[index][event.target.name] = event.target.value;
+    setInputArtikel(list);
   };
 
   const handleRemoveClick = (i) => {
     const list = [...inputArtikel];
-     list.splice(i, 1);
+    list.splice(i, 1);
     setInputArtikel(list);
   };
 
   const handleAddClick = (i) => {
     let newFeld = {
-        inputArtikelNameIn: "",
-        inputArtikelMengeIn: "",
-        inputArtikelEinheitIn: "",
-        inputArtikelKistenIn: "",
-      }
-    setInputArtikel([
-      ...inputArtikel,
-      newFeld
-    ]);
+      inputArtikelNameIn: "",
+      inputArtikelMengeIn: "",
+      inputArtikelEinheitIn: "",
+      inputArtikelKistenIn: "",
+    };
+    setInputArtikel([...inputArtikel, newFeld]);
   };
 
+  const [addDataLieferschein, setAddDataLieferschein] = useState();
   // Lieferschein State submit
   // const onChangeArtikelLe = (e, index) => {
   //    e.preventDefault();
@@ -232,7 +248,7 @@ console.log(inputArtikelLe);
   //   setInputArtikel([{...list, [e.target.name]: e.target.value}]);
   //   //setNewLieferscheinArtikeln({ ...newLieferscheinArtikeln, [e.target.name]: e.target.value });
   // };
-  
+
   // const handleChangeMenge = (e, index) => {
   //   //e.preventDefault();
   //   const list = [...inputArtikel];
@@ -246,11 +262,46 @@ console.log(inputArtikelLe);
   // };
   const submit = (e) => {
     e.preventDefault();
-    console.log(inputArtikel)
-}
-  
-  console.log("New data: ", inputArtikel);
-
+    
+    const data =
+      {
+         lieferscheinArtikels: [...inputArtikelLe],
+        lieferscheinNummer: newNummerLieferschein,
+        lieferscheinDatum: heuteIst,
+        leistungDatum: datumLeistung,
+      lieferant: "",
+        id
+    }
+    axios
+      .post(
+        `${process.env.REACT_APP_API}/customerlieferschein/addlieferschein/${id}`,
+        data
+      )
+      .then((res) => {
+        setAddDataLieferschein(res.data);
+        console.log("Push Data: ", data);
+      })
+      .catch((error) => {
+        console.log("Push Data: ", data);
+        console.log("Create new Customer Error:", error.message);
+      });
+    
+    // console.log(
+    //   "Push: ",
+    //   { inputArtikelNameIn,
+    //     inputArtikelMengeIn,
+    //     inputArtikelEinheitIn,
+    //     inputArtikelKistenIn,
+      
+    //     lieferscheinNummer: newNummerLieferschein,
+    //     lieferscheinDatum: heuteIst,
+    //     leistungDatum: datumLeistung,
+    //     lieferant: "",
+    //     customerId: id,
+    //   },
+    //   id
+    // );
+  };
 
   // Print die Lieferschein
   const Print = () => {
@@ -260,225 +311,7 @@ console.log(inputArtikelLe);
     window.print();
     document.body.innerHTML = originalContents;
   };
-  
-  // const ArtikelTabele = () => {
-    
-    //   return (
-      
-  //     <div>
-  //     {/* <div>{`value: ${value !== null ? `'${value}'` : 'null'}`}</div>
-  //     <div>{`inputValue: '${inputValue}'`}</div> */}
-  //     <br />
-  //     <Autocomplete
-  //                     placeholder="Artikel"
-  //                     // value={valueArtikel}
-  //                     name="artikelNameCu"
-  //                     onChange={(e, newValueArtikel) => {
-  //                       // handleChangeBeschreibung(e);
-  //                       setValueArtikel(newValueArtikel);
-  //                     }}
-  //                     inputValue={inputArtikelValue}
-  //                     onInputChange={(e, newInputArtikelValue) => {
-  //                       setInputArtikelValue(newInputArtikelValue);
-  //                     }}
-  //                    // key={FindArtikel}
-  //                     options={artikelMap}
-  //                     sx={{
-  //                       width: 350,
-  //                       zIndex: 30 + "!important",
-  //                       borderRadius: 50,
-  //                     }}
-  //                     renderInput={(params) => (
-  //                       <TextField
-  //                         {...params}
-  //                         // onSelect={(e) => handleChangeName(e)}
-  //                         name="artikelNameLe"
-  //                         value={!artikelNameLe ? { valueArtikel } : "Artikel"}
-  //                         // onChange={(e)=>handleChangeName(e)}
-  //                       />
-  //                     )}
-  //                   />
-  //   </div>
-        
-  //       )
-    
-  //     //   <Autocomplete
-  //     //     id="highlights"
-  //     //     sx={{ width: 300 }}
-  //     //     options={FindArtikel}
-  //     //     getOptionLabel={(option) => option.artikelName}
-  //     //     renderInput={(params) => (
-  //     //       <TextField {...params} label="Artikel" margin="normal" />
-  //     //     )}
-  //     //     renderOption={(props, option, { inputValue }) => {
-  //     //       const matches = match(option.artikelName, inputValue, {
-  //     //         insideWords: true,
-  //     //       });
-  //     //       const parts = parse(option.artikelName, matches);
 
-  //     //       return (
-  //     //         <li {...props}>
-  //     //           <div>
-  //     //             {parts.map((part, index) => (
-  //     //               <span
-  //     //                 key={index}
-  //     //                 style={{
-  //     //                   fontWeight: part.highlight ? 700 : 400,
-  //     //                 }}
-  //     //               >
-  //     //                 {part.text}
-  //     //               </span>
-  //     //             ))}
-  //     //           </div>
-  //     //         </li>
-  //     //       );
-  //     //     }}
-  //     //   />
-  //     //   </>
-  //     // );
-  //     // customerArtikels.map((x, i) => (
-  //     //   <>
-  //     //     <div className="d-flex flex-wrap justify-content-around">
-  //     //       <div className="d-flex border-top border-bottom">
-  //     //         <TextField
-  //     //           key={i}
-  //     //           style={{ width: "2rem", height: "2rem" }}
-  //     //           id="outlined-read-only-input"
-  //     //           label={x.artikelKodu}
-  //     //           name="artikelKodu"
-  //     //           defaultValue={
-  //     //             x.artikelKodu !== undefined ? `${x.artikelKodu}` : i
-  //     //           }
-  //     //           InputProps={{
-  //     //             readOnly: true,
-  //     //           }}
-  //     //           variant="standard"
-  //     //           size="small"
-  //     //         />
-  //     //         <Form.Label
-  //     //           key={i}
-  //     //           htmlFor="input"
-  //     //           style={{
-  //     //             //  marginRight: "2rem",
-  //     //             //width: "18.5rem",
-  //     //             fontFamily: "Roboto",
-  //     //             fontSize: "0.875rem",
-  //     //             fontWeight: 500,
-  //     //           }}
-  //     //         >
-  //     //           <Form.Select
-  //     //             key={i}
-  //     //             name="artikelNameLe"
-  //     //             style={{ width: "20rem", height: "2rem" }}
-  //     //             value={x.inputArtikelNameLe}
-  //     //             onChange={onChangeArtikelLe}
-  //     //             // onChange={e => {
-  //     //             //   dispatch({
-  //     //             //     type: 'changed',
-  //     //             //     task: {
-  //     //             //       ...task,
-  //     //             //       NewartikelName: e.target.value
-  //     //             //     }
-  //     //             //   });
-  //     //             // }}
-  //     //           >
-  //     //             {FindArtikel.map((artikel, k) => (
-  //     //               <option name={artikel.artikelName} key={k}>
-  //     //                 {artikel.artikelName}
-  //     //               </option>
-  //     //             ))}
-  //     //           </Form.Select>
-  //     //         </Form.Label>
-  //     //         <TextField
-  //     //           key={i}
-  //     //           style={{ width: "20rem", height: "2rem" }}
-  //     //           id="outlined-read-only-input"
-  //     //           //label="Read Only"
-  //     //           defaultValue="Mehl, Zucker, Wasser"
-  //     //           InputProps={{
-  //     //             readOnly: true,
-  //     //           }}
-  //     //           variant="standard"
-  //     //           size="small"
-  //     //         />
-  //     //         <Form.Control
-  //     //           key={i}
-  //     //           variant="outlined"
-  //     //           style={{ width: "7rem", height: "2rem" }}
-  //     //           name="artikelMengeLe"
-  //     //           placeholder="Menge"
-  //     //           value={x.inputArtikelMengeLe}
-  //     //           onChange={(e) => handleCheckMenge(e)}
-  //     //         />
-  //     //         <div
-  //     //           className="border border-dark"
-  //     //           style={{ width: "7rem", height: "2rem" }}
-  //     //         ></div>
-  //     //         <Form.Control
-  //     //           variant="outlined"
-  //     //           name="retour"
-  //     //           placeholder="Retour"
-  //     //           value={x.artikelEinheitLe}
-  //     //           // onChange={(e) => handleInputChange(e, i)}
-  //     //         />
-  //     //         <Form.Control
-  //     //           key={i}
-  //     //           style={{ width: "7rem", height: "2rem" }}
-  //     //           name="kisten"
-  //     //           placeholder="Kisten"
-  //     //           value={"artikelKistenLe"}
-  //     //           //onChange={(e) => handleKistenChange()}
-  //     //         />
-  //     //       </div>
-  //     //       <div className="d-flex flex-row gap-1">
-  //     //         {inputArtikel.length !== 1 && (
-  //     //           <Button
-  //     //             color="error"
-  //     //             variant="outlined"
-  //     //             style={{ width: "5rem", height: "2rem" }}
-  //     //             onClick={() => handleRemoveClick(i)}
-  //     //           >
-  //     //             Löschen
-  //     //           </Button>
-  //     //         )}
-  //     //       </div>
-  //     //     </div>
-  //     //     {inputArtikel.length - 1 === i && (
-  //     //       <Button
-  //     //         color="success"
-  //     //         variant="outlined"
-  //     //         style={{ width: "5rem", height: "2rem" }}
-  //     //         onClick={handleAddClick}
-  //     //       >
-  //     //         Neue
-  //     //       </Button>
-  //     //     )}
-  //     //   </>
-  //     // ))
-      
-    
-  // };
-
-
-    // const [nbRows, setNbRows] = useState(0);
-    // const [product, setProduct] = useState("");
-
-
-  // const addRow = () => {
-   
-  //   const length = FindArtikel.length; 
-    
-
-  //   setNbRows(c => Math.min(length, c + 1)) ;
-  //   if (findCustomer) {
-  //     setProduct(FindArtikel[nbRows].artikelName);
-  //     }
-  // }
-  //  const removeRow = () => {
-  //    setNbRows(c => Math.max(0, c - 1));
-  //   setProduct(FindArtikel[nbRows].artikelName);
-  // }
-  // console.log("Product" ,product, nbRows, FindArtikel.length);
   return token ? (
     <Fragment>
       <CssBaseline />
@@ -512,9 +345,7 @@ console.log(inputArtikelLe);
                   <Box className="d-flex flex-column">
                     <Typography level="body1">Kundenangaben</Typography>
 
-                    <FormText
-                    key={2}>
-
+                    <FormText key={2}>
                       {/* <Typography component="b">Firma: </Typography> */}
                       {findCustomer !== undefined ? (
                         <b>{findCustomer.hitab} </b>
@@ -528,9 +359,7 @@ console.log(inputArtikelLe);
                       )}
                     </FormText>
 
-                    <FormText
-                    key={3}>
-
+                    <FormText key={3}>
                       {findCustomer !== undefined ? (
                         <b>{findCustomer.cadde}</b>
                       ) : (
@@ -545,10 +374,7 @@ console.log(inputArtikelLe);
                       )}
                     </FormText>
 
-                    <FormText
-                      key={4}
-                    >
-
+                    <FormText key={4}>
                       {findCustomer !== undefined ? (
                         <b>{findCustomer.plz} </b>
                       ) : (
@@ -563,10 +389,8 @@ console.log(inputArtikelLe);
                   </Box>
                   <Box className="d-flex flex-column padding-right-6 w-25">
                     <Typography level="body1">
-
                       Lieferschein -Nr.:
                       {newNummerLieferschein}
-
                     </Typography>
                     <FormText>
                       Kundennummer{" "}
@@ -615,79 +439,91 @@ console.log(inputArtikelLe);
                 </Typography>
               </div>
               {inputArtikel.map((x, index) => {
-
-                  return (
-                    <>
-                      
-                      <div className="d-flex flex-wrap justify-content-around">
-                        <div key={index} className="d-flex border-top border-bottom">
-                          
-                          <TextField
-                            style={{ width: "2rem", height: "2rem" }}
-                            id="outlined-read-only-input"
-                            label={x.artikelKodu}
-                            name="artikelKodu"
-                            value={x.artikelKodu}
-                            defaultValue={index+1}
-                            InputProps={{
-                              readOnly: true,
-                            }}
-                            variant="standard"
-                            size="small"
-                          ></TextField>
-                          <Form.Label
+                return (
+                  <>
+                    <div className="d-flex flex-wrap justify-content-around">
+                      <div
+                        key={index}
+                        className="d-flex border-top border-bottom"
+                      >
+                        <TextField
+                          style={{ width: "2rem", height: "2rem" }}
+                          id="outlined-read-only-input"
+                          label={x.artikelKodu}
+                          name="artikelKodu"
+                          value={x.artikelKodu}
+                          defaultValue={index + 1}
+                          InputProps={{
+                            readOnly: true,
+                          }}
+                          variant="standard"
+                          size="small"
+                        ></TextField>
+                        <Form.Label
                           // key={i}
-                            htmlFor="input"
-                            style={{
-                              //  marginRight: "2rem",
-                              //width: "18.5rem",
-                              fontFamily: "Roboto",
-                              fontSize: "0.875rem",
-                              fontWeight: 500,
-                            }}
-                          >
-                          </Form.Label>
-                            <Form.Select
-                            // key={i}
-                              name="inputArtikelNameIn"
-                              style={{ width: "20rem", height: "2rem" }}
-                              value={x.inputArtikelNameIn}
-                              onChange={event => handleInputChange(index, event)}
-                          >
-                            <option></option>
-                              {FindArtikel.map((artikel, k) => (
-                                <option
-                                  value={k.inputArtikelNameIn}
-                                  name={inputArtikelNameIn}
-                                  key={k}
-                                > 
-                                  {artikel.artikelName}
-                                </option>
-                              ))}
-                            </Form.Select>
-                          <TextField
-                          // key={k}
-                            style={{ width: "20rem", height: "2rem" }}
-                            id="outlined-read-only-input"
-                            //label="Read Only"
-                            defaultValue={FindArtikel[index+1]?.artikelBeschreibung}
-                            InputProps={{
-                              readOnly: true,
-                            }}
-                            variant="standard"
-                            size="small"
-                          />
-                          <Form.Control
+                          htmlFor="input"
+                          style={{
+                            //  marginRight: "2rem",
+                            //width: "18.5rem",
+                            fontFamily: "Roboto",
+                            fontSize: "0.875rem",
+                            fontWeight: 500,
+                          }}
+                        ></Form.Label>
+                        <Form.Select
+                          // key={i}
+                          // onChange={(event, newValue) => {
+                          //   setValue(newValue);
+                          // }}
+                          inputValue={inputArtikelValue}
+                          onInputChange={(event, newInputArtikelValue) => {
+                            setInputArtikelValue(newInputArtikelValue);
+                          }}
+                          name="inputArtikelNameIn"
+                          style={{ width: "20rem", height: "2rem" }}
+                          value={x.inputArtikelNameIn}
+                          onChange={(event, newInputArtikelValue) => {
+                            handleInputChange(index, event);
+                            setValueArtikel(newInputArtikelValue);
+                          }}
+                        >
+                          <option></option>
+                          {FindArtikel.map((artikel, k) => (
+                            <option
+                              value={k.inputArtikelNameIn}
+                              name={inputArtikelNameIn}
+                              key={k}
+                            >
+                              {artikel.artikelName}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        {/* <div>{`${valueArtikel !== null ? `'${valueArtikel}'` : 'null'}`}</div> */}
+                        <TextField
+                          key={index}
+                          style={{ width: "20rem", height: "2rem" }}
+                          id="outlined-read-only-input"
+                          //label="Read Only"
+                          //defaultValue=
+                          //{customerArtikels[index]?.artikelBeschreibung}
+                          // {FindArtikel[index + 1]?.artikelBeschreibung}
+                          InputProps={{
+                            readOnly: true,
+                          }}
+                          variant="standard"
+                          size="small"
+                        />
+                        <Form.Control
                           // key={x.id}
-                            variant="outlined"
-                            style={{ width: "7rem", height: "2rem" }}
-                            name="inputArtikelMengeIn"
-                            placeholder="Menge"
-                            value={x.inputArtikelMengeIn}
-                            onChange={event => handleInputChange(index, event)}
-                          />
-                          <div 
-                            // key={i}
+                          variant="outlined"
+                          style={{ width: "7rem", height: "2rem" }}
+                          name="inputArtikelMengeIn"
+                          placeholder="Menge"
+                          value={x.inputArtikelMengeIn}
+                          onChange={(event) => handleInputChange(index, event)}
+                        />
+                        <div
+                          // key={i}
 
                           className="border border-dark"
                           style={{ width: "7rem", height: "2rem" }}
@@ -702,42 +538,44 @@ console.log(inputArtikelLe);
                           /> */}
                         <Form.Control
                           // key={i}
-                            style={{ width: "7rem", height: "2rem" }}
-                            name="inputArtikelKistenIn"
-                            placeholder="Kisten"
-                            value={x.inputArtikelKistenIn}
-                            onChange={event => handleInputChange(index, event)}
-                          />
-                        </div>
-                        <div
-                          // key={i}
-                          className="d-flex flex-row gap-1">
-                          {inputArtikel.length  !== 1 && (
-                            <Button
-                              color="error"
-                              variant="outlined"
-                              style={{ width: "5rem", height: "2rem" }}
-                              onClick={() => handleRemoveClick(index)}
-                            >
-                              Löschen
-                            </Button>
-                          )}
-                        </div>
+                          style={{ width: "7rem", height: "2rem" }}
+                          name="inputArtikelKistenIn"
+                          placeholder="Kisten"
+                          value={x.inputArtikelKistenIn}
+                          onChange={(event) => handleInputChange(index, event)}
+                        />
                       </div>
-                      {!findCustomer ? (null): (inputArtikel.length - 1 === index && (
-                        <Button
-                          color="success"
-                          variant="outlined"
-                          style={{ width: "5rem", height: "2rem" }}
-                          onClick={() => handleAddClick(index)}
-                        >
-                          Neue
-                        </Button>
-                      ))}
-                    </>
-                  );
-                })}
-
+                      <div
+                        // key={i}
+                        className="d-flex flex-row gap-1"
+                      >
+                        {inputArtikel.length !== 1 && (
+                          <Button
+                            color="error"
+                            variant="outlined"
+                            style={{ width: "5rem", height: "2rem" }}
+                            onClick={() => handleRemoveClick(index)}
+                          >
+                            Löschen
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                    {!findCustomer
+                      ? null
+                      : inputArtikel.length - 1 === index && (
+                          <Button
+                            color="success"
+                            variant="outlined"
+                            style={{ width: "5rem", height: "2rem" }}
+                            onClick={() => handleAddClick(index)}
+                          >
+                            Neue
+                          </Button>
+                        )}
+                  </>
+                );
+              })}
             </Box>
           </Box>
           <div className="d-flex flex-wrap justify-content-start">
@@ -768,17 +606,16 @@ console.log(inputArtikelLe);
           </div>
           <div className="d-flex flex-wrap flex-row-reverse">
             <div className="d-flex flex-wrap mt-3 gap-3 pb-5">
-
-                <Button
-                  variant="outlined"
-                  sx={{
-                    height: 40,
+              <Button
+                variant="outlined"
+                sx={{
+                  height: 40,
                 }}
                 onClick={submit}
               >
-                <BiSave/>
-                  &nbsp;Zwischenspeichern
-                </Button>
+                <BiSave />
+                &nbsp;Zwischenspeichern
+              </Button>
 
               <Button
                 variant="outlined"

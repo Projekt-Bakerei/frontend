@@ -15,6 +15,7 @@ export const CustomerProvider = ({ children, ID }) => {
   const [delCustomers, setDelCustomers] = useState([]);
   const [addDataProduct, setAddDataProduct] = useState([]);
   const [delArtikel, setDelArtikel] = useState([]);
+  const [addDataLieferschein, setAddDataLieferschein] = useState([]);
 
   const { token } = useUser();
 
@@ -222,36 +223,53 @@ export const CustomerProvider = ({ children, ID }) => {
 
   // Create Lieferschein beim Customer
   const createLieferschein = (
-    artikelLe,
-    artikelName,
-    artikelKodu,
-    artikelMenge,
-    artikelZutaten,
-    artikelKistenzahl
+    lieferscheins,
+    //  lieferscheinNummer,
+    //     lieferscheinDatum,
+    //     leistungDatum,
+    //   lieferant,
+    //       inputArtikelNameIn,
+    //       inputArtikelMengeIn,
+    //       inputArtikelEinheitIn,
+    //       inputArtikelKistenIn,
+    customerId, 
+    id
   ) => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
-      },
-    };
-    console.log("Token addCustomer:", token);
+    // const config = {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `${token}`,
+    //   },
+    // };
+    console.log("id addCustomer:", customerId,
+      id
+    );
 
     const data = {
-      artikelLe,
-      artikelName,
-      artikelKodu,
-      artikelMenge,
-      artikelZutaten,
-      artikelKistenzahl,
+      lieferscheins,
+      //  {lieferscheinNummer,
+      //   lieferscheinDatum,
+      //   leistungDatum,
+      //  lieferant,
+      //     inputArtikelNameIn,
+      //     inputArtikelMengeIn,
+      //     inputArtikelEinheitIn,
+      //     inputArtikelKistenIn,},
+      customerId,
+      id
     };
     axios
-      .post(`${process.env.REACT_APP_API}/customers/addcustomer`, data, config)
+      .post(
+        `${process.env.REACT_APP_API}/customerlieferschein/addlieferschein/${id}`,
+        data
+      )
       .then((res) => {
-        setAddData(res.data);
+        setAddDataLieferschein(res.data);
+        console.log("Push Data: ", data);
       })
       .catch((error) => {
-        console.log("Create new Customer Error:", error);
+        console.log("Push Data: ", data);
+        console.log("Create new Customer Error:", error.message);
       });
   };
 
