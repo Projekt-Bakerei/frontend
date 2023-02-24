@@ -43,16 +43,60 @@ console.log(user)
               <div className="d-flex flex-row gap-1">
               <Card sx={{width: 220, padding: 1}}>
                 <small>12.02.23 - </small>
-                  <code>Mitterbeiter und Fahrer getrend, fixiert kann löschen von liste und DB.</code>
-                  <code>Lieferschein Nummer fixiert begin von 2023000001</code>
+                  <code>
+                    <ul>
+                      <li>Mitterbeiter und Fahrer getrennt, fixiert kann löschen von liste und DB.</li>
+                      <li>Lieferschein Nummer fixiert begin von 2023000001</li>
+                    </ul> 
+                  </code>
               </Card>
               <Card sx={{width: 220, padding: 1}}>
                 <small>13.02.23 - </small>
-                  <code>Kunden und Artikel list, fixiert kann löschen von liste und DB.</code>
-                  <code>Lieferschein Feld fix.</code>
-                  <code>TODO: Muliple array muss nach documentation suchen! </code>
-                  <code>ArtikelBeschreibung muss fixiert!</code>
-                  
+                  <code>
+                    <ul>
+                      <li>Kunden und Artikel list, fixiert kann löschen von liste und DB.</li>
+                      <li>Lieferschein Feld fix.</li>
+                    </ul>
+                  </code>
+                  <code>TODO:</code>
+                  <code>
+                    <ul>
+                      <li> Muliple array muss nach documentation suchen!</li>
+                      <li>ArtikelBeschreibung muss fixiert!</li>
+                    </ul>
+                  </code>
+                </Card>
+                <Card sx={{width: 220, padding: 1}}>
+                <small>21.02.23 - </small>
+                  <code>
+                    <ul>
+                      <li>Lieferschein nur erste array push</li>
+                      <li>Lieferscein backend fix</li>
+                    </ul>
+                  </code>
+                  <code>TODO:</code>
+                  <code>
+                    <ul>
+                      <li>Subdocuments dokumention suchen!</li>
+                      <li>dokumention für Population!</li>
+                    </ul>
+                  </code>
+                </Card>
+                <Card sx={{width: 220, padding: 1}}>
+                <small>24.02.23 - </small>
+                  <code>
+                    <ul>
+                      <li>Lieferschein fix</li>
+                      <li>Lieferscein Nummer fix</li>
+                    </ul>
+                  </code>
+                  <code>TODO:</code>
+                  <code>
+                    <ul>
+                      <li>Alle Lieferscheins list!</li>
+                      <li>Lieferschein Delete und Edit!</li>
+                    </ul>
+                  </code>
                 </Card>
               </div>
             </Box>
