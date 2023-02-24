@@ -33,7 +33,9 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 
+
 // Befor Jhre vechseln
+
 
 export const AddLieferschein = () => {
   let initialYear = 2023;
@@ -173,6 +175,7 @@ useEffect(() => {
 
   // Laden Artikels von Customer
   const [customerArtikels, setCustomerArtikels] = useState([]);
+
   const [valueArtikel, setValueArtikel] = useState("Artikel");
   const [inputArtikelValue, setInputArtikelValue] = useState();
   const [inputArtikel, setInputArtikel] = useState([
@@ -184,6 +187,7 @@ useEffect(() => {
     },
   ]);
   
+
   useEffect(() => {
     if (findCustomer !== undefined) {
       setCustomerId(findCustomer?.id);
@@ -208,9 +212,11 @@ useEffect(() => {
 
 
 
+
   const [inputArtikelLe, setInputArtikelLe] = useState([]);
 
   console.log("Input Artikel Array: ",inputArtikelLe);
+
   const {
     inputArtikelNameIn,
     inputArtikelMengeIn,
@@ -218,17 +224,21 @@ useEffect(() => {
     inputArtikelKistenIn,
   } = inputArtikelLe;
 
+
   const handleInputChange = (index, event) => {
     const list = [...inputArtikel];
     list[index][event.target.name] = event.target.value;
     setInputArtikel(list);
+
   };
 
   const handleRemoveClick = (i) => {
     const list = [...inputArtikel];
+
     list.splice(i, 1);
     setInputArtikel(list);
   };
+
 
   const handleAddClick = (i) => {
     let newFeld = {
@@ -265,7 +275,6 @@ useEffect(() => {
   // };
   const submit = (e) => {
     e.preventDefault();
-    
     const data =
       {
          lieferscheinArtikels: [...inputArtikelLe],
@@ -298,6 +307,7 @@ useEffect(() => {
     }, 200);
   };
   //console.log("LieferscheinNummer Axios:", lieferscheinNummerNew );
+
 
   // Print die Lieferschein
   const Print = () => {
@@ -520,6 +530,7 @@ useEffect(() => {
                         />
                         <div
                           // key={i}
+
 
                           className="border border-dark"
                           style={{ width: "7rem", height: "2rem" }}
