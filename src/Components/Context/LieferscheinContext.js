@@ -45,6 +45,7 @@ useEffect(() => {
     const data = {
       lieferscheinNummerNew
     };
+    console.log("LieferscheinNummer Axios:", lieferscheinNummerNew);
     axios
       .post(`${process.env.REACT_APP_API}/lieferscheinsnummer/addnummer`, data, config)
       .then((res) => {

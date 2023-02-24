@@ -57,8 +57,9 @@ export const AddLieferschein = () => {
   const { token } = useUser();
   const { listData, createLieferschein } = useCustomer();
 
-  const { listLieferscheinNummer, loadLieferscheinNummer } =
+  const { listLieferscheinNummer, addLieferscheinNummerNew } =
     useLieferscheinContext();
+  
   // console.log(listLieferscheinNummer, loadLieferscheinNummer);
   // // LieferscheinNummer
   // const [lieferscheinNummer, setLieferscheinNummer] = useState(
@@ -102,17 +103,13 @@ export const AddLieferschein = () => {
   const [customerid, setCustomerId] = useState();
   let id = customerid;
 
-
-  useEffect(() => {
-    setListKunden(listData);
-  }, [listData, listLieferscheinNummer]);
-
+const [lieferscheinNummerNew, setLieferscheinNummerNew] = useState();
   // Lieferschein Aktuelnummer rechnen
   let lieferscheinnummer = listLieferscheinNummer;
   const newNummer = lieferscheinnummer.map(
-    (nummer) => nummer.LieferscheinNummer
+    (nummer) => nummer.lieferscheinNummerNew
   );
-  console.log("Nummer", newNummer);
+  //console.log("Nummer", newNummer, lieferscheinnummer);
   let newNummerLieferschein = Math.max.apply(null, newNummer);
   if (getYear === initialYear) {
     newNummerLieferschein += 1;
@@ -120,6 +117,11 @@ export const AddLieferschein = () => {
     newNummerLieferschein += 1000000;
   }
 
+useEffect(() => {
+    setListKunden(listData);
+    setLieferscheinNummerNew(newNummerLieferschein)
+}, [listData, listLieferscheinNummer, newNummerLieferschein]);
+  
   // Customer map
   let kunden = listKunden;
   const firmenMap = kunden.map(({ ismi }) => ismi);
@@ -237,7 +239,8 @@ export const AddLieferschein = () => {
     };
     setInputArtikel([...inputArtikel, newFeld]);
   };
-
+  // const [artikelData, setArtikelData] = useState([]);
+  // console.log("Artikel Data: ", artikelData);
   const [addDataLieferschein, setAddDataLieferschein] = useState();
   // Lieferschein State submit
   // const onChangeArtikelLe = (e, index) => {
@@ -286,22 +289,15 @@ export const AddLieferschein = () => {
         console.log("Create new Customer Error:", error.message);
       });
     
-    // console.log(
-    //   "Push: ",
-    //   { inputArtikelNameIn,
-    //     inputArtikelMengeIn,
-    //     inputArtikelEinheitIn,
-    //     inputArtikelKistenIn,
-      
-    //     lieferscheinNummer: newNummerLieferschein,
-    //     lieferscheinDatum: heuteIst,
-    //     leistungDatum: datumLeistung,
-    //     lieferant: "",
-    //     customerId: id,
-    //   },
-    //   id
-    // );
+    addLieferscheinNummerNew(
+      lieferscheinNummerNew,
+      token
+    );
+    setTimeout(() => {
+      window.location.reload(false);
+    }, 200);
   };
+  //console.log("LieferscheinNummer Axios:", lieferscheinNummerNew );
 
   // Print die Lieferschein
   const Print = () => {
@@ -486,13 +482,13 @@ export const AddLieferschein = () => {
                             handleInputChange(index, event);
                             setValueArtikel(newInputArtikelValue);
                           }}
-                        >
+                          >
                           <option></option>
                           {FindArtikel.map((artikel, k) => (
                             <option
-                              value={k.inputArtikelNameIn}
-                              name={inputArtikelNameIn}
-                              key={k}
+                            value={k.inputArtikelNameIn}
+                            name={inputArtikelNameIn}
+                            key={k}
                             >
                               {artikel.artikelName}
                             </option>
