@@ -98,6 +98,24 @@ console.log(user)
                     </ul>
                   </code>
                 </Card>
+                <Card sx={{width: 220, padding: 1}}>
+                <small>04.03.23 - </small>
+                  <code>
+                    <ul>
+                      <li>Lieferschein fix Zutaten und Price</li>
+                      <li>Lieferscein Kodu fix</li>
+                    </ul>
+                  </code>
+                  <code>TODO:</code>
+                  <code>
+                    <ul>
+                      <li>Prüfen wenn Passiv mit Preis zeigen!</li>
+                      <li>Lieferschein Kisten!</li>
+                      <li>Alle Lieferscheins list!</li>
+                      <li>Lieferschein Delete und Edit!</li>
+                    </ul>
+                  </code>
+                </Card>
               </div>
             </Box>
           ) :( 
