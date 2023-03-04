@@ -34,6 +34,7 @@ import axios from "axios";
 
 // Befor Jhre vechseln
 
+
 export const AddLieferschein = () => {
   let initialYear = 2023;
 
@@ -53,8 +54,21 @@ export const AddLieferschein = () => {
     return <strong>{heute}</strong>;
   };
 
+
+  const [heuteIst, setHeuteIst] = useState();
+  const HeuteDatum = () => {
+    const heute =
+      String(date.getDate()).padStart(2, "0") +
+      "." +
+      String(date.getMonth() + 1).padStart(2, "0") +
+      "." +
+      date.getFullYear();
+    setHeuteIst(heute);
+    return <strong>{heute}</strong>;
+  };
+  const { customerId } = useParams();
   const { token } = useUser();
-  const { listData } = useCustomer();
+  const { listData, createLieferschein } = useCustomer();
 
   const { listLieferscheinNummer, addLieferscheinNummerNew } =
     useLieferscheinContext();
@@ -64,6 +78,7 @@ export const AddLieferschein = () => {
   let id = customerid;
 
   const [lieferscheinNummerNew, setLieferscheinNummerNew] = useState();
+
 
   // Lieferschein Aktuelnummer rechnen
   let lieferscheinnummer = listLieferscheinNummer;
@@ -78,11 +93,11 @@ export const AddLieferschein = () => {
     newNummerLieferschein += 1000000;
   }
 
-  useEffect(() => {
+useEffect(() => {
     setListKunden(listData);
-    setLieferscheinNummerNew(newNummerLieferschein);
-  }, [listData, listLieferscheinNummer, newNummerLieferschein]);
-
+    setLieferscheinNummerNew(newNummerLieferschein)
+}, [listData, listLieferscheinNummer, newNummerLieferschein]);
+  
   // Customer map
   let kunden = listKunden;
   const firmenMap = kunden.map(({ ismi }) => ismi);
@@ -134,19 +149,22 @@ export const AddLieferschein = () => {
 
   // Laden Artikels von Customer
   const [customerArtikels, setCustomerArtikels] = useState([]);
+
   const [artikelData, setArtikelData] = useState("");
-  
+
   const [inputArtikel, setInputArtikel] = useState([
     {
       inputArtikelNameIn: "",
       inputArtikelMengeIn: "",
       inputArtikelEinheitIn: "",
       inputArtikelKistenIn: "",
+
       inputArtikelPriceIn: "",
       inputArtikelKoduIn: "",
       inputArtikelBeschreibungIn: "",
     },
   ]);
+
 
   useEffect(() => {
     if (findCustomer !== undefined) {
@@ -159,6 +177,7 @@ export const AddLieferschein = () => {
   }, [findCustomer, inputArtikel]);
 
   let product = customerArtikels;
+
 
   const artikelMap = product?.map(({ artikelName }) => artikelName);
 
@@ -173,6 +192,7 @@ export const AddLieferschein = () => {
   const [artikelKoduData, setArtikelKoduData] = useState([]);
   const [artikelBeschreibungData, setArtikelBeschreibungData] = useState([]);
  
+
 
   const handleInputChange = (index, event) => {
     const list = [...inputArtikel];
@@ -222,7 +242,9 @@ export const AddLieferschein = () => {
     setArtikelData(artikels);
   };
 
+
   const handleAddClick = (i) => {
+
     const newFeld = {
       inputArtikelNameIn: "",
       inputArtikelMengeIn: "",
@@ -265,6 +287,7 @@ export const AddLieferschein = () => {
       });
 
     addLieferscheinNummerNew(lieferscheinNummerNew, token);
+
     setTimeout(() => {
       window.location.reload(false);
     }, 200);
@@ -492,6 +515,7 @@ export const AddLieferschein = () => {
                             fontWeight: 500,
                           }}
                         ></Form.Label>
+
                         <Autocomplete
                           label="Product"
                           value={index.valueArtikel}
@@ -525,6 +549,7 @@ export const AddLieferschein = () => {
                           )}
                         />
                         {/* <Form.Select
+
                           // key={i}
                           // onChange={(event, newValue) => {
                           //   setValue(newValue);
