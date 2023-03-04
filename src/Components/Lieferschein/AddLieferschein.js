@@ -54,18 +54,6 @@ export const AddLieferschein = () => {
     return <strong>{heute}</strong>;
   };
 
-
-  const [heuteIst, setHeuteIst] = useState();
-  const HeuteDatum = () => {
-    const heute =
-      String(date.getDate()).padStart(2, "0") +
-      "." +
-      String(date.getMonth() + 1).padStart(2, "0") +
-      "." +
-      date.getFullYear();
-    setHeuteIst(heute);
-    return <strong>{heute}</strong>;
-  };
   const { customerId } = useParams();
   const { token } = useUser();
   const { listData, createLieferschein } = useCustomer();
