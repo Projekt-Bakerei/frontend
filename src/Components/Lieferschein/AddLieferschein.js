@@ -425,6 +425,9 @@ export const AddLieferschein = () => {
                     </Typography>
                   </Box>
                 </Box>
+                  <Typography fontSize="sm">Sehr geehrte Damen und Herren,<br/>
+vielen Dank für die Zusammenarbeit. Vereinbarungsgemäß liefern wir Ihnen folgende Waren: 
+                  </Typography>
                 <hr />
               </Box>
             </Box>

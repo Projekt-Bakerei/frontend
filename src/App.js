@@ -19,12 +19,13 @@ import NewCustomer from "./Components/Customer/NewCustomer";
 import AddArtikel from "./Components/Artikel/AddArtikel";
 
 import { CreateInvoice } from "./Components/Rechnung/CreateInvoice";
-import BelegeMenu from "./Components/Rechnung/Belege";
+import BelegeMenu from "./Components/Menu/Belege";
 import Ausgangsbelege from "./Components/Rechnung/Ausgangsbelege";
 import Eingagngsbelege from "./Components/Rechnung/Eingangsbelege";
 import { AddLieferschein } from "./Components/Lieferschein/AddLieferschein";
 import NewFahrer from "./Components/Miterbeiter/NewFahrer";
 import ListFahrer from "./Components/Miterbeiter/ListFahrer";
+import ListLieferschein from "./Components/Lieferschein/ListLieferschein";
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
           <Route path="/ausgangsbelege" exact element={<Ausgangsbelege />} />
           <Route path="/eingangsbelege" exact element={<Eingagngsbelege />} />
           <Route path="/lieferschein" exact element={<AddLieferschein />} />
+          <Route path="/listlieferschein" exact element={<ListLieferschein />} />
 
 
         </Routes>

@@ -48,7 +48,7 @@ export default function BelegeMenuButton() {
           <Menu {...bindMenu(popupState)}>
             <MenuItem onClick={handleRechnung}>Rechnung</MenuItem>
             <MenuItem onClick={popupState.close}>Angebot</MenuItem>
-            <MenuItem onClick={handleLieferschein}>Lieferschein</MenuItem>
+                <MenuItem onClick={handleLieferschein}>Lieferschein</MenuItem>    
             <MenuItem onClick={popupState.close}>Abschlagsrechnung</MenuItem>
             <MenuItem onClick={popupState.close}>Rechnungskorrektur</MenuItem>
           </Menu>
