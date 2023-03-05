@@ -18,7 +18,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import BelegeMenuButton from "../Menu/BelegeMenu";
+import BelegeMenuButton from "./BelegeMenu";
 
 const drawerWidth = 240;
 const margintop = 50;
@@ -84,8 +84,11 @@ export default function BelegeMenu() {
     setOpen(false);
   };
   const handleClick = (value) => {
-    if (value === "Alle Belege") {
+    if (value === "alle Belege") {
       window.location.href = "/belege";
+    }
+    if (value === "alle Lieferscheine") {
+      window.location.href = "/listlieferschein";
     }
     if (value === "Ausgangsbelege") {
       window.location.href = "/ausgangsbelege";
@@ -132,7 +135,8 @@ export default function BelegeMenu() {
           </Box>
           <List>
             {[
-              "Alle Belege",
+              "alle Belege",
+              "alle Lieferscheine",
               "Ausgangsbelege",
               "Eingagngsbelege",
               "Offene Rechnungen",

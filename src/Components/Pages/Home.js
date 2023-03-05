@@ -40,7 +40,7 @@ console.log(user)
               Hallo! -{bull} {user.name}
               </Typography>
               <small>Update:</small>
-              <div className="d-flex flex-row gap-1">
+              <div className="d-flex flex-wrap gap-1">
               <Card sx={{width: 220, padding: 1}}>
                 <small>12.02.23 - </small>
                   <code>
@@ -112,6 +112,22 @@ console.log(user)
                       <li>Prüfen wenn Passiv mit Preis zeigen!</li>
                       <li>Lieferschein Kisten!</li>
                       <li>Alle Lieferscheins list!</li>
+                      <li>Lieferschein Delete und Edit!</li>
+                    </ul>
+                  </code>
+                </Card>
+                <Card sx={{width: 220, padding: 1}}>
+                <small>05.03.23 - </small>
+                  <code>
+                    <ul>
+                      <li>Alle Lieferschein List erstelt</li>
+                    </ul>
+                  </code>
+                  <code>TODO:</code>
+                  <code>
+                    <ul>
+                      <li>Prüfen wenn Passiv mit Preis zeigen!</li>
+                      <li>Lieferschein Kisten!</li>
                       <li>Lieferschein Delete und Edit!</li>
                     </ul>
                   </code>
