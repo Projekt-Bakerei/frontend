@@ -16,6 +16,7 @@ import { Button } from "@mui/joy";
 
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useCustomer } from "../Context/CustomerContext";
+import { useMiterbeiter } from "../Context/MiterbeiterContext";
 
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -43,7 +44,7 @@ export const BackButton = () => {
   );
 };
 
-function ListLieferschein() {
+function FahrerService() {
   const bull = (
     <Box
       component="span"
@@ -55,23 +56,50 @@ function ListLieferschein() {
 
   const { token } = useUser();
   const { listData } = useCustomer();
+  const { listFahrer } = useMiterbeiter()
   const [listKunden, setListKunden] = useState([]);
+  const [listFahrerService, setListFahrerService] = useState([]);
+
+
+  console.log(listFahrer);
 
   let kunden = listKunden;
-  const firmenMap = kunden.map(({ ismi }) => ismi);
-  const [valueFirma, setValueFirma] = useState("");
+  
+  const [valueFahrer, setValueFahrer] = useState("");
   const [inputValue, setInputValue] = useState("");
+
+  let fahrer = listFahrerService;
+  const fahrerMap = fahrer.map(({ mName }) => mName);
+  //console.log(firmenMap, kunden);
 
   useEffect(() => {
     setListKunden(listData);
-  }, [listData]);
-
-  const findLieferschein = kunden?.find(
-    (lieferschein) => lieferschein.ismi === `${valueFirma}`
+    setListFahrerService(listFahrer)
+  }, [listData, listFahrer]);
+  const firmenMap = kunden?.map((customer) => {
+    return customer
+  });
+  const findLieferschein = kunden?.lieferscheins?.find(
+    (obj) => obj.lieferant === `${valueFahrer}`
   );
-  let listLieferscheins = findLieferschein?.lieferscheins;
+  let listLieferscheins = findLieferschein?.lieferscheins.lieferant;
 
-  const [expanded, setExpanded] = React.useState(false);
+  const filteredData = firmenMap?.filter(obj => {
+    return obj.lieferscheins.some(object => object.lieferant === `${valueFahrer}`);
+  });
+
+  console.log(
+    kunden,
+    firmenMap,
+    findLieferschein,
+    listLieferscheins,
+    kunden[11]?.lieferscheins[9]?.lieferant
+  );
+  
+  
+  console.log(filteredData);
+
+  const [expanded, setExpanded] = useState(false);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -91,9 +119,8 @@ function ListLieferschein() {
         maxWidth="xl"
         sx={{ paddingLeft: "5vw !important", paddingRight: "5vw !important", marginTop: "5vw !important" }} 
       >
-
         <Typography textColor="neutral.500" fontSize="xl" fontWeight="lg">
-          {bull} Alle Lieferscheine
+          {bull} Fahrer Service
         </Typography>
         <BackButton />
         
@@ -103,20 +130,20 @@ function ListLieferschein() {
             {/* <BelegeMenu /> */}
             <FormControl id="controllable" sx={{ marginTop: "1rem", marginLeft: "1rem" }}>
               <FormLabel sx={{ margin: "1rem" }}>
-                Hier eine Firma wählen
+                Hier ein Fahrer wählen
               </FormLabel>
               <Autocomplete
-                placeholder="Müsteri ara"
-                value={valueFirma}
+                placeholder="Fahrer Name"
+                value={valueFahrer}
                 onChange={(event, newValue) => {
-                  setValueFirma(newValue);
+                  setValueFahrer(newValue);
                 }}
                 inputValue={inputValue}
                 onInputChange={(event, newInputValue) => {
                   setInputValue(newInputValue);
                 }}
-                key={firmenMap}
-                options={firmenMap}
+                key={fahrerMap}
+                options={fahrerMap}
                 sx={{
                   width: 350,
                   zIndex: 30 + "!important",
@@ -129,7 +156,7 @@ function ListLieferschein() {
                       //setCustomerId(Find.id);
                       // setCustomerArtikels(Find.artikels);
                     }}
-                    label="Ismiyle | Müsteri ara"
+                    label="Fahrer Name"
                   />
                 )}
               />
@@ -222,4 +249,4 @@ function ListLieferschein() {
   );
 }
 
-export default ListLieferschein;
+export default FahrerService;
