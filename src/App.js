@@ -26,6 +26,7 @@ import { AddLieferschein } from "./Components/Lieferschein/AddLieferschein";
 import NewFahrer from "./Components/Miterbeiter/NewFahrer";
 import ListFahrer from "./Components/Miterbeiter/ListFahrer";
 import ListLieferschein from "./Components/Lieferschein/ListLieferschein";
+import FahrerService from "./Components/Lieferschein/FahrerService";
 
 function App() {
   return (
@@ -53,7 +54,7 @@ function App() {
           <Route path="/eingangsbelege" exact element={<Eingagngsbelege />} />
           <Route path="/lieferschein" exact element={<AddLieferschein />} />
           <Route path="/listlieferschein" exact element={<ListLieferschein />} />
-
+          <Route path="/fahrerservice" exact element={<FahrerService />} />
 
         </Routes>
       </Router>

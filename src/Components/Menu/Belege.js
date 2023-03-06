@@ -105,7 +105,10 @@ export default function BelegeMenu() {
     if (value === "Storniert") {
       window.location.href = "/storniert";
     }
-    console.log(value);
+    if (value === "Fahrerservice") {
+      window.location.href = "/fahrerservice";
+    }
+    //console.log(value);
   };
 
   return (
@@ -137,6 +140,7 @@ export default function BelegeMenu() {
             {[
               "alle Belege",
               "alle Lieferscheine",
+              "Fahrerservice",
               "Ausgangsbelege",
               "Eingagngsbelege",
               "Offene Rechnungen",
