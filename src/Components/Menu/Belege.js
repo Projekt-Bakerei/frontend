@@ -108,7 +108,7 @@ export default function BelegeMenu() {
     if (value === "Fahrerservice") {
       window.location.href = "/fahrerservice";
     }
-    //console.log(value);
+
   };
 
   return (
