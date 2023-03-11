@@ -31,7 +31,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-
 export const BackButton = () => {
   let navigate = useNavigate();
   return (
@@ -56,48 +55,60 @@ function FahrerService() {
 
   const { token } = useUser();
   const { listData } = useCustomer();
-  const { listFahrer } = useMiterbeiter()
+  const { listFahrer } = useMiterbeiter();
   const [listKunden, setListKunden] = useState([]);
   const [listFahrerService, setListFahrerService] = useState([]);
 
-
-  console.log(listFahrer);
-
   let kunden = listKunden;
-  
+
   const [valueFahrer, setValueFahrer] = useState("");
   const [inputValue, setInputValue] = useState("");
 
   let fahrer = listFahrerService;
   const fahrerMap = fahrer.map(({ mName }) => mName);
   //console.log(firmenMap, kunden);
+  const firmenMap = kunden?.map((customer) => {
+    return customer;
+  });
+  const filteredData = firmenMap?.filter((obj) => {
+    return obj.lieferscheins.find(
+      (object) => object.lieferant
+    );
+  });
+
+  const findFahrer = filteredData?.map(({ lieferscheins }) => {
+    return lieferscheins
+  });
+  const flatFahrer = findFahrer?.flat()
+
 
   useEffect(() => {
     setListKunden(listData);
-    setListFahrerService(listFahrer)
+    setListFahrerService(listFahrer);
   }, [listData, listFahrer]);
-  const firmenMap = kunden?.map((customer) => {
-    return customer
-  });
-  const findLieferschein = kunden?.lieferscheins?.find(
-    (obj) => obj.lieferant === `${valueFahrer}`
-  );
-  let listLieferscheins = findLieferschein?.lieferscheins.lieferant;
 
-  const filteredData = firmenMap?.filter(obj => {
-    return obj.lieferscheins.some(object => object.lieferant === `${valueFahrer}`);
-  });
 
-  console.log(
-    kunden,
-    firmenMap,
-    findLieferschein,
-    listLieferscheins,
-    kunden[11]?.lieferscheins[9]?.lieferant
+  function search(array, condition) {
+    if (array.length === 0) {
+      return [];
+    }
+    const [head, ...tail] = array;
+    if (condition(head)) {
+      return [head, ...search(tail, condition)];
+    }
+    return search(tail, condition);
+  }
+
+  const searchLieferscheins = search(
+    flatFahrer,
+    (fahrer) => fahrer?.lieferant === `${valueFahrer}`
   );
-  
-  
-  console.log(filteredData);
+
+  //  console.log("Search: ", searchLieferscheins);
+  // console.log("FilterData: ", filteredData);
+  // console.log("Flat Fahrer Lieferscheins:", flatFahrer);
+  // console.log("Array: ", arrayLieferscheins);
+  // filteredData?.forEach(element => console.log(element.lieferscheins.find(obj => obj.lieferant === `${valueFahrer}`)));
 
   const [expanded, setExpanded] = useState(false);
 
@@ -117,18 +128,25 @@ function FahrerService() {
 
       <Container
         maxWidth="xl"
-        sx={{ paddingLeft: "5vw !important", paddingRight: "5vw !important", marginTop: "5vw !important" }} 
+        sx={{
+          paddingLeft: "5vw !important",
+          paddingRight: "5vw !important",
+          marginTop: "5vw !important",
+        }}
       >
         <Typography textColor="neutral.500" fontSize="xl" fontWeight="lg">
           {bull} Fahrer Service
         </Typography>
         <BackButton />
-        
+
         <hr />
         {token ? (
           <>
             {/* <BelegeMenu /> */}
-            <FormControl id="controllable" sx={{ marginTop: "1rem", marginLeft: "1rem" }}>
+            <FormControl
+              id="controllable"
+              sx={{ marginTop: "1rem", marginLeft: "1rem" }}
+            >
               <FormLabel sx={{ margin: "1rem" }}>
                 Hier ein Fahrer wählen
               </FormLabel>
@@ -162,9 +180,9 @@ function FahrerService() {
               />
             </FormControl>
             <hr />
-            {findLieferschein !== undefined ? (
+            {searchLieferscheins !== undefined ? (
               <Box id="Accordion" sx={{ marginTop: "2rem" }}>
-                {listLieferscheins.map((lieferschein, i) => (
+                {searchLieferscheins.map((lieferschein, i) => (
                   <>
                     <Accordion
                       expanded={expanded === i}
@@ -175,14 +193,18 @@ function FahrerService() {
                         aria-controls="panel1bh-content"
                         id="panel1bh-header"
                       >
-                        <Typography sx={{width: "20%", color: "text.secondary" }}>
+                        <Typography
+                          sx={{ width: "20%", color: "text.secondary" }}
+                        >
                           vom Datum: <b>{lieferschein.lieferscheinDatum}</b>
                         </Typography>
                         <Typography sx={{ width: "33%", flexShrink: 1 }}>
                           Lieferschein Nummer:{" "}
                           <b>{lieferschein.lieferscheinNummer}</b>
                         </Typography>
-                        <Typography sx={{width: "33%", color: "text.secondary" }}>
+                        <Typography
+                          sx={{ width: "33%", color: "text.secondary" }}
+                        >
                           Leistung Datum: <b>{lieferschein.leistungDatum}</b>
                         </Typography>
                       </AccordionSummary>
@@ -193,32 +215,41 @@ function FahrerService() {
                               sx={{ minWidth: 650 }}
                               aria-label="caption table"
                             >
-                              <caption>
-                              Ware ordnungsgemäß erhalten
-                              </caption>
+                              <caption>Ware ordnungsgemäß erhalten</caption>
                               <TableHead>
                                 <TableRow>
+                                  <TableCell align="left">Kodu</TableCell>
                                   <TableCell align="left">
-                                    Kodu
+                                    Artikel Name
                                   </TableCell>
-                                  <TableCell align="left">Artikel Name</TableCell>
                                   <TableCell align="right">Menge</TableCell>
                                   <TableCell align="right">Price</TableCell>
                                   <TableCell align="right">Kisten</TableCell>
                                 </TableRow>
                               </TableHead>
                               <TableBody>
-                                {lieferschein.lieferscheinArtikelsDb.map((artikel, i) =>
-                                
-                                <TableRow key={i}>
-                                  <TableCell component="th" scope="row">
-                                    {artikel.inputArtikelKoduIn}
-                                  </TableCell>
-                                  <TableCell align="left">{artikel.inputArtikelNameIn}</TableCell>
-                                  <TableCell align="right">{artikel.inputArtikelMengeIn} Stk.</TableCell>
-                                  <TableCell align="right">{formatPrice(artikel.inputArtikelPriceIn)}</TableCell>
-                                  <TableCell align="right">{artikel.inputArtikelKistenIn} Stk.</TableCell>
-                                  </TableRow>
+                                {lieferschein.lieferscheinArtikelsDb.map(
+                                  (artikel, i) => (
+                                    <TableRow key={i}>
+                                      <TableCell component="th" scope="row">
+                                        {artikel.inputArtikelKoduIn}
+                                      </TableCell>
+                                      <TableCell align="left">
+                                        {artikel.inputArtikelNameIn}
+                                      </TableCell>
+                                      <TableCell align="right">
+                                        {artikel.inputArtikelMengeIn} Stk.
+                                      </TableCell>
+                                      <TableCell align="right">
+                                        {formatPrice(
+                                          artikel.inputArtikelPriceIn
+                                        )}
+                                      </TableCell>
+                                      <TableCell align="right">
+                                        {artikel.inputArtikelKistenIn} Stk.
+                                      </TableCell>
+                                    </TableRow>
+                                  )
                                 )}
                               </TableBody>
                             </Table>
