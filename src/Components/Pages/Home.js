@@ -150,6 +150,25 @@ console.log(user)
                     </ul>
                   </code>
                 </Card>
+                <Card sx={{width: 220, padding: 1}}>
+                <small>11.03.23 - </small>
+                  <code>
+                    <ul>
+                      <li>Fahrer Services Search fix</li>
+                      <li>Filter nach Name der Fahrer und Lieferscheins</li>
+                    </ul>
+                  </code>
+                  <code>TODO:</code>
+                  <code>
+                    <ul>
+                      <li>Samlen von Lieferscheins für Tag!</li>
+                      <li>Lieferschein Delete und Edit!</li>
+                    </ul>
+                  </code>
+                </Card>
+
+
+
               </div>
             </Box>
           ) :( 
