@@ -166,11 +166,30 @@ console.log(user)
                     </ul>
                   </code>
                 </Card>
+                <Card sx={{width: 220, padding: 1}}>
+                <small>12.03.23 - </small>
+                  <code>
+                    <ul>
+                      <li>Fahrer Services fix</li>
+                      <li>Filter nach Name der Fahrer und Lieferscheins fix</li>
+                      <li>Samlen von Lieferscheins für Tag fix</li>
+                    </ul>
+                  </code>
+                  <code>TODO:</code>
+                  <code>
+                    <ul>
+                      <li>Alle Lieferschein in Ausgangsbelege erstellen!</li>
+                      <li>Summe von Artikels!</li>
+                      <li>Lieferschein Delete und Edit!</li>
+                      <li>Produktions Liste erstellen!</li>
+                    </ul>
+                  </code>
+                </Card>
 
 
 
               </div>
-            </Box>
+            </Box> 
           ) :( 
             <Typography textColor="red" fontSize="xl" fontWeight="lg">
             Du bist nicht angemeldet!
