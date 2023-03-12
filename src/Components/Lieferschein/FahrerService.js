@@ -72,21 +72,54 @@ function FahrerService() {
   });
   const filteredData = firmenMap?.filter((obj) => {
     return obj.lieferscheins.find(
-      (object) => object.lieferant
+      (object) => object.lieferant === `${valueFahrer}`
     );
   });
 
   const findFahrer = filteredData?.map(({ lieferscheins }) => {
-    return lieferscheins
+    return lieferscheins;
   });
-  const flatFahrer = findFahrer?.flat()
+  const flatFahrer = findFahrer?.flat();
 
+  const listDataLiferchein = filteredData?.map((obj) => obj);
+  // function LiefersceinMap() {
+  //   return (
+  //     <>
+  //       <ul>
+  //         {listDataLiferchein?.map((firma, index) => (
+  //           <>
+  //             <li key={index}>Firma: {firma.ismi}</li>
 
+  //             {firma.lieferscheins.map((lieferschein, index) => (
+  //               <>
+  //                 {lieferschein.lieferant === `${valueFahrer}` ? (
+  //                   <b key={index}>{lieferschein.lieferscheinNummer}</b>
+  //                 ) : null}
+  //                 {lieferschein.lieferant === `${valueFahrer}` ? (
+  //                   <li key={index}>{lieferschein.lieferscheinDatum}</li>
+  //                 ) : null}
+  //                 {lieferschein.lieferant === `${valueFahrer}` ? (
+  //                   <li key={index}>{lieferschein.leistungDatum}</li>
+  //                 ) : null}
+  //                 {lieferschein.lieferscheinArtikelsDb.map(
+  //                   (lieferscheinen, index) => (
+  //                     <>
+  //                       <li key={index}>{lieferscheinen.inputArtikelNameIn}</li>
+  //                     </>
+  //                   )
+  //                 )}
+  //               </>
+  //             ))}
+  //           </>
+  //         ))}
+  //       </ul>
+  //     </>
+  //   );
+  // }
   useEffect(() => {
     setListKunden(listData);
     setListFahrerService(listFahrer);
   }, [listData, listFahrer]);
-
 
   function search(array, condition) {
     if (array.length === 0) {
@@ -104,9 +137,9 @@ function FahrerService() {
     (fahrer) => fahrer?.lieferant === `${valueFahrer}`
   );
 
-  //  console.log("Search: ", searchLieferscheins);
-  // console.log("FilterData: ", filteredData);
-  // console.log("Flat Fahrer Lieferscheins:", flatFahrer);
+  console.log("Search: ", searchLieferscheins);
+  console.log("FilterData: ", filteredData.flat());
+  console.log("Flat Fahrer Lieferscheins:", flatFahrer);
   // console.log("Array: ", arrayLieferscheins);
   // filteredData?.forEach(element => console.log(element.lieferscheins.find(obj => obj.lieferant === `${valueFahrer}`)));
 
@@ -180,83 +213,116 @@ function FahrerService() {
               />
             </FormControl>
             <hr />
+            {/* <LiefersceinMap /> */}
             {searchLieferscheins !== undefined ? (
               <Box id="Accordion" sx={{ marginTop: "2rem" }}>
-                {searchLieferscheins.map((lieferschein, i) => (
+                {listDataLiferchein?.map((firma, index) => (
                   <>
-                    <Accordion
-                      expanded={expanded === i}
-                      onChange={handleChange(i)}
-                    >
-                      <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1bh-content"
-                        id="panel1bh-header"
-                      >
-                        <Typography
-                          sx={{ width: "20%", color: "text.secondary" }}
-                        >
-                          vom Datum: <b>{lieferschein.lieferscheinDatum}</b>
-                        </Typography>
-                        <Typography sx={{ width: "33%", flexShrink: 1 }}>
-                          Lieferschein Nummer:{" "}
-                          <b>{lieferschein.lieferscheinNummer}</b>
-                        </Typography>
-                        <Typography
-                          sx={{ width: "33%", color: "text.secondary" }}
-                        >
-                          Leistung Datum: <b>{lieferschein.leistungDatum}</b>
-                        </Typography>
-                      </AccordionSummary>
-                      <AccordionDetails>
-                        <Box sx={{ width: "100%" }}>
-                          <TableContainer component={Paper}>
-                            <Table
-                              sx={{ minWidth: 650 }}
-                              aria-label="caption table"
+                    {firma.lieferscheins.map((lieferschein, i) =>
+                      lieferschein.lieferant === `${valueFahrer}` ? (
+                        <>
+                          <Accordion
+                            expanded={expanded === index}
+                            onChange={handleChange(index)}
+                          >
+                            <AccordionSummary
+                              expandIcon={<ExpandMoreIcon />}
+                              aria-controls="panel1bh-content"
+                              id="panel1bh-header"
                             >
-                              <caption>Ware ordnungsgemäß erhalten</caption>
-                              <TableHead>
-                                <TableRow>
-                                  <TableCell align="left">Kodu</TableCell>
-                                  <TableCell align="left">
-                                    Artikel Name
-                                  </TableCell>
-                                  <TableCell align="right">Menge</TableCell>
-                                  <TableCell align="right">Price</TableCell>
-                                  <TableCell align="right">Kisten</TableCell>
-                                </TableRow>
-                              </TableHead>
-                              <TableBody>
-                                {lieferschein.lieferscheinArtikelsDb.map(
-                                  (artikel, i) => (
-                                    <TableRow key={i}>
-                                      <TableCell component="th" scope="row">
-                                        {artikel.inputArtikelKoduIn}
-                                      </TableCell>
-                                      <TableCell align="left">
-                                        {artikel.inputArtikelNameIn}
-                                      </TableCell>
-                                      <TableCell align="right">
-                                        {artikel.inputArtikelMengeIn} Stk.
-                                      </TableCell>
-                                      <TableCell align="right">
-                                        {formatPrice(
-                                          artikel.inputArtikelPriceIn
-                                        )}
-                                      </TableCell>
-                                      <TableCell align="right">
-                                        {artikel.inputArtikelKistenIn} Stk.
-                                      </TableCell>
-                                    </TableRow>
-                                  )
-                                )}
-                              </TableBody>
-                            </Table>
-                          </TableContainer>
-                        </Box>
-                      </AccordionDetails>
-                    </Accordion>
+                              <Typography
+                                sx={{ width: "20%", color: "text.secondary" }}
+                              >
+                                <span>an {firma.hitab}:</span>{" "}
+                                <b>{firma.ismi}</b>
+                              </Typography>
+
+                              <Typography
+                                sx={{ width: "20%", color: "text.secondary" }}
+                              >
+                                vom Datum:{" "}
+                                <b>{lieferschein.lieferscheinDatum}</b>
+                              </Typography>
+                              <Typography sx={{ width: "33%", flexShrink: 1 }}>
+                                Lieferschein Nummer:{" "}
+                                {lieferschein.lieferant === `${valueFahrer}` ? (
+                                  <b>{lieferschein.lieferscheinNummer}</b>
+                                ) : null}
+                              </Typography>
+                              <Typography
+                                sx={{ width: "33%", color: "text.secondary" }}
+                              >
+                                Leistung Datum:{" "}
+                                {lieferschein.lieferant === `${valueFahrer}` ? (
+                                  <b>{lieferschein.leistungDatum}</b>
+                                ) : null}
+                              </Typography>
+                            </AccordionSummary>
+
+                            <AccordionDetails>
+                              <Box sx={{ width: "100%" }}>
+                                <TableContainer component={Paper}>
+                                  <Table
+                                    sx={{ minWidth: 650 }}
+                                    aria-label="caption table"
+                                  >
+                                    <caption>
+                                      Ware ordnungsgemäß erhalten
+                                    </caption>
+                                    <TableHead>
+                                      <TableRow>
+                                        <TableCell align="left">Kodu</TableCell>
+                                        <TableCell align="left">
+                                          Artikel Name
+                                        </TableCell>
+                                        <TableCell align="right">
+                                          Menge
+                                        </TableCell>
+                                        <TableCell align="right">
+                                          Price
+                                        </TableCell>
+                                        <TableCell align="right">
+                                          Kisten
+                                        </TableCell>
+                                      </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                      {lieferschein.lieferscheinArtikelsDb.map(
+                                        (artikel, i) => (
+                                          <TableRow key={i}>
+                                            <TableCell
+                                              component="th"
+                                              scope="row"
+                                            >
+                                              {artikel.inputArtikelKoduIn}
+                                            </TableCell>
+                                            <TableCell align="left">
+                                              {artikel.inputArtikelNameIn}
+                                            </TableCell>
+                                            <TableCell align="right">
+                                              {artikel.inputArtikelMengeIn} Stk.
+                                            </TableCell>
+                                            <TableCell align="right">
+                                              {formatPrice(
+                                                artikel.inputArtikelPriceIn
+                                              )}
+                                            </TableCell>
+                                            <TableCell align="right">
+                                              {artikel.inputArtikelKistenIn}{" "}
+                                              Stk.
+                                            </TableCell>
+                                          </TableRow>
+                                        )
+                                      )}
+                                    </TableBody>
+                                  </Table>
+                                </TableContainer>
+                              </Box>
+                            </AccordionDetails>
+                          </Accordion>
+                        </>
+                      ) : null
+                    )}
                   </>
                 ))}
               </Box>
