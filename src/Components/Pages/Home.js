@@ -3,13 +3,10 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { Box, Container } from "@mui/system";
 import Typography from "@mui/joy/Typography";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
+
 import { Grid } from "@mui/material";
 import { useUser } from "../Context/UserContext";
 import { Image } from "react-bootstrap";
-import MiniDrawer from "../Menu/Drawer";
 
 
 function Home() {
@@ -182,6 +179,25 @@ console.log(user)
                       <li>Summe von Artikels!</li>
                       <li>Lieferschein Delete und Edit!</li>
                       <li>Produktions Liste erstellen!</li>
+                    </ul>
+                  </code>
+                </Card>
+                <Card sx={{width: 220, padding: 1}}>
+                <small>14.03.23 - </small>
+                  <code>
+                    <ul>
+                      <li>Ausgabe Lieferschein erstellt</li>
+                      <li>DatePicker install</li>
+                      <li>Bugs bei Lieferscheins fix</li>
+                    </ul>
+                  </code>
+                  <code>TODO:</code>
+                  <code>
+                    <ul>
+                      <li>Summe von Artikels!</li>
+                      <li>Lieferschein Delete und Edit!</li>
+                      <li>Produktions Liste erstellen!</li>
+                      <li>Print von Asugaben und Lieferscheins!</li>
                     </ul>
                   </code>
                 </Card>

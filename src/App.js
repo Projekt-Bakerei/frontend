@@ -20,7 +20,7 @@ import AddArtikel from "./Components/Artikel/AddArtikel";
 
 import { CreateInvoice } from "./Components/Rechnung/CreateInvoice";
 import BelegeMenu from "./Components/Menu/Belege";
-import Ausgangsbelege from "./Components/Rechnung/Ausgangsbelege";
+import Ausgangsbelege from "./Components/Belege/Ausgangsbelege";
 import Eingagngsbelege from "./Components/Rechnung/Eingangsbelege";
 import { AddLieferschein } from "./Components/Lieferschein/AddLieferschein";
 import NewFahrer from "./Components/Miterbeiter/NewFahrer";
